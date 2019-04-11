@@ -8,28 +8,36 @@ import { IProduct } from '../../api/types';
 
 export default function Home() {
 
-  const [ product, setProduct ] = useState();
+  const [ products, setProducts ] = useState();
   useEffect(() => {
     const fetchProduct = async () => {
       const result = await getAllProducts();
-      setProduct(result);
+      setProducts(result);
     }
     fetchProduct();
   }, []);
 
-  function und(prod:IProduct|undefined){
+  function showProductList(prod:IProduct[]|undefined){
     if(prod !== undefined){
-      return ProductComponent(prod);
+     return (
+       <div>
+        { ProductComponent(prod[3]) } 
+        { ProductComponent(prod[4]) }
+       </div>
+       
+     ) 
+
+       
     } else {
       return '';
     }
   }
 
-
+  console.log(products);
   return (
     <Fragment>
       <Helmet title="Forsíða" />
-      {und(product)}
+       {showProductList(products) }
     </Fragment>
   );
 }

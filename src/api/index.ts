@@ -43,7 +43,7 @@ async function getAllProducts() : Promise<IProduct[]>{
       price: element.price,
       title: element.title,
       };
-      console.info(product);
+      
       products.push(product);
     });
     
