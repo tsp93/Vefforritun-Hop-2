@@ -1,17 +1,32 @@
-import React, { Fragment } from 'react';
-import Products from '../../components/products/Products';
+import React, { Fragment, useEffect, useState } from 'react';
+import { getProduct } from '../../api';
+import { IProduct } from '../../api/types';
+import ProductComponent from '../../components/product/Product';
 
-export default function Product() {
+export default function Product(props:any) {
+  const { id } = props.match.params;
+  const [ product, setProduct ] = useState();
+  useEffect(() => {
+    const fetchProduct = async () => {
+      const result = await getProduct(id);
+      setProduct(result);
+    }
+    fetchProduct();
+  }, []);
 
-  const element = (<p>hello</p>);
   
+  function und(prod:IProduct|undefined){
+    if(prod !== undefined){
+      return ProductComponent(prod);
+    } else {
+      return '';
+    }
+  }
+
   return (
     <div>
-    <p> Products </p>
-    
-    { Products() }
-
+      {und(product)}
     </div>
-    
   );
 }
+

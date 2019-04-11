@@ -17,6 +17,7 @@ import Order from './routes/orders/Order';
 import NotFound from './routes/system-pages/NotFound';
 
 import './App.scss';
+import Productroute from './routes/product/Product';
 
 type Props = {
   location: Location;
@@ -38,7 +39,7 @@ function App(props: Props) {
             <Route path="/login" exact component={Login} />
             <Route path="/categories/" exact component={Categories} />
             <Route path="/categories/:id" exact component={Category} />
-            <Route path="/product/:id" exact component={Product} />
+            <Route path="/product/:id" exact component={Productroute} />
             <Route path="/cart" exact component={Cart} />
             <Route path="/orders" exact component={Orders} />
             <Route path="/orders/:id" exact component={Order} />
