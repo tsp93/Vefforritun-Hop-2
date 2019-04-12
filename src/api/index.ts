@@ -1,4 +1,4 @@
-import { IProduct } from './types';
+import { IProduct, ICategory } from './types';
 import { async } from 'q';
 
 // Sækja slóð á API úr env
@@ -50,11 +50,31 @@ async function getAllProducts() : Promise<IProduct[]>{
   });
   
 
-  return new Promise((resolve) => resolve(products))
+  return new Promise((resolve) => resolve(products));
+}
 
+async function getAllCategories() : Promise<ICategory[]>{
+  const url = new URL('/categories',baseurl);
+  const response = await fetch(url.href);
+  const data = response.json();
+
+  let categories : ICategory[] = [];
+
+  data.then(function(value){
+    value.items.forEach(function(element:any){
+      const category: ICategory= {
+        id: element.id,
+        title: element.title
+      };
+
+      categories.push(category);
+    });
+  });
+  return new Promise((resolve) => resolve(categories));
 }
 
 export {
   getProduct,
-  getAllProducts
+  getAllProducts,
+  getAllCategories
 };

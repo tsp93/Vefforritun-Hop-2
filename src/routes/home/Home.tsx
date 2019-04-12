@@ -5,6 +5,7 @@ import { getProduct, getAllProducts } from '../../api';
 import './Home.scss';
 import ProductComponent from '../../components/product/Product';
 import { IProduct } from '../../api/types';
+import Search from '../../components/search/Search';
 
 export default function Home() {
 
@@ -19,18 +20,14 @@ export default function Home() {
 
   function showProductList(prod:IProduct[]|undefined){
     if(prod !== undefined){
-     return (
-       <div>
-        { ProductComponent(prod[3]) } 
-        { ProductComponent(prod[4]) }
-       </div>
-       
-     ) 
-
-       
-    } else {
-      return '';
-    }
+     let array : any = [];
+     for(let i=0; i<prod.length;i++){
+       array.push(
+         ProductComponent(prod[i]) 
+       );
+     }
+     return array;   
+    } 
   }
 
   console.log(products);
