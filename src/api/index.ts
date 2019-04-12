@@ -1,5 +1,6 @@
-import { IProduct, ICategory } from './types';
+import { IProduct, ICategory, IUser } from './types';
 import { async } from 'q';
+import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
 // Sækja slóð á API úr env
 const baseurl:string | undefined = process.env.REACT_APP_API_URL;
@@ -73,7 +74,38 @@ async function getAllCategories() : Promise<ICategory[]>{
   return new Promise((resolve) => resolve(categories));
 }
 
+async function postLogin(u:String,p:String) : Promise<IUser>{
+  const url = new URL('/users/login',baseurl);
+
+  const response = await fetch(url.href, {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      firstParam: u,
+      secondParam: p,
+    })
+  });
+
+  const data = response.json();
+
+  let user = data.then(function(value){
+    const result : IUser = {
+      id: value.id,
+      username: value.username,
+      email: value.email,
+      admin: value.admin
+    }
+    return result;
+  });
+
+  return new Promise(resolve => resolve(user)); 
+}
+
 export {
+  postLogin,
   getProduct,
   getAllProducts,
   getAllCategories

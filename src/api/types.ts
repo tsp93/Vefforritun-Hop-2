@@ -14,4 +14,11 @@ export interface IProduct {
   updated?: Date;
 }
 
+export interface IUser{
+  id: number;
+  username: String;
+  email: String;
+  admin: Boolean;
+}
+
 // todo fleiri týpur
