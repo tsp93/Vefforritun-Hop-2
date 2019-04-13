@@ -1,4 +1,4 @@
-import { IProduct, ICategory, IUser } from './types';
+import { IProduct, ICategory, IUser, IError } from './types';
 import { async } from 'q';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
@@ -75,15 +75,15 @@ async function getAllCategories() : Promise<ICategory[]>{
 }
 
 /**
- *  Login fall
+ *  kallar á login fall á server 
  * @param u username
  * @param p password
+ * 
+ * skilar fylki af villum ef einhverjar
  */
 
-async function postLogin(u:String,p:any) : Promise<IUser | undefined >{
+async function postLogin(u:String,p:any) : Promise<IError[] | IUser>{
   const url = new URL('/users/login',baseurl);
-  
-
   
   const response = await fetch(url.href, {
     method: 'POST',
@@ -99,27 +99,96 @@ async function postLogin(u:String,p:any) : Promise<IUser | undefined >{
   const data = response.json();
   
 
-  let user = data.then(function(value){
+  let result = data.then(function(value){
+    console.log(value);
+    let messages : IError[] = [];
+
+    if(value.user){
+      const user :IUser = {
+        id: value.user.id,
+        username: value.user.username,
+        email: value.user.email,
+        admin: value.user.admin
+      }
+      return user;
+    }
+      
+    if(!value.error && !value.user){
+      value.forEach(function(err: any){
+          const msg: IError = {
+            field: err.field,
+            message: err.error,
+          }
+          messages.push(msg);
+        });
+    }
+        
+
     if(value.error){
-      return undefined;
+      const msg : IError ={
+        field: 'NoSuchUser',
+        message: value.error,
+        }
+      messages.push(msg);
     }
+      
+    return messages;
   
-    const result : IUser = {
-      id: value.user.id,
-      username: value.user.username,
-      email: value.user.email,
-      admin: value.user.admin
-    }
-    return result;
+  });
+  return new Promise(resolve => resolve(result)); 
+}
+
+/**
+ *  kallar á register fall á server
+ * 
+ * @param u username
+ * @param p password
+ * @param e email
+ * 
+ * skilar fylki af villum ef einhverjar
+ */
+
+async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
+  const url = new URL('/users/register',baseurl);
+  
+  const response = await fetch(url.href, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      username: u,
+      password: p,
+      email: e,
+    })
+  });
+
+  const data = response.json();
+
+  let result = data.then(function(value){
+    console.log(value);
+    
+    let messages : IError[] = [];
+      if(value.errors){
+        value.errors.forEach(function(err: any){
+          const msg: IError = {
+            field: err.field,
+            message: err.error,
+          }
+          messages.push(msg);
+        });
+      }
+      return messages;
+    
   });
  
-
-  return new Promise(resolve => resolve(user)); 
+  return new Promise(resolve => resolve(result)); 
 }
 
 export {
   postLogin,
   getProduct,
   getAllProducts,
-  getAllCategories
+  getAllCategories,
+  postSignUp,
 };

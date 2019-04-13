@@ -21,4 +21,9 @@ export interface IUser{
   admin: Boolean;
 }
 
+export interface IError{
+  field: String;
+  message: String;
+}
+
 // todo fleiri týpur
