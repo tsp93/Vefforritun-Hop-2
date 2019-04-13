@@ -25,8 +25,11 @@ function changePasswordInput(e: any){
 
 async function onSubmitLogin(e:any){
   e.preventDefault();
-
-  const result = await postLogin(username,password);
+  if(username === undefined || password === undefined){
+    setValidLogin(false);
+  }
+  else{
+    const result = await postLogin(username,password);
   console.log(result);
   setUser(result);
   if(result){
@@ -37,6 +40,8 @@ async function onSubmitLogin(e:any){
    console.log('notendanafn eða lykilorð vitlaust');
    setValidLogin(false);
   }
+  }
+  
   
 }
 

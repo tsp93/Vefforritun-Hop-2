@@ -15,17 +15,29 @@ export default function Product(props:any) {
   }, []);
 
   
-  function und(prod:IProduct|undefined){
+  function showProduct(prod:IProduct|undefined){
     if(prod !== undefined){
-      return ProductComponent(prod,prod.id);
+      return (
+        <div>
+          <img src={product.image}></img>
+          <p>{product.title}</p>
+          <p>{product.price}</p>
+          <p>{product.category}</p>
+        </div>
+      
+      )
     } else {
-      return '';
+      return(
+        <div>
+          <p>Vara fannst ekki </p>
+        </div>
+      );
     }
   }
 
   return (
     <div>
-      {und(product)}
+      {showProduct(product)}
     </div>
   );
 }
