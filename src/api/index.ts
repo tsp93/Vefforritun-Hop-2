@@ -100,7 +100,7 @@ async function postLogin(u:String,p:any) : Promise<IError[] | IUser>{
   
 
   let result = data.then(function(value){
-    console.log(value);
+    
     let messages : IError[] = [];
 
     if(value.user){
@@ -166,7 +166,6 @@ async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
   const data = response.json();
 
   let result = data.then(function(value){
-    console.log(value);
     
     let messages : IError[] = [];
       if(value.errors){
