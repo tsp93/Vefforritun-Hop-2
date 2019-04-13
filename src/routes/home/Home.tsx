@@ -23,7 +23,7 @@ export default function Home() {
      let array : any = [];
      for(let i=0; i<prod.length;i++){
        array.push(
-         ProductComponent(prod[i]) 
+         ProductComponent(prod[i],prod[i].id) 
        );
      }
      return array;   

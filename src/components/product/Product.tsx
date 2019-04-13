@@ -3,10 +3,14 @@ import { getProduct } from '../../api/index';
 import { IProduct } from '../../api/types';
 import './Product.scss';
 
-export default function ProductComponent(product: IProduct) {
+export default function ProductComponent(product: IProduct, key : any) {
+
+  onclick = (e:any) =>{
+    console.log(key);
+  }
 
   return (
-    <div className="product">
+    <div className="product" key={key}>
       <img src={product.image}></img>
       <p>{product.title}</p>
       <p>{product.price}</p>

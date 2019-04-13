@@ -17,7 +17,7 @@ export default function Product(props:any) {
   
   function und(prod:IProduct|undefined){
     if(prod !== undefined){
-      return ProductComponent(prod);
+      return ProductComponent(prod,prod.id);
     } else {
       return '';
     }

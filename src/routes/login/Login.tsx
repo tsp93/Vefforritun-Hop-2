@@ -1,88 +1,74 @@
 import React, { Component, useEffect, useState } from 'react';
 import { postLogin } from '../../api/index';
 
+import App from '../../App';
 import './Login.scss';
+import Home  from '../home/Home';
 import { IUser } from '../../api/types';
 
-function User(u:string,p: string): IUser{
+export default function Login(props : any){
+  
+const [user, setUser] = useState();
+const [username, setUsername] = useState();
+const [password, setPassword] = useState();
+const [validLogin, setValidLogin ] = useState();
 
-  const [ user, setUser ] = useState();
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const result = await postLogin(u,p);
-      setUser(result);
-    }
-    fetchProduct();
-  }, []);
-
-  function showUser(usr : IUser){
-    console.log(usr.username);
-    console.log(usr.email);
-      
-  }
-
-  return user;
+function changeUsernameInput(e: any){
+  let target = e.target.value;
+  setUsername(target);
 }
 
+function changePasswordInput(e: any){
+  let target = e.target.value;
+  setPassword(target);
+}
 
-export default class Login extends Component{
+async function onSubmitLogin(e:any){
+  e.preventDefault();
 
-  
-    state = {
-      username: '',
-      password: ''
-    };
-  
-  handleInputChange = (e: any) => {
-
-    const { name, value } = e.target;
-
-    if (name) {
-      this.setState({ [name]: value });
-    }
+  const result = await postLogin(username,password);
+  console.log(result);
+  setUser(result);
+  if(result){
+    console.log('logged in');
+    setValidLogin(true);
   }
-
-  handleSubmit = (e:any) => {
-    e.preventDefault();
-    
-    const { username, password } = this.state;
-    
-    //const user = postLogin(username, password);
-    //console.log(user);
-    try{
-      const test = User(username,password);
-      console.log(test);
-
-    }
-    catch(e){
-      console.log('catch í handleSubmit');
-      console.log(e);
-    }
+  else{
+   console.log('notendanafn eða lykilorð vitlaust');
+   setValidLogin(false);
   }
+  
+}
 
-  render(){
+function invalidLogin(log : Boolean){
+  if(log === false){
     return (
-      <fieldset>
-        <form onSubmit={this.handleSubmit} >
-        <div>
-          <label htmlFor="username">Notendanafn:</label>
-            <input autoComplete="off" id="username" type="text" name="username" onChange={this.handleInputChange}/>
-          </div>
-          <br/>
-          <div>
-            <label htmlFor="password">Lykilorð:</label>
-              <input autoComplete="off" id="password" type="password" name="password" onChange={this.handleInputChange}/>
-          </div>
-          <input type="submit" value="Submit"></input>
-         
-          
-      </form>
-      </fieldset>
-      
-    );
+      <p>Notendanafn eða lykilorð er vitlaust </p>
+    )
   }
+}
 
+return (
+  <fieldset>
+    <form onSubmit={onSubmitLogin} >
+    <div>
+      <label htmlFor="username">Notendanafn:</label>
+        <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
+      </div>
+      <br/>
+      <div>
+        <label htmlFor="password">Lykilorð:</label>
+          <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
+      </div>
+      <input type="submit" value="Submit"></input> 
+  </form>
+  <div>
+    { invalidLogin(validLogin) }
+  </div>
+  </fieldset>
 
+  
+)
 }
 
 

@@ -74,32 +74,45 @@ async function getAllCategories() : Promise<ICategory[]>{
   return new Promise((resolve) => resolve(categories));
 }
 
-async function postLogin(u:String,p:String) : Promise<IUser>{
-  const url = new URL('/users/login',baseurl);
+/**
+ *  Login fall
+ * @param u username
+ * @param p password
+ */
 
+async function postLogin(u:String,p:any) : Promise<IUser | undefined >{
+  const url = new URL('/users/login',baseurl);
+  
+
+  
   const response = await fetch(url.href, {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      firstParam: u,
-      secondParam: p,
+      username: u,
+      password: p,
     })
   });
 
   const data = response.json();
+  
 
   let user = data.then(function(value){
+    if(value.error){
+      return undefined;
+    }
+  
     const result : IUser = {
-      id: value.id,
-      username: value.username,
-      email: value.email,
-      admin: value.admin
+      id: value.user.id,
+      username: value.user.username,
+      email: value.user.email,
+      admin: value.user.admin
     }
     return result;
   });
+ 
 
   return new Promise(resolve => resolve(user)); 
 }
