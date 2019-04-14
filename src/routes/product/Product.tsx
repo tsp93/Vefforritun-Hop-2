@@ -17,12 +17,14 @@ export default function Product(props:any) {
   
   function showProduct(prod:IProduct|undefined){
     if(prod !== undefined){
+      
       return (
         <div>
-          <img src={product.image}></img>
-          <p>{product.title}</p>
-          <p>{product.price}</p>
-          <p>{product.category}</p>
+          <img src={prod.image}></img>
+          <h1>{prod.title}</h1>
+          <p>Verð:{prod.price}</p>
+          <p>Flokkur: {prod.category}</p>
+          <p>{prod.description}</p>
         </div>
       
       )

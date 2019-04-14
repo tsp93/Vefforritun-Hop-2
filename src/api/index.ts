@@ -18,6 +18,7 @@ async function getProduct(id: number ) : Promise<IProduct> {
       image: value.image,
       price: value.price,
       title: value.title,
+      description: value.description
     };
     return product
   });
@@ -40,7 +41,7 @@ async function getAllProducts() : Promise<IProduct[]>{
       const product: IProduct = { 
       category:{
         title:element.category_title,
-        id: 1
+        id: element.category_id
       }, 
       id: element.id,
       image: element.image,

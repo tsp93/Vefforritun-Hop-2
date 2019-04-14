@@ -27,7 +27,7 @@ export default function Home() {
          image: prod[i].image,
          title: prod[i].title,
          price: prod[i].price.toString(),
-         category: prod[i].category.title
+         category: prod[i].category.title,
        }
        
        array.push(
@@ -50,6 +50,9 @@ export default function Home() {
     <Fragment>
       <Helmet title="Forsíða" />
        {showProductList(products) }
+       <button>fyrrverandi síða</button>
+       <button>næsta síða</button>
+
     </Fragment>
   );
 }
