@@ -38,7 +38,10 @@ async function getAllProducts() : Promise<IProduct[]>{
     value.items.forEach(function(element: any){
   
       const product: IProduct = { 
-      category: element.category_title,
+      category:{
+        title:element.category_title,
+        id: 1
+      }, 
       id: element.id,
       image: element.image,
       price: element.price,

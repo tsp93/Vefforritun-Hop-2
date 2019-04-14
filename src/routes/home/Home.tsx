@@ -22,8 +22,23 @@ export default function Home() {
     if(prod !== undefined){
      let array : any = [];
      for(let i=0; i<prod.length;i++){
+       const p = {
+         id: prod[i].id,
+         image: prod[i].image,
+         title: prod[i].title,
+         price: prod[i].price.toString(),
+         category: prod[i].category.title
+       }
+       
        array.push(
-         ProductComponent(prod[i],prod[i].id) 
+         //ProductComponent(prod[i],prod[i].id) 
+         
+         <ProductComponent
+         key= {i}
+         product={p}
+         
+        
+         /> 
        );
      }
      return array;   
