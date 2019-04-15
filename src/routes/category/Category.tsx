@@ -14,7 +14,7 @@ export default function Category(props: any) {
   const [ title, setTitle ] = useState();
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();
-  const [ page , setPage ] = useState(1);
+  const [ page , setPage ] = useState(0);
 
 
   const init = useEffect(() => {
@@ -79,24 +79,22 @@ export default function Category(props: any) {
 
   function showPagebuttons(){
     const prevPage = async (e:any) => {
-      setPage(page-1);
-      const result =await getProductsInCat(id,page);
-      console.log(result);
+      setPage(page - 1);
+      const result = await getProductsInCat(id,page);
       setProducts(result);
       
     };
     const nextPage = async (e:any) => {
-      setPage(page+1);
-      const result =await getProductsInCat(id,page);
-      console.log(result);
-      setProducts(result);
+      setPage(page + 1);
       
+      const result = await getProductsInCat(id,page);
+      setProducts(result);
     };
 
-    if(page <= 1){
+    if(page < 1){
       return (
         <div>
-          <p>síða: {page}</p>
+          <p>síða: {page+1}</p>
           <button onClick={nextPage}>næsta síða</button>
         </div>
       )
@@ -105,7 +103,7 @@ export default function Category(props: any) {
       return (
         <div>
           <button onClick={prevPage}>fyrrverandi síða</button>
-          <p>síða: {page}</p>
+          <p>síða: {page+1}</p>
           <button onClick={nextPage}>næsta síða</button>
         </div>
       )
@@ -120,7 +118,7 @@ export default function Category(props: any) {
       <Helmet title="Flokkur" />
         <Search/>
         
-        <h1>Flokkur {page}</h1>
+        <h1>Flokkur</h1>
 
         {showProductList(products) }
         {showPagebuttons()}

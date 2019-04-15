@@ -59,12 +59,13 @@ async function getAllProducts() : Promise<IProduct[]>{
 }
 
 async function getProductsInCat(id : number | string, page: number) : Promise<IProduct[]>{
-  const offset = (page-1)*10;
-  const limit = (page)*10;
-  console.log('offset:' + offset);
-  console.log('limit:'+ limit);
+  const offset = page*10;
+  const limit = 10;
+  console.log('page: '+ page);
+  console.log('offset: ' + offset);
+  console.log('limit: '+ limit);
  
-  const suffix = '/products?category='+ id + '&offset='+offset  + '&limit=' + limit;
+  const suffix = '/products?category='+ id + '&offset='+ offset + '&limit=' + limit;
   const url = new URL(suffix, baseurl);
   const response = await fetch(url.href);
   const data = response.json();
