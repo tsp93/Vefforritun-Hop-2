@@ -1,4 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import  { Redirect,NavLink } from 'react-router-dom';
+
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
 
@@ -18,9 +20,11 @@ export default function CategoriesRoute() {
       let array : any = [];
       for(let i=0; i<cat.length;i++){
         array.push(
+          <NavLink to={"/categories/"+cat[i].id }>
           <div>
-            <h2 key={i}>{cat[i].title}</h2>
+            <h2>{cat[i].title}</h2>
           </div>
+          </NavLink>
         );
       }
       return array;   

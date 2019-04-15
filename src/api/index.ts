@@ -58,6 +58,38 @@ async function getAllProducts() : Promise<IProduct[]>{
   return new Promise((resolve) => resolve(products));
 }
 
+async function getProductsInCat(id : number | string) : Promise<IProduct[]>{
+ 
+  const suffix = '/products?category='+ id;
+  const url = new URL(suffix, baseurl);
+  const response = await fetch(url.href);
+  const data = response.json();
+
+  let products : IProduct[] = [];
+
+  data.then(function(value){
+
+    value.items.forEach(function(element: any){
+  
+      const product: IProduct = { 
+      category:{
+        title:element.category_title,
+        id: element.category_id
+      }, 
+      id: element.id,
+      image: element.image,
+      price: element.price,
+      title: element.title,
+      };
+      
+      products.push(product);
+    });
+    
+  });
+
+  return new Promise((resolve) => resolve(products));
+}
+
 async function getAllCategories() : Promise<ICategory[]>{
   const url = new URL('/categories',baseurl);
   const response = await fetch(url.href);
@@ -194,4 +226,5 @@ export {
   getAllProducts,
   getAllCategories,
   postSignUp,
+  getProductsInCat,
 };
