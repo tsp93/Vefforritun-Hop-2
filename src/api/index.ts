@@ -179,6 +179,9 @@ async function postLogin(u:String,p:any) : Promise<IError[] | IUser>{
         email: value.user.email,
         admin: value.user.admin
       }
+      if(value.token){
+        localStorage.setItem('myToken',value.token);
+      }
       return user;
     }
       
@@ -253,6 +256,25 @@ async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
   return new Promise(resolve => resolve(result)); 
 }
 
+async function getCurrentUser() : Promise<IUser | any>{
+
+  const url = new URL('/users/me',baseurl);
+
+  const options : any = {method: 'GET', headers: {}} ;
+  
+  const token = localStorage.getItem('myToken');
+
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url.href, options);
+  const result = response.json();
+
+
+  return new Promise(resolve => resolve(result)); 
+}
+
 export {
   postLogin,
   getProduct,
@@ -260,5 +282,6 @@ export {
   getAllCategories,
   postSignUp,
   getProductsInCat,
-  searchProducts
+  searchProducts,
+  getCurrentUser,
 };

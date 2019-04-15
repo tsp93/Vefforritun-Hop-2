@@ -40,7 +40,7 @@ export default function Home() {
     } 
   }
 
-  console.log(products);
+ 
   return (
     <Fragment>
       <Helmet title="Forsíða" />
