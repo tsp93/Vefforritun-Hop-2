@@ -14,13 +14,13 @@ export default function Category(props: any) {
   const [ title, setTitle ] = useState();
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();
-  const [ page , setPage ] = useState(0);
+  const [ offset , setOffset ] = useState(0);
 
 
-  const init = useEffect(() => {
+  useEffect(() => {
     const fetchProduct = async () => {
       setloading(false);
-      const result = await getProductsInCat(id,page);
+      const result = await getProductsInCat(id,offset);
       setProducts(result);
       setFullList(result);
       
@@ -78,23 +78,26 @@ export default function Category(props: any) {
   }
 
   function showPagebuttons(){
-    const prevPage = async (e:any) => {
-      setPage(page - 1);
-      const result = await getProductsInCat(id,page);
-      setProducts(result);
-      
+    function prevPage(){
+      const temp = offset - 10;
+      setOffset(temp);
+      loadPage(temp); 
     };
-    const nextPage = async (e:any) => {
-      setPage(page + 1);
-      
-      const result = await getProductsInCat(id,page);
-      setProducts(result);
+    function nextPage() {
+      const temp = offset + 10;
+      setOffset(temp);
+      loadPage(temp);
     };
 
-    if(page < 1){
+    async function loadPage(next:number){
+      const result = await getProductsInCat(id,next);
+      setProducts(result);
+    }
+
+    if(offset < 1){
       return (
         <div>
-          <p>síða: {page+1}</p>
+          <p>síða: {(offset/10)+ 1}</p>
           <button onClick={nextPage}>næsta síða</button>
         </div>
       )
@@ -103,7 +106,7 @@ export default function Category(props: any) {
       return (
         <div>
           <button onClick={prevPage}>fyrrverandi síða</button>
-          <p>síða: {page+1}</p>
+          <p>síða: {(offset/10)+ 1}</p>
           <button onClick={nextPage}>næsta síða</button>
         </div>
       )
