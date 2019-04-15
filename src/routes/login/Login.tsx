@@ -85,8 +85,6 @@ return (
   </form>
   {loginSuccess(success)}
   </fieldset>
-
-  
 )
 }
 

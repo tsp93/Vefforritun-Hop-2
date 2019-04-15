@@ -31,14 +31,7 @@ export default function Home() {
        }
        
        array.push(
-         //ProductComponent(prod[i],prod[i].id) 
-         
-         <ProductComponent
-         key= {i}
-         product={p}
-         
-        
-         /> 
+         <ProductComponent key= {i} product={p} /> 
        );
      }
      return array;   

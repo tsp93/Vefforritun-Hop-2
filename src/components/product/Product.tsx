@@ -14,7 +14,7 @@ export default function ProductComponent(props : any) {
 
   const handleClick = (e: any) =>{
     console.log(props.product.category);
-    //return (<Redirect exact to ="/cart">)
+    
   }
 
   function showProd(){
@@ -29,7 +29,6 @@ export default function ProductComponent(props : any) {
 
   return (
     <div className="product">
-      
       <NavLink to={"/product/"+props.product.id }>{showProd()}</NavLink>
     </div>
   );
@@ -46,32 +45,3 @@ ProductComponent.propTypes = {
   }),
 
 }
-
-
-/*
-class ProductComponent extends Component{
-  
-  static propTypes = {
-    image : PropTypes.string,
-    title : PropTypes.string,
-    price : PropTypes.string,
-    category: PropTypes.string,
-  }
-  
-  
-  render(){
-    return (
-      <div className="product" >
-        <img src={this.props.image}></img>
-        <p>{this.props.title}</p>
-        <p>{this.props.price}</p>
-        <p>{this.props.category}</p>
-        
-  
-      </div>
-    );
-  }
-}
-
-export default ProductComponent;
-*/
