@@ -20,7 +20,7 @@ export default function CategoriesRoute() {
       let array : any = [];
       for(let i=0; i<cat.length;i++){
         array.push(
-          <NavLink to={"/categories/"+cat[i].id }>
+          <NavLink to={"/categories/"+cat[i].id } key={i}>
           <div>
             <h2>{cat[i].title}</h2>
           </div>
