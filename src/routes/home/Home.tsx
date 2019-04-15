@@ -1,11 +1,13 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import Helmet from 'react-helmet';
 import { getProduct, getAllProducts } from '../../api';
+import  { Redirect,NavLink } from 'react-router-dom';
 
 import './Home.scss';
 import ProductComponent from '../../components/product/Product';
 import { IProduct } from '../../api/types';
 import Search from '../../components/search/Search';
+import CategoriesRoute from '../categories/Categories';
 
 export default function Home() {
 
@@ -43,8 +45,12 @@ export default function Home() {
     <Fragment>
       <Helmet title="Forsíða" />
        {showProductList(products) }
-       <button>fyrrverandi síða</button>
-       <button>næsta síða</button>
+     <br/>
+     <button>
+       <NavLink to="/categories">skoða alla flokka</NavLink>
+     </button>
+     
+      <CategoriesRoute/> 
 
     </Fragment>
   );
