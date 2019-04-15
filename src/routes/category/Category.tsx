@@ -13,6 +13,7 @@ export default function Category(props: any) {
   const { id } = props.match.params;
   const [ title, setTitle ] = useState();
   const [ products, setProducts ] = useState();
+  const [ fullList, setFullList ] = useState();
 
 
   const init = useEffect(() => {
@@ -20,6 +21,7 @@ export default function Category(props: any) {
       setloading(false);
       const result = await getProductsInCat(id);
       setProducts(result);
+      setFullList(result);
       
     }
     fetchProduct();
@@ -36,8 +38,14 @@ export default function Category(props: any) {
 
     const submitSearch = async (e:any) => {
       e.preventDefault();
-      const result = await searchProducts(search,id);
-      setProducts(result);
+      if(search === '' || search ===undefined){
+        setProducts(fullList);
+      }
+      else{
+        const result = await searchProducts(search,id);
+        setProducts(result);
+      }
+      
     }
 
     return (
