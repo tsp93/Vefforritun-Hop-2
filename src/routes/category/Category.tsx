@@ -14,12 +14,13 @@ export default function Category(props: any) {
   const [ title, setTitle ] = useState();
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();
+  const [ page , setPage ] = useState(1);
 
 
   const init = useEffect(() => {
     const fetchProduct = async () => {
       setloading(false);
-      const result = await getProductsInCat(id);
+      const result = await getProductsInCat(id,page);
       setProducts(result);
       setFullList(result);
       
@@ -76,12 +77,40 @@ export default function Category(props: any) {
     } 
   }
 
-  function showState(l : Boolean){
-    if(l){
+  function showPagebuttons(){
+    const prevPage = async (e:any) => {
+      setPage(page-1);
+      const result =await getProductsInCat(id,page);
+      console.log(result);
+      setProducts(result);
+      
+    };
+    const nextPage = async (e:any) => {
+      setPage(page+1);
+      const result =await getProductsInCat(id,page);
+      console.log(result);
+      setProducts(result);
+      
+    };
+
+    if(page <= 1){
       return (
-        <p>sæki gögn...</p>
+        <div>
+          <p>síða: {page}</p>
+          <button onClick={nextPage}>næsta síða</button>
+        </div>
       )
     }
+    else{
+      return (
+        <div>
+          <button onClick={prevPage}>fyrrverandi síða</button>
+          <p>síða: {page}</p>
+          <button onClick={nextPage}>næsta síða</button>
+        </div>
+      )
+    }
+    
   }
 
 
@@ -90,12 +119,11 @@ export default function Category(props: any) {
     <Fragment>
       <Helmet title="Flokkur" />
         <Search/>
-        {showState(loading)}
-        <h1>Flokkur</h1>
+        
+        <h1>Flokkur {page}</h1>
 
         {showProductList(products) }
-        <button>fyrrverandi síða</button>
-        <button>næsta síða</button>
+        {showPagebuttons()}
 
     </Fragment>
   )
