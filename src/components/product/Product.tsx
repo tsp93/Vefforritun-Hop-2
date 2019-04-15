@@ -12,11 +12,6 @@ import { prototype } from 'stream';
 
 export default function ProductComponent(props : any) {
 
-  const handleClick = (e: any) =>{
-    console.log(props.product.category);
-    
-  }
-
   function showProd(){
     return (
     <div>

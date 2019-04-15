@@ -2,6 +2,11 @@ import React from 'react';
 
 export default function Search() {
   return (
-    <p>search</p>
+    <form>
+      <label htmlFor="leit">leit:</label>
+      <input autoComplete="off" id="leit" type="text" name="leit"/>
+      <button>leita</button>
+      
+    </form>
   );
 }

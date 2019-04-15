@@ -3,6 +3,7 @@ import  { Redirect,NavLink } from 'react-router-dom';
 
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
+import Category from '../category/Category';
 
 export default function CategoriesRoute() {
 
@@ -14,7 +15,7 @@ export default function CategoriesRoute() {
     }
     fetchProduct();
   },[]);
-
+  
   function showCategories(cat: ICategory[]){
     if(cat !== undefined){
       let array : any = [];
