@@ -13,22 +13,19 @@ export default function Home() {
   useEffect(() => {
     const fetchProduct = async () => {
       const result : IUser = await getCurrentUser();
-      console.log(result);
       setCurr(result);
-      
     }
     fetchProduct();
   }, []);
 
   function showcurr(u : IUser){
     if(u !== undefined){
-      return ( <h1>{u.username}</h1>)
+      return ( <p>{u.username}</p>)
     }
     
   }
   
   function showNavigation(){
-    console.log(curr);
     if(curr === undefined || curr.error){
       return (
         <div>

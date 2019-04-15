@@ -61,6 +61,7 @@ export default function Category(props: any) {
 
   function showProductList(prod:IProduct[]|undefined){
     if(prod !== undefined){
+      
       let array : any = [];
       for(let i=0; i<prod.length;i++){
         const p = {
@@ -92,6 +93,7 @@ export default function Category(props: any) {
     async function loadPage(next:number){
       const result = await getProductsInCat(id,next);
       setProducts(result);
+      console.log(result);
     }
 
     if(offset < 1){
@@ -120,7 +122,6 @@ export default function Category(props: any) {
     <Fragment>
       <Helmet title="Flokkur" />
         <Search/>
-        
         <h1>Flokkur</h1>
 
         {showProductList(products) }
