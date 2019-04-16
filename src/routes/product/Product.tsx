@@ -1,7 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
+
 import { getProduct } from '../../api';
 import { IProduct } from '../../api/types';
 import ProductComponent from '../../components/product/Product';
+import AddToCart from '../../components/cart/AddToCart';
+
 
 export default function Product(props:any) {
   const { id } = props.match.params;
@@ -15,9 +19,8 @@ export default function Product(props:any) {
   }, []);
 
   
-  function showProduct(prod:IProduct|undefined){
-    if(prod !== undefined){
-      
+  function showProduct(prod:IProduct){
+    if(prod !== undefined){      
       return (
         <div>
           <img src={prod.image}></img>
@@ -25,6 +28,8 @@ export default function Product(props:any) {
           <p>Verð:{prod.price}</p>
           <p>Flokkur: {prod.category}</p>
           <p>{prod.description}</p>
+          {AddToCart(prod.id)}
+          
         </div>
       
       )
@@ -43,4 +48,6 @@ export default function Product(props:any) {
     </div>
   );
 }
+
+
 

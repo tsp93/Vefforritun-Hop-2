@@ -1,6 +1,8 @@
 import { IProduct, ICategory, IUser, IError, ICart } from './types';
 import { async } from 'q';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
+import { string } from 'prop-types';
+import { ifError } from 'assert';
 
 // Sækja slóð á API úr env
 const baseurl:string | undefined = process.env.REACT_APP_API_URL;
@@ -275,6 +277,9 @@ async function getCurrentUser() : Promise<IUser | any>{
   return new Promise(resolve => resolve(result)); 
 }
 
+/**
+ * 
+ */
 async function getCart(): Promise<ICart> {
   
   const url = new URL('/cart',baseurl);
@@ -324,6 +329,11 @@ async function getCart(): Promise<ICart> {
 
 }
 
+/**
+ * 
+ * @param line 
+ * @param q 
+ */
 async function changeLineQuantity(line: number,q: number|string): Promise<IError[] | IProduct>{
   const suffix = `/cart/line/${line}`;
   const url = new URL(suffix,baseurl);
@@ -386,6 +396,51 @@ async function changeLineQuantity(line: number,q: number|string): Promise<IError
   return new Promise(resolve => resolve(result));
 }
 
+/**
+ * 
+ */
+async function postOrders(name : string, address: string): Promise<IError[]>{
+  const suffix = '/orders';
+  const url = new URL(suffix, baseurl);
+
+  const options : any = {
+    method: 'POST',
+    headers: {},
+    body: JSON.stringify({ name: name, address: address })
+  };
+  
+  
+  options.headers['Content-Type'] ='application/json';
+
+
+  const token = localStorage.getItem('myToken');
+
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+  const response = await fetch(url.href, options);
+  const data = response.json();
+  console.log(data);
+
+  let result = data.then(function(value){
+    
+    let messages : IError[] = [];
+    if(value.errors){
+      value.errors.forEach(function(err: any){
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
+      
+    }
+  return messages;
+  });
+
+return new Promise(resolve => resolve(result));
+}
+
 
 export {
   postLogin,
@@ -398,4 +453,5 @@ export {
   getCurrentUser,
   getCart,
   changeLineQuantity,
+  postOrders,
 };

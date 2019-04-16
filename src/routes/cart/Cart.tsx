@@ -5,6 +5,7 @@ import './Cart.scss';
 import { IProduct, ICart } from '../../api/types';
 import ProductComponent from '../../components/product/Product';
 import PropTypes from 'prop-types';
+import makeOrder from '../../components/makeOrder/makeOrder';
 
 
 export default function Cart() {
@@ -14,7 +15,6 @@ export default function Cart() {
   useEffect(() => {
     const fetchProduct = async () => {
       const result = await getCart();
-      console.log(result);
       setCart(result);
     }
     fetchProduct();
@@ -112,7 +112,8 @@ export default function Cart() {
   return (
     <div>
       { showProductList(cart) }
-      { showTotalPrice(cart)  } 
+      { showTotalPrice(cart)  }
+      { makeOrder() }
     </div>
     
   );

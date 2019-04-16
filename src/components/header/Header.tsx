@@ -20,7 +20,7 @@ export default function Home() {
 
   function showcurr(u : IUser){
     if(u !== undefined){
-      return ( <p>{u.username}</p>)
+      return ( <p>logged in as: {u.username}</p>)
     }
     
   }
