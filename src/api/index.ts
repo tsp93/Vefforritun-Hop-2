@@ -305,12 +305,13 @@ async function getCart(): Promise<ICart> {
         title:element.category_title,
         id: element.category_id
       }, 
-      id: element.product_id,
-      image: element.image,
-      price: element.price,
-      title: element.title,
+      id:       element.product_id,
+      image:    element.image,
+      price:    element.price,
+      title:    element.title,
       quantity: element.quantity,
-      line: element.id,
+      line:     element.id,
+      total:    element.total,
       };
       
       cart.products.push(product);
@@ -323,18 +324,18 @@ async function getCart(): Promise<ICart> {
 
 }
 
-async function changeLineQuantity(line: number,q: number|string): Promise<IError[]>{
+async function changeLineQuantity(line: number,q: number|string): Promise<IError[] | IProduct>{
   const suffix = `/cart/line/${line}`;
   const url = new URL(suffix,baseurl);
 
-  console.log(typeof q);
+  
   const options : any = {
     method: 'PATCH',
     headers: {},
     body: JSON.stringify({ quantity: q })
   };
   
-  console.log(options);
+  
   options.headers['Content-Type'] ='application/json';
 
 
@@ -349,8 +350,10 @@ async function changeLineQuantity(line: number,q: number|string): Promise<IError
 
   let result = data.then(function(value){
     
-    let messages : IError[] = [];
+    
       if(value.errors){
+        let messages : IError[] = [];
+
         value.errors.forEach(function(err: any){
           const msg: IError = {
             field: err.field,
@@ -358,8 +361,25 @@ async function changeLineQuantity(line: number,q: number|string): Promise<IError
           }
           messages.push(msg);
         });
+        return messages;
       }
-      return messages;
+      else{
+        const product: IProduct = { 
+          category:{
+            title:value.category_title,
+            id: value.category_id
+          }, 
+          id: value.product_id,
+          image:    value.image,
+          price:    value.price,
+          title:    value.title,
+          quantity: value.quantity,
+          line:     value.id,
+          total:    value.total
+          };
+          return product;
+      }
+      
     
   });
 

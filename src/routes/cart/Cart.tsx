@@ -26,16 +26,21 @@ export default function Cart() {
 
     function handleQuantityChange(e: any){
       let target = e.target.value;
+      if(target <1){
+        return;
+      }
       setfjoldi(target);
     }
 
     async function submitChange(e :any){
       e.preventDefault();
       const l =props.product.line;
-      console.log(l);
       console.log(fjoldi);
-      const result = changeLineQuantity(l,fjoldi);
-      console.log(result);
+      
+      await changeLineQuantity(l,fjoldi);
+
+      const reload = await getCart();
+      setCart(reload);
 
     }
 
@@ -52,20 +57,22 @@ export default function Cart() {
            <input type="number" name="quantity" value={fjoldi} onChange={handleQuantityChange}></input>
            <button>Uppfæra</button>
          </form>
+         <p>samtalt: {props.product.total} </p>
        </div>
        
     )
   }
 
   CartProduct.propTypes={
-    product: PropTypes.shape({
-      id : PropTypes.number.isRequired,
-      image: PropTypes.string,
-      title: PropTypes.string,
-      price: PropTypes.string,
+    product:    PropTypes.shape({
+      id :      PropTypes.number.isRequired,
+      image:    PropTypes.string,
+      title:    PropTypes.string,
+      price:    PropTypes.string,
       category: PropTypes.string,
       quantity: PropTypes.number,
-      line: PropTypes.number,
+      line:     PropTypes.number,
+      total:    PropTypes.number,
     
     }),
   }
@@ -74,15 +81,16 @@ export default function Cart() {
   function showProductList(mycart:ICart|undefined){
     if(mycart !== undefined){
      let array : any = [];
-     for(let i=0; i< cart.products.length;i++){
+     for(let i=0; i< mycart.products.length;i++){
        const p = {
-         id: cart.products[i].id,
-         image: cart.products[i].image,
-         title: cart.products[i].title,
-         price: cart.products[i].price.toString(),
-         category: cart.products[i].category.title,
-         quantity: cart.products[i].quantity,
-         line: cart.products[i].line,
+         id:        mycart.products[i].id,
+         image:     mycart.products[i].image,
+         title:     mycart.products[i].title,
+         price:     mycart.products[i].price.toString(),
+         category:  mycart.products[i].category.title,
+         quantity:  mycart.products[i].quantity,
+         line:      mycart.products[i].line,
+         total:     mycart.products[i].total,
        }
        
        array.push(
@@ -96,7 +104,7 @@ export default function Cart() {
   function showTotalPrice(c: ICart){
     if(c !== undefined){
       return (
-        <h2>samtals: {c.total_price}</h2>
+        <h2>Karfa samtals: {c.total_price}</h2>
       )
     }
   }
