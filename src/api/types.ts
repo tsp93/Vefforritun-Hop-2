@@ -12,6 +12,8 @@ export interface IProduct {
   description?: string;
   created?: Date;
   updated?: Date;
+  quantity?: number;
+  line?: number;
 }
 
 export interface IUser{

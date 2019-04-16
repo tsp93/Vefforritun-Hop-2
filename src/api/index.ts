@@ -309,6 +309,8 @@ async function getCart(): Promise<ICart> {
       image: element.image,
       price: element.price,
       title: element.title,
+      quantity: element.quantity,
+      line: element.id,
       };
       
       cart.products.push(product);
@@ -319,6 +321,49 @@ async function getCart(): Promise<ICart> {
   });
   return new Promise(resolve => resolve(cart)); 
 
+}
+
+async function changeLineQuantity(line: number,q: number|string): Promise<IError[]>{
+  const suffix = `/cart/line/${line}`;
+  const url = new URL(suffix,baseurl);
+
+  console.log(typeof q);
+  const options : any = {
+    method: 'PATCH',
+    headers: {},
+    body: JSON.stringify({ quantity: q })
+  };
+  
+  console.log(options);
+  options.headers['Content-Type'] ='application/json';
+
+
+  const token = localStorage.getItem('myToken');
+
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+  const response = await fetch(url.href, options);
+  const data = response.json();
+
+
+  let result = data.then(function(value){
+    
+    let messages : IError[] = [];
+      if(value.errors){
+        value.errors.forEach(function(err: any){
+          const msg: IError = {
+            field: err.field,
+            message: err.error,
+          }
+          messages.push(msg);
+        });
+      }
+      return messages;
+    
+  });
+
+  return new Promise(resolve => resolve(result));
 }
 
 
@@ -332,4 +377,5 @@ export {
   searchProducts,
   getCurrentUser,
   getCart,
+  changeLineQuantity,
 };

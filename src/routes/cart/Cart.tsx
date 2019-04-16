@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { getCart } from '../../api';
+import { getCart, changeLineQuantity } from '../../api';
 
 import './Cart.scss';
 import { IProduct, ICart } from '../../api/types';
 import ProductComponent from '../../components/product/Product';
+import PropTypes from 'prop-types';
+
 
 export default function Cart() {
 
   const [ cart, setCart ] = useState();
+
   useEffect(() => {
     const fetchProduct = async () => {
       const result = await getCart();
@@ -17,17 +20,54 @@ export default function Cart() {
     fetchProduct();
   }, []);
 
-  function CartProduct(p: IProduct){
+  function CartProduct(props: any){
+    
+    const [fjoldi, setfjoldi] = useState(props.product.quantity);
+
+    function handleQuantityChange(e: any){
+      let target = e.target.value;
+      setfjoldi(target);
+    }
+
+    async function submitChange(e :any){
+      e.preventDefault();
+      const l =props.product.line;
+      console.log(l);
+      console.log(fjoldi);
+      const result = changeLineQuantity(l,fjoldi);
+      console.log(result);
+
+    }
+
     return (
-      <div key={p.id}>
-         <img src={p.image}></img>
-         <p>{p.title}</p>
-         <p>{p.price} kr.</p>
-         <p>{p.category}</p>
-         <p> product id(temp): {p.id}</p>
+      <div key={props.product.id}>
+         <img src={props.product.image}></img>
+         <p>{props.product.title}</p>
+         <p>{props.product.price} kr.</p>
+         <p>{props.product.category}</p>
+         <p>quantity: {props.product.quantity}</p>
+         <p> product id(temp): {props.product.id}</p>
+         <form onSubmit={submitChange}>
+           <label htmlFor="quantity">Fjöldi: </label>
+           <input type="number" name="quantity" value={fjoldi} onChange={handleQuantityChange}></input>
+           <button>Uppfæra</button>
+         </form>
        </div>
        
     )
+  }
+
+  CartProduct.propTypes={
+    product: PropTypes.shape({
+      id : PropTypes.number.isRequired,
+      image: PropTypes.string,
+      title: PropTypes.string,
+      price: PropTypes.string,
+      category: PropTypes.string,
+      quantity: PropTypes.number,
+      line: PropTypes.number,
+    
+    }),
   }
 
 
@@ -41,10 +81,12 @@ export default function Cart() {
          title: cart.products[i].title,
          price: cart.products[i].price.toString(),
          category: cart.products[i].category.title,
+         quantity: cart.products[i].quantity,
+         line: cart.products[i].line,
        }
        
        array.push(
-         CartProduct(p)
+         <CartProduct product={p} key={i}/>
        );
      }
      return array;   
@@ -54,7 +96,7 @@ export default function Cart() {
   function showTotalPrice(c: ICart){
     if(c !== undefined){
       return (
-        <p>samtals: {c.total_price}</p>
+        <h2>samtals: {c.total_price}</h2>
       )
     }
   }
