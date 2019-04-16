@@ -19,7 +19,7 @@ export default function ProductComponent(props : any) {
       <p>{props.product.title}</p>
       <p>{props.product.price} kr.</p>
       <p>{props.product.category}</p>
-      <p>{props.product.id}</p>
+      <p> product id(temp): {props.product.id}</p>
     </div>)
   }
 

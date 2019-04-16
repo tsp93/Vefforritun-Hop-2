@@ -26,4 +26,10 @@ export interface IError{
   message: String;
 }
 
+export interface ICart{
+  products: IProduct[];
+  cartID: number;
+  total_price: number;
+}
+
 // todo fleiri týpur

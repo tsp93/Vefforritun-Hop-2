@@ -1,4 +1,4 @@
-import { IProduct, ICategory, IUser, IError } from './types';
+import { IProduct, ICategory, IUser, IError, ICart } from './types';
 import { async } from 'q';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
 
@@ -260,7 +260,7 @@ async function getCurrentUser() : Promise<IUser | any>{
 
   const url = new URL('/users/me',baseurl);
 
-  const options : any = {method: 'GET', headers: {}} ;
+  const options : any = {method: 'GET', headers: {}};
   
   const token = localStorage.getItem('myToken');
 
@@ -275,6 +275,53 @@ async function getCurrentUser() : Promise<IUser | any>{
   return new Promise(resolve => resolve(result)); 
 }
 
+async function getCart(): Promise<ICart> {
+  
+  const url = new URL('/cart',baseurl);
+  const options : any = {method: 'GET', headers: {}};
+  const token = localStorage.getItem('myToken');
+
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+  const response = await fetch(url.href, options);
+  const data = response.json();
+
+  let cart : ICart = { 
+    products: [],
+    cartID: -1,
+    total_price:0
+  };
+
+  data.then(function(value){
+    if(value.error){
+      return value.error;
+    }
+
+    value.lines.forEach((element: any) => {
+  
+      const product: IProduct = { 
+      category:{
+        title:element.category_title,
+        id: element.category_id
+      }, 
+      id: element.product_id,
+      image: element.image,
+      price: element.price,
+      title: element.title,
+      };
+      
+      cart.products.push(product);
+    });
+    cart.total_price = value.total;
+    cart.cartID = value.id;
+
+  });
+  return new Promise(resolve => resolve(cart)); 
+
+}
+
+
 export {
   postLogin,
   getProduct,
@@ -284,4 +331,5 @@ export {
   getProductsInCat,
   searchProducts,
   getCurrentUser,
+  getCart,
 };
