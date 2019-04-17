@@ -30,7 +30,7 @@ export default function makeOrder(){
         if(errors !== undefined){
             let array = [];
             for(let i = 0; i< errors.length; i++){
-                array.push(<p>{errors[i].field},{errors[i].message}</p>)
+                array.push(<p key={i}>{errors[i].field},{errors[i].message}</p>)
             }
          return array;   
         }
@@ -45,10 +45,10 @@ export default function makeOrder(){
         {showErrors()}
         <form onSubmit={sumbitOrder}>
         <label htmlFor="name">Nafn:</label>
-        <input autoComplete="off"  type="text" name="name" />
+        <input autoComplete="off"  type="text" name="name" onChange={handleNameChange} />
         <br/>
         <label >Heimilisfang:</label>
-        <input autoComplete="off" type="text" name="adress"/>
+        <input autoComplete="off" type="text" name="adress" onChange={handleAddressChange}/>
         <button>Senda inn pöntun</button>
         </form>
     </div>
