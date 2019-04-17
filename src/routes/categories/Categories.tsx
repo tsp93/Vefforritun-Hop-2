@@ -21,7 +21,7 @@ export default function CategoriesRoute() {
   },[]);
   
   function showCategories(cat: ICategory[]) {
-    if (cat !== undefined) {
+    if (cat != undefined) {
       const array : any = [];
       for (let i = 0; i < cat.length; i += 1) {
         array.push(
