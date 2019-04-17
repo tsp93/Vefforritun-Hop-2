@@ -1,8 +1,4 @@
 import { IProduct, ICategory, IUser, IError, ICart, IOrder } from './types';
-import { async } from 'q';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
-import { string, element } from 'prop-types';
-import { ifError } from 'assert';
 
 // Sækja slóð á API úr env
 const baseurl : string | undefined = process.env.REACT_APP_API_URL;
