@@ -4,7 +4,7 @@ import { IProduct, ICategory, IUser, IError, ICart, IOrder } from './types';
 const baseurl : string | undefined = process.env.REACT_APP_API_URL;
 
 /**
- * Býr til vöru út frá hlut
+ * Hjálparfall sem býr til vöru út frá hlut
  * @param element Hlutur úr JSON
  */
 function constructProduct(element: any) {
