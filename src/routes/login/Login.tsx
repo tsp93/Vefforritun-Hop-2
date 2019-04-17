@@ -26,7 +26,7 @@ function changePasswordInput(e: any){
 }
 
 async function onSubmitLogin(e:any){
-  e.preventDefault();
+  //e.preventDefault();
     const result = await postLogin(username,password);
     
     
@@ -41,6 +41,7 @@ async function onSubmitLogin(e:any){
       console.log('success');
       console.log(result);
       setSuccess(true);
+      window.location.reload();
     }
 }
 

@@ -8,12 +8,29 @@ import { IUser } from '../../api/types';
 export default function Home() {
 
   const [curr, setCurr] = useState();
+  const [loggedin, setloggedin] = useState(checkToken());
+
+  function checkToken() :boolean{
+    const token = localStorage.getItem('myToken');
+    if(token){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 
 
   useEffect(() => {
     const fetchProduct = async () => {
       const result : IUser = await getCurrentUser();
-      setCurr(result);
+      if(result.hasOwnProperty('error')){
+        setloggedin(false);
+      }
+      else if(result.username){
+        setloggedin(true);
+        setCurr(result);
+      }
     }
     fetchProduct();
   }, []);
@@ -22,11 +39,15 @@ export default function Home() {
     if(u !== undefined){
       return ( <p>logged in as: {u.username}</p>)
     }
-    
   }
   
   function showNavigation(){
-    if(curr === undefined || curr.error){
+    function handleLogout(e:any){
+      localStorage.removeItem('myToken');
+      setloggedin(false);
+    }
+
+    if(!loggedin){
       return (
         <div>
           <NavLink activeClassName="header__link--selected" exact to="/register">Nýskráning</NavLink>
@@ -40,7 +61,7 @@ export default function Home() {
         </div>
       )
     }
-    else if(curr !== undefined){
+    else if(loggedin){
       return (
         <div>
           <NavLink activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
@@ -50,7 +71,7 @@ export default function Home() {
           <NavLink activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
-          <button onClick={() =>{ localStorage.removeItem('myToken')}}>logout</button>
+          <button onClick={handleLogout}>logout</button>
         </div>
       )
       
