@@ -24,11 +24,7 @@ export default function Product(props:any) {
     fetchProduct();
   }, []);
 <<<<<<< HEAD
-<<<<<<< HEAD
   
-=======
-
->>>>>>> 718b545042ac15d5e23b01f37d89944701c9aac7
 =======
 
 >>>>>>> 718b545042ac15d5e23b01f37d89944701c9aac7
