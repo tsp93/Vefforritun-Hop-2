@@ -480,7 +480,7 @@ async function getOrders(): Promise<IOrder[] | IError[]>{
   const url = new URL(suffix, baseurl);
 
   const options : any = {
-    method: 'POST',
+    method: 'GET',
     headers: {},
   };
   options.headers['Content-Type'] ='application/json';
@@ -541,4 +541,5 @@ export {
   postCart,
   changeLineQuantity,
   postOrders,
+  getOrders,
 };

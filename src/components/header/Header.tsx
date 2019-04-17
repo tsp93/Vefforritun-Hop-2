@@ -33,8 +33,6 @@ export default function Home() {
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/login">Innskráning</NavLink>
           <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
-          <br/>
           <NavLink activeClassName="header__link--selected" exact to="/">Vörur</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
@@ -48,6 +46,8 @@ export default function Home() {
           <NavLink activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/">Vörur</NavLink>
+          <br/>
+          <NavLink activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
           <button onClick={() =>{ localStorage.removeItem('myToken')}}>logout</button>
