@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { postCart, getCart } from '../../api/index';
+import { addToCart, getCart } from '../../api/index';
 import { ifError } from 'assert';
 import { IError } from '../../api/types';
 
@@ -17,7 +17,7 @@ export default function AddToCart(id: any){
     console.log('orderProduct');
     console.log(quantity);
 
-    const result =  await postCart(id, quantity);
+    const result =  await addToCart(id, quantity);
     console.log(result);
     errors= result;
   }

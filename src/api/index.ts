@@ -5,157 +5,146 @@ import { string, element } from 'prop-types';
 import { ifError } from 'assert';
 
 // Sækja slóð á API úr env
-const baseurl:string | undefined = process.env.REACT_APP_API_URL;
+const baseurl : string | undefined = process.env.REACT_APP_API_URL;
 
+/**
+ * Býr til vöru út frá hlut
+ * @param element Hlutur úr JSON
+ */
+function constructProduct(element: any) {
+  const product: IProduct = {
+    id: element.id,
+    title: element.title,
+    price: element.price,
+    image: element.image,
+    category: {
+      id: element.category_id,
+      title: element.category_title,
+    },
+    description: element.description,
+    created: element.created,
+    updated: element.updated,
+    quantity: element.quantity,
+    line: element.line,
+    total: element.total,
+  };
+
+  return product;
+}
+
+/**
+ * Sækir vöru
+ * @param id Id á vöru 
+ */
 async function getProduct(id: number ) : Promise<IProduct> {
-  // todo sækja vöru
-  const url = new URL('/products/'+id,baseurl);
+  const url = new URL(`/products/${id}`, baseurl);
   const response = await fetch(url.href);
   const data = response.json();
-  
-  var product = data.then(function(value){
-    const product: IProduct = { 
-      category: value.category_title,
-      id: value.id,
-      image: value.image,
-      price: value.price,
-      title: value.title,
-      description: value.description
-    };
-    return product
+
+  var product = data.then((value) => {
+    return constructProduct(value);
   });
 
-  return new Promise((resolve) => resolve(product))
+  return new Promise((resolve) => resolve(product));
 }
 
-
-async function getAllProducts() : Promise<IProduct[]>{
-  const url = new URL('/products/',baseurl);
+/**
+ * Sækir vörur
+ */
+async function getAllProducts() : Promise<IProduct[]> {
+  const url = new URL('/products/', baseurl);
   const response = await fetch(url.href);
   const data = response.json();
 
-  let products : IProduct[] = [];
-    
-  data.then(function(value){
+  const products : IProduct[] = [];
 
-    value.items.forEach(function(element: any){
-  
-      const product: IProduct = { 
-      category:{
-        title:element.category_title,
-        id: element.category_id
-      }, 
-      id: element.id,
-      image: element.image,
-      price: element.price,
-      title: element.title,
-      };
-      
-      products.push(product);
+  data.then((value) => {
+    value.items.forEach((element: any) => {
+      products.push(constructProduct(element));
     });
-    
   });
-  
 
   return new Promise((resolve) => resolve(products));
 }
 
-async function getProductsInCat(id : number | string, offset: number) : Promise<IProduct[]>{
-  
+/**
+ * Sækir vörur úr flokki
+ * @param id Id á flokk
+ * @param offset Upphafspunktur til að sækja úr flokki
+ */
+async function getProductsInCat(id : number | string, offset: number) : Promise<IProduct[]> {
   const limit = 10;
- 
-  const suffix = '/products?category='+ id + '&offset='+ offset + '&limit=' + limit;
+  const suffix = `/products?category=${id}&offset=${offset}&limit=${limit}`;
   const url = new URL(suffix, baseurl);
   const response = await fetch(url.href);
   const data = response.json();
 
-  let products : IProduct[] = [];
+  const products : IProduct[] = [];
 
-  data.then(function(value){
-
-    value.items.forEach(function(element: any){
-  
-      const product: IProduct = { 
-      category:{
-        title:element.category_title,
-        id: element.category_id
-      }, 
-      id: element.id,
-      image: element.image,
-      price: element.price,
-      title: element.title,
-      };
-      
-      products.push(product);
-    });
-    
-  });
-
-  return new Promise((resolve) => resolve(products));
-}
-
-async function searchProducts(search : string,cat:string) : Promise<IProduct[]>{
-
-  const suffix = '/products?search='+ search + '&category=' + cat;
-  const url = new URL(suffix, baseurl);
-  const response = await fetch(url.href);
-  const data = response.json();
-
-  let products : IProduct[] = [];
-
-  data.then(function(value){
-
-    value.items.forEach(function(element: any){
-  
-      const product: IProduct = { 
-      category:{
-        title:element.category_title,
-        id: element.category_id
-      }, 
-      id: element.id,
-      image: element.image,
-      price: element.price,
-      title: element.title,
-      };
-      
-      products.push(product);
+  data.then((value) => {
+    value.items.forEach((element: any) => {
+      products.push(constructProduct(element));
     });
   });
 
   return new Promise((resolve) => resolve(products));
 }
 
-async function getAllCategories() : Promise<ICategory[]>{
-  const url = new URL('/categories',baseurl);
+/**
+ * Leitar að vöru
+ * @param search Vara til að leita að
+ * @param cat Flokkur til leita í
+ */
+async function searchProducts(search : string, cat : string) : Promise<IProduct[]> {
+  const suffix = `/products?search=${search}&category=${cat}`;
+  const url = new URL(suffix, baseurl);
   const response = await fetch(url.href);
   const data = response.json();
 
-  let categories : ICategory[] = [];
+  const products : IProduct[] = [];
 
-  data.then(function(value){
-    value.items.forEach(function(element:any){
-      const category: ICategory= {
+  data.then((value) => {
+    value.items.forEach((element: any) => {
+      products.push(constructProduct(element));
+    });
+  });
+
+  return new Promise((resolve) => resolve(products));
+}
+
+/**
+ * Sækir flokka
+ */
+async function getAllCategories() : Promise<ICategory[]> {
+  const url = new URL('/categories', baseurl);
+  const response = await fetch(url.href);
+  const data = response.json();
+
+  const categories : ICategory[] = [];
+
+  data.then((value) => {
+    value.items.forEach((element:any) => {
+      const category: ICategory = {
         id: element.id,
-        title: element.title
+        title: element.title,
       };
 
       categories.push(category);
     });
   });
+
   return new Promise((resolve) => resolve(categories));
 }
 
 /**
- *  kallar á login fall á server 
+ * Kallar á login fall á server 
  * @param u username
  * @param p password
  * 
- * skilar fylki af villum ef einhverjar
+ * @returns Skilar fylki af villum ef einhverjar
  */
-
-async function postLogin(u:String,p:any) : Promise<IError[] | IUser>{
-  const url = new URL('/users/login',baseurl);
-  
+async function postLogin(u : String, p : any) : Promise<IError[] | IUser> {
+  const url = new URL('/users/login', baseurl);
   const response = await fetch(url.href, {
     method: 'POST',
     headers: {
@@ -164,65 +153,63 @@ async function postLogin(u:String,p:any) : Promise<IError[] | IUser>{
     body: JSON.stringify({
       username: u,
       password: p,
-    })
+    }),
   });
-
   const data = response.json();
-  
 
-  let result = data.then(function(value){
-    
-    let messages : IError[] = [];
+  const result = data.then((value) => {
+    const messages : IError[] = [];
 
-    if(value.user){
-      const user :IUser = {
+    // Ef notandi náði að skrá sig inn
+    if (value.user) {
+      const user : IUser = {
         id: value.user.id,
         username: value.user.username,
         email: value.user.email,
-        admin: value.user.admin
+        admin: value.user.admin,
       }
-      if(value.token){
-        localStorage.setItem('myToken',value.token);
+      if (value.token) {
+        localStorage.setItem('myToken', value.token);
       }
       return user;
     }
-      
-    if(!value.error && !value.user){
-      value.forEach(function(err: any){
-          const msg: IError = {
-            field: err.field,
-            message: err.error,
-          }
-          messages.push(msg);
-        });
-    }
-        
 
-    if(value.error){
-      const msg : IError ={
+    // Ef villa kom upp við innskráningu
+    if (!value.error && !value.user) {
+      value.forEach((err: any) => {
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
+    }
+
+    // Ef notandi fannst ekki
+    if (value.error) {
+      const msg : IError = {
         field: 'NoSuchUser',
         message: value.error,
-        }
+      }
       messages.push(msg);
     }
       
     return messages;
-  
   });
+
   return new Promise(resolve => resolve(result)); 
 }
 
 /**
- *  kallar á register fall á server
+ * Kallar á register fall á server
  * 
  * @param u username
  * @param p password
  * @param e email
  * 
- * skilar fylki af villum ef einhverjar
+ * @returns Skilar fylki af villum ef einhverjar
  */
-
-async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
+async function postSignUp(u : string, p : string, e : string) : Promise<IError[]> {
   const url = new URL('/users/register',baseurl);
   
   const response = await fetch(url.href, {
@@ -239,9 +226,8 @@ async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
 
   const data = response.json();
 
-  let result = data.then(function(value){
-    
-    let messages : IError[] = [];
+  const result = data.then(function(value){
+    const messages : IError[] = [];
       if(value.errors){
         value.errors.forEach(function(err: any){
           const msg: IError = {
@@ -258,44 +244,41 @@ async function postSignUp(u: string,p:string,e:string): Promise<IError[]>{
   return new Promise(resolve => resolve(result)); 
 }
 
-async function getCurrentUser() : Promise<IUser | any>{
-
-  const url = new URL('/users/me',baseurl);
-
-  const options : any = {method: 'GET', headers: {}};
-  
+/**
+ * Nær í innskráðan notanda
+ */
+async function getCurrentUser() : Promise<IUser | any> {
+  const url = new URL('/users/me', baseurl);
+  const options : any = { method: 'GET', headers: {} };
   const token = localStorage.getItem('myToken');
 
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
-
   const response = await fetch(url.href, options);
   const result = response.json();
-
 
   return new Promise(resolve => resolve(result)); 
 }
 
 /**
- * 
+ * Nær í körfu
  */
-async function getCart(): Promise<ICart> {
-  
-  const url = new URL('/cart',baseurl);
-  const options : any = {method: 'GET', headers: {}};
+async function getCart() : Promise<ICart> {
+  const url = new URL('/cart', baseurl);
+  const options : any = { method: 'GET', headers: {} };
   const token = localStorage.getItem('myToken');
 
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  let cart : ICart = { 
+  const cart : ICart = {
     products: [],
     cartID: -1,
-    total_price:0
+    total_price:0,
   };
 
   data.then(function(value){
@@ -304,58 +287,53 @@ async function getCart(): Promise<ICart> {
     }
 
     value.lines.forEach((element: any) => {
-  
-      const product: IProduct = { 
-      category:{
-        title:element.category_title,
-        id: element.category_id
-      }, 
-      id:       element.product_id,
-      image:    element.image,
-      price:    element.price,
-      title:    element.title,
-      quantity: element.quantity,
-      line:     element.id,
-      total:    element.total,
-      };
-      
-      cart.products.push(product);
+      cart.products.push(constructProduct(element));
     });
     cart.total_price = value.total;
     cart.cartID = value.id;
-
   });
-  return new Promise(resolve => resolve(cart)); 
 
+  return new Promise(resolve => resolve(cart)); 
 }
 
-async function postCart(pid :number, q : number) : Promise<IError[]>{
-  const url = new URL('/cart',baseurl);
-  const options : any = {method: 'POST', headers: {}, body:JSON.stringify({product: pid, quantity: q})};
-
+/**
+ * Bætir við vöru í körfu
+ * @param pid Id á vöru
+ * @param q Magn af vöru
+ */
+async function addToCart(pid : number, q : number) : Promise<IError[]> {
+  const url = new URL('/cart', baseurl);
+  const options : any = {
+    method: 'POST',
+    headers: {},
+    body:JSON.stringify({
+      product: pid,
+      quantity: q,
+    })
+  };
   options.headers['Content-Type'] ='application/json';
 
   const token = localStorage.getItem('myToken');
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  let result = data.then(function(value){
-    
-    let messages : IError[] = [];
-    if(value.errors){
-      value.errors.forEach(function(err: any){
+  const result = data.then((value) => {
+    const messages : IError[] = [];
+
+    if (value.errors) {
+      value.errors.forEach((err: any) => {
         const msg: IError = {
           field: err.field,
           message: err.error,
         }
         messages.push(msg);
       });
-      
     }
+
   return messages;
   });
 
@@ -364,121 +342,101 @@ return new Promise(resolve => resolve(result));
 }
 
 /**
- * 
- * @param line 
- * @param q 
+ * Breytir magn af ákveðinni vöru í körfu
+ * @param line Varan sem skal uppfæra
+ * @param q Nýja magn af vöru
  */
-async function changeLineQuantity(line: number,q: number|string): Promise<IError[] | IProduct>{
+async function changeLineQuantity(line : number, q : number | string) : Promise<IError[] | IProduct> {
   const suffix = `/cart/line/${line}`;
   const url = new URL(suffix,baseurl);
-
-  
   const options : any = {
     method: 'PATCH',
     headers: {},
-    body: JSON.stringify({ quantity: q })
+    body: JSON.stringify({
+      quantity: q,
+    })
   };
-  
-  
   options.headers['Content-Type'] ='application/json';
 
-
   const token = localStorage.getItem('myToken');
-
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
   const response = await fetch(url.href, options);
   const data = response.json();
 
+  const result = data.then(function(value){
+    if (value.errors) {
+      const messages : IError[] = [];
 
-  let result = data.then(function(value){
-    
-    
-      if(value.errors){
-        let messages : IError[] = [];
+      value.errors.forEach((err: any) => {
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
 
-        value.errors.forEach(function(err: any){
-          const msg: IError = {
-            field: err.field,
-            message: err.error,
-          }
-          messages.push(msg);
-        });
-        return messages;
-      }
-      else{
-        const product: IProduct = { 
-          category:{
-            title:value.category_title,
-            id: value.category_id
-          }, 
-          id: value.product_id,
-          image:    value.image,
-          price:    value.price,
-          title:    value.title,
-          quantity: value.quantity,
-          line:     value.id,
-          total:    value.total
-          };
-          return product;
-      }
-      
-    
+      return messages;
+    } else {
+      return constructProduct(value);
+    }
   });
 
   return new Promise(resolve => resolve(result));
 }
 
 /**
- * 
+ * Býr til pöntun úr körfu
+ * @param name Nafn á notanda
+ * @param address Heimilisfang notanda
  */
-async function postOrders(name : string, address: string): Promise<IError[]>{
-  const suffix = '/orders';
-  const url = new URL(suffix, baseurl);
-
+async function postOrders(name : string, address : string) : Promise<IError[]> {
+  const url = new URL('/orders', baseurl);
   const options : any = {
     method: 'POST',
     headers: {},
-    body: JSON.stringify({ name: name, address: address })
+    body: JSON.stringify({
+      name: name,
+      address: address,
+    })
   };
-  
   options.headers['Content-Type'] ='application/json';
 
-
   const token = localStorage.getItem('myToken');
-
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
   const response = await fetch(url.href, options);
   const data = response.json();
   console.log(data);
 
-  let result = data.then(function(value){
+  const result = data.then(function(value){
     
-    let messages : IError[] = [];
-    if(value.errors){
-      value.errors.forEach(function(err: any){
+    const messages : IError[] = [];
+    if (value.errors) {
+      value.errors.forEach((err: any) => {
         const msg: IError = {
           field: err.field,
           message: err.error,
         }
         messages.push(msg);
       });
-      
     }
-  return messages;
+
+    return messages;
   });
 
-return new Promise(resolve => resolve(result));
+  return new Promise(resolve => resolve(result));
 }
 
-async function getOrders(): Promise<IOrder[] | IError[]>{
-
-  const suffix = '/orders';
-  const url = new URL(suffix, baseurl);
-
+/**
+ * Sækir pantanir
+ */
+async function getOrders(): Promise<IOrder[] | IError[]> {
+  const url = new URL('/orders', baseurl);
   const options : any = {
     method: 'GET',
     headers: {},
@@ -486,17 +444,16 @@ async function getOrders(): Promise<IOrder[] | IError[]>{
   options.headers['Content-Type'] ='application/json';
 
   const token = localStorage.getItem('myToken');
-
   if(token){
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  let result = data.then(function(value){
-    
-    if(value.errors){
-      let messages : IError[] = [];
+  const result = data.then(function(value){
+    if (value.errors) {
+      const messages : IError[] = [];
 
       value.errors.forEach(function(err: any){
         const msg: IError = {
@@ -506,24 +463,23 @@ async function getOrders(): Promise<IOrder[] | IError[]>{
         messages.push(msg);
       });
       return messages;
-    }
-    else{
-      let orders : IOrder[] = [];
+    } else {
+      const orders : IOrder[] = [];
 
-      value.items.forEach((element: any)=>{
+      value.items.forEach((element: any) => {
         const order = {
           id: element.id,
           name: element.name,
           address : element.address,
-          created : element.created
+          created : element.created,
         }
         orders.push(order);
-
       });
+
       return orders;
     }
-
   });
+
   return new Promise(resolve => resolve(result));
 }
 
@@ -538,7 +494,7 @@ export {
   searchProducts,
   getCurrentUser,
   getCart,
-  postCart,
+  addToCart,
   changeLineQuantity,
   postOrders,
   getOrders,

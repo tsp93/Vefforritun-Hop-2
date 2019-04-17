@@ -19,12 +19,6 @@ export default function Product(props:any) {
     fetchProduct();
   }, []);
 
-
-  
-
-
-
-  
   function showProduct(prod:IProduct){
     
     
@@ -35,7 +29,7 @@ export default function Product(props:any) {
           <img src={prod.image}></img>
           <h1>{prod.title}</h1>
           <p>Verð:{prod.price}</p>
-          <p>Flokkur: {prod.category}</p>
+          <p>Flokkur: {prod.category.title}</p>
           <p>{prod.description}</p>
           <p>{prod.id}</p>
           {AddToCart(prod.id)}

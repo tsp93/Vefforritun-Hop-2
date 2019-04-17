@@ -41,4 +41,3 @@ export interface IOrder{
   address: string;
   created: Date;
 }
-// todo fleiri týpur
