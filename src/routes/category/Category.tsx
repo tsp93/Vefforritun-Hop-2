@@ -15,6 +15,7 @@ export default function Category(props: any) {
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();
   const [ offset , setOffset ] = useState(0);
+  
 
 
   useEffect(() => {
@@ -23,7 +24,7 @@ export default function Category(props: any) {
       const result = await getProductsInCat(id,offset);
       setProducts(result);
       setFullList(result);
-      
+      setloading(false);
     }
     fetchProduct();
   }, []);
@@ -60,22 +61,26 @@ export default function Category(props: any) {
   }
 
   function showProductList(prod:IProduct[]|undefined){
-    if(prod !== undefined){
-      
-      let array : any = [];
-      for(let i=0; i<prod.length;i++){
-        const p = {
-          id: prod[i].id,
-          image: prod[i].image,
-          title: prod[i].title,
-          price: prod[i].price.toString(),
-          category: prod[i].category.title,
+
+    if(loading){
+      return (<p>loading...</p>)
+    }
+    else{
+      if(prod !== undefined){
+        let array : any = [];
+        for(let i=0; i<prod.length;i++){
+          const p = {
+            id: prod[i].id,
+            image: prod[i].image,
+            title: prod[i].title,
+            price: prod[i].price.toString(),
+            category: prod[i].category.title,
+          }
+          array.push( <ProductComponent key= {i} product={p}/> );
         }
-       
-        array.push( <ProductComponent key= {i} product={p}/> );
-     }
-     return array;   
-    } 
+        return array;   
+      } 
+    }
   }
 
   function showPagebuttons(){
