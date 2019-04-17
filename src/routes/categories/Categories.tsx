@@ -5,19 +5,20 @@ import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
 
 import './Categories.scss';
+import CategoryBox from '../../components/categoryBox/CategoryBox';
 
 /**
  * Birtir vöruflokkana á forsíðunni
  */
 export default function CategoriesRoute() {
 
-  const [ categories , setCategories ] = useState();
+  const [ categories, setCategories ] = useState();
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchCategories = async () => {
       const result = await getAllCategories();
       setCategories(result);
     };
-    fetchProduct();
+    fetchCategories();
   },[]);
   
   function showCategories(cat: ICategory[]) {
@@ -25,9 +26,11 @@ export default function CategoriesRoute() {
       const array : any = [];
       for (let i = 0; i < cat.length; i += 1) {
         array.push(
-          <Link to = {`/categories/${cat[i].id}`} key={i} className='category'>
-            <h1>{cat[i].title}</h1>
-          </Link>
+          <CategoryBox
+              id={cat[i].id}
+              title={cat[i].title}
+              key={i}
+            />
         );
       }
       return array;
