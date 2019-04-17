@@ -329,6 +329,23 @@ async function getCart(): Promise<ICart> {
 
 }
 
+async function postCart(pid :number, q : number){
+  const url = new URL('/cart',baseurl);
+  const options : any = {method: 'POST', headers: {}, body:JSON.stringify({product: pid, quantity: q})};
+
+  options.headers['Content-Type'] ='application/json';
+
+  const token = localStorage.getItem('myToken');
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url.href, options);
+  const data = response.json();
+  console.log(data);
+
+}
+
 /**
  * 
  * @param line 
@@ -451,6 +468,7 @@ export {
   searchProducts,
   getCurrentUser,
   getCart,
+  postCart,
   changeLineQuantity,
   postOrders,
 };
