@@ -23,11 +23,7 @@ export default function Product(props:any) {
     }
     fetchProduct();
   }, []);
-<<<<<<< HEAD
   
-=======
-
->>>>>>> 718b545042ac15d5e23b01f37d89944701c9aac7
   function showProduct(prod:IProduct){
     
     if(loading){
@@ -36,7 +32,6 @@ export default function Product(props:any) {
     else{
       if(prod !== undefined){ 
          
-<<<<<<< HEAD
         return (
           <div>
             <img src={prod.image}></img>
@@ -55,26 +50,6 @@ export default function Product(props:any) {
           </div>
         );
       }
-=======
-      return (
-        <div>
-          <img src={prod.image}></img>
-          <h1>{prod.title}</h1>
-          <p>Verð:{prod.price}</p>
-          <p>Flokkur: {prod.category.title}</p>
-          <p>{prod.description}</p>
-          <p>{prod.id}</p>
-          {AddToCart(prod.id)}
-        </div>
-    
-      )
-    } else {
-      return(
-        <div>
-          <p>Vara fannst ekki </p>
-        </div>
-      );
->>>>>>> 718b545042ac15d5e23b01f37d89944701c9aac7
     }
     
   }
