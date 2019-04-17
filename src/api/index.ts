@@ -329,6 +329,40 @@ async function getCart(): Promise<ICart> {
 
 }
 
+async function postCart(pid :number, q : number) : Promise<IError[]>{
+  const url = new URL('/cart',baseurl);
+  const options : any = {method: 'POST', headers: {}, body:JSON.stringify({product: pid, quantity: q})};
+
+  options.headers['Content-Type'] ='application/json';
+
+  const token = localStorage.getItem('myToken');
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url.href, options);
+  const data = response.json();
+
+  let result = data.then(function(value){
+    
+    let messages : IError[] = [];
+    if(value.errors){
+      value.errors.forEach(function(err: any){
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
+      
+    }
+  return messages;
+  });
+
+return new Promise(resolve => resolve(result));
+
+}
+
 /**
  * 
  * @param line 
@@ -409,7 +443,6 @@ async function postOrders(name : string, address: string): Promise<IError[]>{
     body: JSON.stringify({ name: name, address: address })
   };
   
-  
   options.headers['Content-Type'] ='application/json';
 
 
@@ -452,6 +485,7 @@ export {
   searchProducts,
   getCurrentUser,
   getCart,
+  postCart,
   changeLineQuantity,
   postOrders,
 };

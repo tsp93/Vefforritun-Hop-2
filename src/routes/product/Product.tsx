@@ -7,6 +7,7 @@ import ProductComponent from '../../components/product/Product';
 import AddToCart from '../../components/cart/AddToCart';
 
 
+
 export default function Product(props:any) {
   const { id } = props.match.params;
   const [ product, setProduct ] = useState();
@@ -18,9 +19,17 @@ export default function Product(props:any) {
     fetchProduct();
   }, []);
 
+
+  
+
+
+
   
   function showProduct(prod:IProduct){
-    if(prod !== undefined){      
+    
+    
+    if(prod !== undefined){ 
+         
       return (
         <div>
           <img src={prod.image}></img>
@@ -28,10 +37,10 @@ export default function Product(props:any) {
           <p>Verð:{prod.price}</p>
           <p>Flokkur: {prod.category}</p>
           <p>{prod.description}</p>
+          <p>{prod.id}</p>
           {AddToCart(prod.id)}
-          
         </div>
-      
+    
       )
     } else {
       return(
