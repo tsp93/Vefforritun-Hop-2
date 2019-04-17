@@ -329,7 +329,7 @@ async function getCart(): Promise<ICart> {
 
 }
 
-async function postCart(pid :number, q : number){
+async function postCart(pid :number, q : number) : Promise<IError[]>{
   const url = new URL('/cart',baseurl);
   const options : any = {method: 'POST', headers: {}, body:JSON.stringify({product: pid, quantity: q})};
 
@@ -342,7 +342,24 @@ async function postCart(pid :number, q : number){
 
   const response = await fetch(url.href, options);
   const data = response.json();
-  console.log(data);
+
+  let result = data.then(function(value){
+    
+    let messages : IError[] = [];
+    if(value.errors){
+      value.errors.forEach(function(err: any){
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
+      
+    }
+  return messages;
+  });
+
+return new Promise(resolve => resolve(result));
 
 }
 
