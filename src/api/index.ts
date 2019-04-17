@@ -25,6 +25,7 @@ function constructProduct(element: any) {
     total: element.total,
   };
 
+  console.log(product);
   return product;
 }
 
