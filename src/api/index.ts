@@ -1,7 +1,7 @@
-import { IProduct, ICategory, IUser, IError, ICart } from './types';
+import { IProduct, ICategory, IUser, IError, ICart, IOrder } from './types';
 import { async } from 'q';
 import { unstable_renderSubtreeIntoContainer } from 'react-dom';
-import { string } from 'prop-types';
+import { string, element } from 'prop-types';
 import { ifError } from 'assert';
 
 // Sækja slóð á API úr env
@@ -472,6 +472,59 @@ async function postOrders(name : string, address: string): Promise<IError[]>{
   });
 
 return new Promise(resolve => resolve(result));
+}
+
+async function getOrders(): Promise<IOrder[] | IError[]>{
+
+  const suffix = '/orders';
+  const url = new URL(suffix, baseurl);
+
+  const options : any = {
+    method: 'POST',
+    headers: {},
+  };
+  options.headers['Content-Type'] ='application/json';
+
+  const token = localStorage.getItem('myToken');
+
+  if(token){
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+  const response = await fetch(url.href, options);
+  const data = response.json();
+
+  let result = data.then(function(value){
+    
+    if(value.errors){
+      let messages : IError[] = [];
+
+      value.errors.forEach(function(err: any){
+        const msg: IError = {
+          field: err.field,
+          message: err.error,
+        }
+        messages.push(msg);
+      });
+      return messages;
+    }
+    else{
+      let orders : IOrder[] = [];
+
+      value.items.forEach((element: any)=>{
+        const order = {
+          id: element.id,
+          name: element.name,
+          address : element.address,
+          created : element.created
+        }
+        orders.push(order);
+
+      });
+      return orders;
+    }
+
+  });
+  return new Promise(resolve => resolve(result));
 }
 
 
