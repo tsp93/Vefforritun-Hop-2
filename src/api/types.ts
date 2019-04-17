@@ -35,4 +35,9 @@ export interface ICart{
   total_price: number;
 }
 
-// todo fleiri týpur
+export interface IOrder{
+  id: number;
+  name: string;
+  address: string;
+  created: Date;
+}
