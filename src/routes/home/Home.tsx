@@ -12,16 +12,21 @@ import CategoriesRoute from '../categories/Categories';
 export default function Home() {
 
   const [ products, setProducts ] = useState();
+  const [loading, setLoading ] = useState(true);
   useEffect(() => {
     const fetchProduct = async () => {
       const result = await getAllProducts();
       setProducts(result);
+      setLoading(false);
     }
     fetchProduct();
   }, []);
 
   function showProductList(prod:IProduct[]|undefined){
-    if(prod !== undefined){
+    if(loading){
+      return(<p>loading...</p>)
+    }else{
+      if(prod !== undefined){
      let array : any = [];
      for(let i=0; i<prod.length;i++){
        const p = {
@@ -37,7 +42,9 @@ export default function Home() {
        );
      }
      return array;   
-    } 
+    }
+    }
+     
   }
 
  
