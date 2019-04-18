@@ -2,3 +2,25 @@
 
 .cart {
 }
+
+.addToCart__container{
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.addToCart__container button{
+    width:100px;
+    height: 1rem;
+    background-color: $color-font;
+    color: aliceblue;
+    border: none;
+    border-radius: 2.5px; 
+}
+
+.addToCart__container input{
+    width:50px;
+    height:1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+

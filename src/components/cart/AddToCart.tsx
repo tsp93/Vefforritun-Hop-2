@@ -4,6 +4,8 @@ import { addToCart, getCart } from '../../api/index';
 import { ifError } from 'assert';
 import { IError } from '../../api/types';
 
+import './Cart.scss';
+
 
 export default function AddToCart(id: any){
 
@@ -40,7 +42,7 @@ export default function AddToCart(id: any){
   const token = localStorage.getItem('myToken');
   if(token){
     return (
-      <div>
+      <div className="addToCart__container">
         
         <form onSubmit={orderProduct}>
           <label>Fjöldi: </label>

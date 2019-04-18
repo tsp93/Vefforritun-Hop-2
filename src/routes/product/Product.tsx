@@ -41,9 +41,9 @@ export default function Product(props:any) {
             </div>
             <div className="product__info">
               <h1>{prod.title}</h1>
-              <p className="priduct__info--price">Verð:{prod.price}</p>
+              <p className="product__info--price">Verð:{prod.price}</p>
               <p>Flokkur: {prod.category.title}</p>
-              <p>{prod.description}</p>
+              <p className="product__info--desc">{prod.description}</p>
               {AddToCart(prod.id)}
             </div>
           </div>
