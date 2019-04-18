@@ -51,7 +51,10 @@ export default function Home() {
   return (
     <Fragment>
       <Helmet title="Forsíða" />
-       {showProductList(products) }
+        <div className="card_container">
+          {showProductList(products) }
+        </div>
+       
      <br/>
      <button>
        <NavLink to="/categories">skoða alla flokka</NavLink>
