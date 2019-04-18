@@ -11,6 +11,7 @@ export default function Category(props: any) {
 
   const [loading , setloading] = useState(true);
   const { id } = props.match.params;
+  const { cid } = props.id;
   const [ title, setTitle ] = useState();
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();

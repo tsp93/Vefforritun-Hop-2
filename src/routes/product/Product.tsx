@@ -6,7 +6,8 @@ import { IProduct } from '../../api/types';
 import ProductComponent from '../../components/product/Product';
 import AddToCart from '../../components/cart/AddToCart';
 
-
+import './Product.scss';
+import Category from '../category/Category';
 
 export default function Product(props:any) {
 
@@ -33,14 +34,17 @@ export default function Product(props:any) {
       if(prod !== undefined){ 
          
         return (
-          <div>
-            <img src={prod.image}></img>
-            <h1>{prod.title}</h1>
-            <p>Verð:{prod.price}</p>
-            <p>Flokkur: {prod.category.title}</p>
-            <p>{prod.description}</p>
-            <p>{prod.id}</p>
-            {AddToCart(prod.id)}
+          <div className="product__page">
+            <div className="product__image">
+              <img src={prod.image}></img>
+            </div>
+            <div className="product__info">
+              <h1>{prod.title}</h1>
+              <p className="priduct__info--price">Verð:{prod.price}</p>
+              <p>Flokkur: {prod.category.title}</p>
+              <p>{prod.description}</p>
+              {AddToCart(prod.id)}
+            </div>
           </div>
         )
       } else {
@@ -57,6 +61,7 @@ export default function Product(props:any) {
   return (
     <div>
       {showProduct(product)}
+      
     </div>
   );
 }

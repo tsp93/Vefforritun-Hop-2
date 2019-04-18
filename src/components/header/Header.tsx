@@ -12,6 +12,7 @@ export default function Home() {
 
   function checkToken() :boolean{
     const token = localStorage.getItem('myToken');
+    console.log(token);
     if(token){
       return true;
     }

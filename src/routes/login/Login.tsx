@@ -26,7 +26,7 @@ function changePasswordInput(e: any){
 }
 
 async function onSubmitLogin(e:any){
-  //e.preventDefault();
+  e.preventDefault();
     const result = await postLogin(username,password);
     
     
