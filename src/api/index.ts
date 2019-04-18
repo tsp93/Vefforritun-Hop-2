@@ -25,7 +25,6 @@ function constructProduct(element: any) {
     total: element.total,
   };
 
-  console.log(product);
   return product;
 }
 
@@ -38,7 +37,7 @@ async function getProduct(id: number ) : Promise<IProduct> {
   const response = await fetch(url.href);
   const data = response.json();
 
-  var product = data.then((value) => {
+  const product = data.then((value) => {
     return constructProduct(value);
   });
 
@@ -46,54 +45,20 @@ async function getProduct(id: number ) : Promise<IProduct> {
 }
 
 /**
- * Sækir vörur
+ * Sækir vörur eftir parametrum
+ * @param offset Hvar á að byrja á í vörulistanum
+ * @param limit Hversu margar vörur á að sækja
+ * @param category Hvaða flokk varan er í
+ * @param search Leit að ákveðinni vöru
  */
-async function getAllProducts() : Promise<IProduct[]> {
-  const url = new URL('/products/', baseurl);
-  const response = await fetch(url.href);
-  const data = response.json();
-
-  const products : IProduct[] = [];
-
-  data.then((value) => {
-    value.items.forEach((element: any) => {
-      products.push(constructProduct(element));
-    });
-  });
-
-  return new Promise((resolve) => resolve(products));
-}
-
-/**
- * Sækir vörur úr flokki
- * @param id Id á flokk
- * @param offset Upphafspunktur til að sækja úr flokki
- */
-async function getProductsInCat(id : number | string, offset: number) : Promise<IProduct[]> {
-  const limit = 10;
-  const suffix = `/products?category=${id}&offset=${offset}&limit=${limit}`;
-  const url = new URL(suffix, baseurl);
-  const response = await fetch(url.href);
-  const data = response.json();
-
-  const products : IProduct[] = [];
-
-  data.then((value) => {
-    value.items.forEach((element: any) => {
-      products.push(constructProduct(element));
-    });
-  });
-
-  return new Promise((resolve) => resolve(products));
-}
-
-/**
- * Leitar að vöru
- * @param search Vara til að leita að
- * @param cat Flokkur til leita í
- */
-async function searchProducts(search : string, cat : string) : Promise<IProduct[]> {
-  const suffix = `/products?search=${search}&category=${cat}`;
+async function getProducts(offset : number | null, limit : number | null, category : number | null, search : String | null) : Promise<IProduct[]> {
+  let suffix = `/products?offset=${offset}&limit=${limit}`;
+  if (category != null) {
+    suffix = `${suffix}&category=${category}`
+  }
+  if (search != null) {
+    suffix = `${suffix}&search=${search}`
+  }
   const url = new URL(suffix, baseurl);
   const response = await fetch(url.href);
   const data = response.json();
@@ -131,6 +96,26 @@ async function getAllCategories() : Promise<ICategory[]> {
   });
 
   return new Promise((resolve) => resolve(categories));
+}
+
+/**
+ * Sækir flokk
+ * @param id Id á flokk
+ */
+async function getCategory(id : number) {
+  const url = new URL(`/categories/${id}`, baseurl);
+  const response = await fetch(url.href);
+  const data = response.json();
+
+  const category = data.then((value) => {
+    const cat: ICategory = {
+      id: value.id,
+      title: value.title,
+    };
+    return cat;
+  });
+
+  return new Promise((resolve) => resolve(category));
 }
 
 /**
@@ -208,7 +193,6 @@ async function postLogin(u : String, p : any) : Promise<IError[] | IUser> {
  */
 async function postSignUp(u : string, p : string, e : string) : Promise<IError[]> {
   const url = new URL('/users/register',baseurl);
-  
   const response = await fetch(url.href, {
     method: 'POST',
     headers: {
@@ -220,13 +204,12 @@ async function postSignUp(u : string, p : string, e : string) : Promise<IError[]
       email: e,
     })
   });
-
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     const messages : IError[] = [];
       if(value.errors){
-        value.errors.forEach(function(err: any){
+        value.errors.forEach((err: any) => {
           const msg: IError = {
             field: err.field,
             message: err.error,
@@ -247,11 +230,12 @@ async function postSignUp(u : string, p : string, e : string) : Promise<IError[]
 async function getCurrentUser() : Promise<IUser | any> {
   const url = new URL('/users/me', baseurl);
   const options : any = { method: 'GET', headers: {} };
-  const token = localStorage.getItem('myToken');
 
+  const token = localStorage.getItem('myToken');
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
   const response = await fetch(url.href, options);
   const result = response.json();
 
@@ -264,11 +248,12 @@ async function getCurrentUser() : Promise<IUser | any> {
 async function getCart() : Promise<ICart> {
   const url = new URL('/cart', baseurl);
   const options : any = { method: 'GET', headers: {} };
-  const token = localStorage.getItem('myToken');
 
+  const token = localStorage.getItem('myToken');
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
   const response = await fetch(url.href, options);
   const data = response.json();
 
@@ -278,7 +263,7 @@ async function getCart() : Promise<ICart> {
     total_price:0,
   };
 
-  data.then(function(value){
+  data.then((value) => {
     if(value.error){
       return value.error;
     }
@@ -363,7 +348,7 @@ async function changeLineQuantity(line : number, q : number | string) : Promise<
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     if (value.errors) {
       const messages : IError[] = [];
 
@@ -410,7 +395,7 @@ async function postOrders(name : string, address : string) : Promise<IError[]> {
   const data = response.json();
   console.log(data);
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     
     const messages : IError[] = [];
     if (value.errors) {
@@ -448,11 +433,11 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     if (value.errors) {
       const messages : IError[] = [];
 
-      value.errors.forEach(function(err: any){
+      value.errors.forEach((err: any) => {
         const msg: IError = {
           field: err.field,
           message: err.error,
@@ -484,11 +469,10 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
 export {
   postLogin,
   getProduct,
-  getAllProducts,
+  getProducts,
   getAllCategories,
+  getCategory,
   postSignUp,
-  getProductsInCat,
-  searchProducts,
   getCurrentUser,
   getCart,
   addToCart,

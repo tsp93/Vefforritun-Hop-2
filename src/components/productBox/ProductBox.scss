@@ -1,0 +1,39 @@
+@import '../../config.scss';
+
+.productBox {
+  color: $color-font;
+  display: flex;
+  flex-flow: column;
+  margin: 1rem;
+  text-decoration: none;
+  width: 30%;
+
+  @media screen and (max-width: $tablet-width){
+    width: 45%;
+  }
+
+  @media screen and (max-width: $mobile-width){
+    width: 90%;
+  }
+}
+
+.productImg {
+  flex: 3;
+
+  & img {
+    height: 18rem;
+    object-fit: cover;
+    width: 100%;
+  }
+}
+
+.productInfo {
+  display: flex;
+  flex: 1;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+.productPri {
+  font-size: $big-font-size;
+}

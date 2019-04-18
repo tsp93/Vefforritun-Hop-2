@@ -3,3 +3,44 @@
 .productDetails {
 
 }
+
+.product__page{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    max-width: $max-width;
+    padding:0px;
+    
+    
+}
+
+.product__image{
+    //width:50%;
+    //margin-right: 1em;
+    @include columns(6);
+    padding: 0px;
+}
+.product__image img{
+    width:100%;
+}
+
+.product__info {
+    margin-left: 1em;
+    @include columns(6);
+    padding: 0px;
+}
+.product__info h1{
+    font-family: $font-heading;
+    margin-bottom: 2rem;
+}
+
+.product__info p {
+   font-family: $font-main;
+   font-size: $small-font-size;
+}
+
+.product__info--desc{
+    margin-top: 2rem;
+}

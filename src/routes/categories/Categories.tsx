@@ -1,25 +1,28 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import  { Link } from 'react-router-dom';
 
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
 
-import './Categories.scss';
 import CategoryBox from '../../components/categoryBox/CategoryBox';
 
+import './Categories.scss';
+
 /**
- * Birtir vöruflokkana á forsíðunni
+ * Birtir vöruflokkana
  */
-export default function CategoriesRoute() {
+export default function Categories() {
 
   const [ categories, setCategories ] = useState();
+  const [ loading, setLoading ] = useState(true);
+
   useEffect(() => {
     const fetchCategories = async () => {
       const result = await getAllCategories();
       setCategories(result);
+      setLoading(false);
     };
     fetchCategories();
-  },[]);
+  }, []);
   
   function showCategories(cat: ICategory[]) {
     if (cat != undefined) {
@@ -27,10 +30,10 @@ export default function CategoriesRoute() {
       for (let i = 0; i < cat.length; i += 1) {
         array.push(
           <CategoryBox
-              id={cat[i].id}
-              title={cat[i].title}
-              key={i}
-            />
+            id={cat[i].id}
+            title={cat[i].title}
+            key={i}
+          />
         );
       }
       return array;
@@ -39,12 +42,17 @@ export default function CategoriesRoute() {
 
   return (
     <Fragment>
-      <div>
-        <h2>Skoðaðu vöruflokkana okkar</h2>
-        <section className='categories'>
-          { showCategories(categories) }
-        </section>
-      </div>
+      {loading && (
+        <p>Loading...</p>
+      )}
+      {!loading && (
+        <div className="categories">
+          <h2>Skoðaðu vöruflokkana okkar</h2>
+          <section className='categoryList'>
+            { showCategories(categories) }
+          </section>
+        </div>
+      )}
     </Fragment>
   );
 }

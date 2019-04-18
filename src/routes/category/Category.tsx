@@ -1,137 +1,77 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import Helmet from 'react-helmet';
 
-import { getProductsInCat, searchProducts } from '../../api';
-import { IProduct } from '../../api/types';
-import ProductComponent from '../../components/product/Product';
-import { async } from 'q';
+import { getCategory } from '../../api';
 
+import Search from '../../components/search/Search';
 
-export default function Category(props: any) {
+import Products from '../products/Products';
 
-  const [loading , setloading] = useState(true);
+import './Category.scss';
+import Button from '../../components/button/Button';
+
+export default function Category(props : any) {
   const { id } = props.match.params;
-  const [ title, setTitle ] = useState();
-  const [ products, setProducts ] = useState();
-  const [ fullList, setFullList ] = useState();
-  const [ offset , setOffset ] = useState(0);
-  
+  const limit = 12;
 
+  const [ category, setCategory ] = useState();
+  const [ offset, setOffset ] = useState(0);
+  const [ search, setSearch ] = useState();
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      setloading(false);
-      const result = await getProductsInCat(id,offset);
-      setProducts(result);
-      setFullList(result);
-      setloading(false);
+      const result = await getCategory(id);
+      setCategory(result);
+      setLoading(false);
     }
     fetchProduct();
   }, []);
 
-  function Search() {
-
-    const [search, setSearch] = useState();
-
-    function handleSearchChange(e: any){
-      let target = e.target.value;
-      setSearch(target);
-    }
-
-    const submitSearch = async (e:any) => {
-      e.preventDefault();
-      if(search === '' || search ===undefined){
-        setProducts(fullList);
-      }
-      else{
-        const result = await searchProducts(search,id);
-        setProducts(result);
-      }
-      
-    }
-
-    return (
-      <form onSubmit={submitSearch}>
-        <label htmlFor="leit">leit:</label>
-        <input autoComplete="off" id="leit" type="text" name="leit" onChange={handleSearchChange}/>
-        <button>leita</button>
-        
-      </form>
-    );
+  function handleSearchChange(e : any) {
+    setSearch(e.target.value);
   }
 
-  function showProductList(prod:IProduct[]|undefined){
-
-    if(loading){
-      return (<p>loading...</p>)
-    }
-    else{
-      if(prod !== undefined){
-        let array : any = [];
-        for(let i=0; i<prod.length;i++){
-          const p = {
-            id: prod[i].id,
-            image: prod[i].image,
-            title: prod[i].title,
-            price: prod[i].price.toString(),
-            category: prod[i].category.title,
-          }
-          array.push( <ProductComponent key= {i} product={p}/> );
-        }
-        return array;   
-      } 
-    }
+  function handleNext() {
+    setOffset(offset + limit);
   }
 
-  function showPagebuttons(){
-    function prevPage(){
-      const temp = offset - 10;
-      setOffset(temp);
-      loadPage(temp); 
-    };
-    function nextPage() {
-      const temp = offset + 10;
-      setOffset(temp);
-      loadPage(temp);
-    };
-
-    async function loadPage(next:number){
-      const result = await getProductsInCat(id,next);
-      setProducts(result);
-      console.log(result);
-    }
-
-    if(offset < 1){
-      return (
-        <div>
-          <p>síða: {(offset/10)+ 1}</p>
-          <button onClick={nextPage}>næsta síða</button>
-        </div>
-      )
-    }
-    else{
-      return (
-        <div>
-          <button onClick={prevPage}>fyrrverandi síða</button>
-          <p>síða: {(offset/10)+ 1}</p>
-          <button onClick={nextPage}>næsta síða</button>
-        </div>
-      )
-    }
-    
+  function handlePrevious() {
+    setOffset(offset - limit);
   }
-
-
 
   return (
     <Fragment>
-      <Helmet title="Flokkur" />
-        <Search/>
-        <h1>Flokkur</h1>
+      {loading && (
+        <p>Loading...</p>
+      )}
+      {(!loading && category!=null) && (
+        <Fragment>
+          <Helmet title={category.title} />
 
-        {showProductList(products) }
-        {showPagebuttons()}
+          <Search handleSearchChange={handleSearchChange} />
+    
+          <h1>{category.title}</h1>
+    
+          <Products
+            offset={offset}
+            limit={limit}
+            category={category}
+            search={search}
+          />
 
+          <Button
+            className={'prevButt'}
+            children={'Fyrri síða'}
+            onClick={handlePrevious}
+          />
+          <Button
+            className={'nextButt'}
+            children={'Næsta síða'}
+            onClick={handleNext}
+          />
+        </Fragment>
+      )}
     </Fragment>
   )
 }
