@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import  { Link } from 'react-router-dom';
 
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
@@ -12,14 +11,17 @@ import CategoryBox from '../../components/categoryBox/CategoryBox';
  */
 export default function CategoriesRoute() {
 
-  const [ categories, setCategories ] = useState();
+  const [categories, setCategories] = useState();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchCategories = async () => {
       const result = await getAllCategories();
       setCategories(result);
     };
     fetchCategories();
-  },[]);
+    setLoading(false);
+  }, []);
   
   function showCategories(cat: ICategory[]) {
     if (cat != undefined) {
@@ -39,12 +41,17 @@ export default function CategoriesRoute() {
 
   return (
     <Fragment>
-      <div>
-        <h2>Skoðaðu vöruflokkana okkar</h2>
-        <section className='categories'>
-          { showCategories(categories) }
-        </section>
-      </div>
+      {loading && (
+        <p>Hleður...</p>
+      )}
+      {!loading && (
+        <div>
+          <h2>Skoðaðu vöruflokkana okkar</h2>
+          <section className='categories'>
+            { showCategories(categories) }
+          </section>
+        </div>
+      )}
     </Fragment>
   );
 }

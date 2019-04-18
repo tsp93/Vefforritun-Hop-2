@@ -223,10 +223,10 @@ async function postSignUp(u : string, p : string, e : string) : Promise<IError[]
 
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     const messages : IError[] = [];
       if(value.errors){
-        value.errors.forEach(function(err: any){
+        value.errors.forEach((err: any) => {
           const msg: IError = {
             field: err.field,
             message: err.error,
@@ -278,7 +278,7 @@ async function getCart() : Promise<ICart> {
     total_price:0,
   };
 
-  data.then(function(value){
+  data.then((value) => {
     if(value.error){
       return value.error;
     }
@@ -363,7 +363,7 @@ async function changeLineQuantity(line : number, q : number | string) : Promise<
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     if (value.errors) {
       const messages : IError[] = [];
 
@@ -410,7 +410,7 @@ async function postOrders(name : string, address : string) : Promise<IError[]> {
   const data = response.json();
   console.log(data);
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     
     const messages : IError[] = [];
     if (value.errors) {
@@ -448,11 +448,11 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  const result = data.then(function(value){
+  const result = data.then((value) => {
     if (value.errors) {
       const messages : IError[] = [];
 
-      value.errors.forEach(function(err: any){
+      value.errors.forEach((err: any) => {
         const msg: IError = {
           field: err.field,
           message: err.error,
