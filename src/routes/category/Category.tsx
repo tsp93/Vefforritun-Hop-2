@@ -29,8 +29,7 @@ export default function Category(props : any) {
   }, []);
 
   function handleSearchChange(e : any) {
-    const target = e.target.value;
-    setSearch(target);
+    setSearch(e.target.value);
   }
 
   function handleNext() {
