@@ -3,3 +3,24 @@
 .productDetails {
 
 }
+
+.product__page{
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    margin: 1em;
+    
+}
+
+.product__image{
+    width:50%;
+    margin-right: 1em;
+}
+.product__image img{
+    width:100%;
+}
+
+.product__info {
+    width: 50%;
+    margin-left: 1em;
+}
