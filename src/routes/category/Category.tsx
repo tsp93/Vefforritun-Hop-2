@@ -3,9 +3,8 @@ import Helmet from 'react-helmet';
 
 import { getProductsInCat, searchProducts } from '../../api';
 import { IProduct } from '../../api/types';
-import ProductComponent from '../../components/product/Product';
-import { async } from 'q';
 
+import ProductBox from '../../components/productBox/ProductBox'
 
 export default function Category(props: any) {
 
@@ -15,18 +14,16 @@ export default function Category(props: any) {
   const [ products, setProducts ] = useState();
   const [ fullList, setFullList ] = useState();
   const [ offset , setOffset ] = useState(0);
-  
-
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       setloading(false);
       const result = await getProductsInCat(id,offset);
       setProducts(result);
       setFullList(result);
       setloading(false);
     }
-    fetchProduct();
+    fetchProducts();
   }, []);
 
   function Search() {
@@ -67,16 +64,18 @@ export default function Category(props: any) {
     }
     else{
       if(prod !== undefined){
-        let array : any = [];
+        const array : any = [];
         for(let i=0; i<prod.length;i++){
-          const p = {
-            id: prod[i].id,
-            image: prod[i].image,
-            title: prod[i].title,
-            price: prod[i].price.toString(),
-            category: prod[i].category.title,
-          }
-          array.push( <ProductComponent key= {i} product={p}/> );
+          array.push(
+            <ProductBox
+              key={i}
+              id={prod[i].id}
+              title={prod[i].title}
+              price={prod[i].price}
+              image={prod[i].image}
+              category={prod[i].category}
+            />
+          );
         }
         return array;   
       } 

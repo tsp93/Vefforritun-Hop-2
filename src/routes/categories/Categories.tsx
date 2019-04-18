@@ -18,9 +18,9 @@ export default function CategoriesRoute() {
     const fetchCategories = async () => {
       const result = await getAllCategories();
       setCategories(result);
+      setLoading(false);
     };
     fetchCategories();
-    setLoading(false);
   }, []);
   
   function showCategories(cat: ICategory[]) {
@@ -42,7 +42,7 @@ export default function CategoriesRoute() {
   return (
     <Fragment>
       {loading && (
-        <p>Hleður...</p>
+        <p>Loading...</p>
       )}
       {!loading && (
         <div>
