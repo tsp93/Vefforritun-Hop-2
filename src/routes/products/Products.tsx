@@ -1,20 +1,21 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
-import { getAllProducts } from '../../api';
+import { getProducts } from '../../api';
 import { IProduct } from '../../api/types';
 
 import ProductBox from '../../components/productBox/ProductBox';
 
 import './Products.scss';
 
-export default function ProductsRoute() {
+export default function Products(props : any) {
+  const { offset, limit, category, search } = props;
 
   const [ products, setProducts ] = useState();
-  const [loading, setLoading ] = useState(true);
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const result = await getAllProducts();
+      const result = await getProducts(offset, limit, category, search);
       setProducts(result);
       setLoading(false);
     }

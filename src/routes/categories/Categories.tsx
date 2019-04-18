@@ -10,10 +10,10 @@ import './Categories.scss';
 /**
  * Birtir vöruflokkana
  */
-export default function CategoriesRoute() {
+export default function Categories() {
 
-  const [categories, setCategories] = useState();
-  const [loading, setLoading] = useState(true);
+  const [ categories, setCategories ] = useState();
+  const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -30,10 +30,10 @@ export default function CategoriesRoute() {
       for (let i = 0; i < cat.length; i += 1) {
         array.push(
           <CategoryBox
-              id={cat[i].id}
-              title={cat[i].title}
-              key={i}
-            />
+            id={cat[i].id}
+            title={cat[i].title}
+            key={i}
+          />
         );
       }
       return array;
