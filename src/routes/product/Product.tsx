@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState, Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { getProduct } from '../../api';
@@ -9,6 +9,7 @@ import AddToCart from '../../components/cart/AddToCart';
 import './Product.scss';
 import './grid.scss';
 import Category from '../category/Category';
+import Products from '../products/Products';
 
 export default function Product(props:any) {
 
@@ -59,10 +60,23 @@ export default function Product(props:any) {
     
   }
 
+  function sameCat(prod: IProduct){
+    if(prod !== undefined){
+      return (
+        <Fragment>
+          <h2 className="moreFormCat">Meira úr {product.category.title}</h2>
+          <Products limit={6} category={prod.category.id}/>
+        </Fragment>
+      )
+    }
+
+  }
+
   return (
     <div>
       {showProduct(product)}
-      
+
+      {sameCat(product)}
     </div>
   );
 }
