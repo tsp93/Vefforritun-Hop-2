@@ -3,11 +3,12 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
 
-import './Categories.scss';
 import CategoryBox from '../../components/categoryBox/CategoryBox';
 
+import './Categories.scss';
+
 /**
- * Birtir vöruflokkana á forsíðunni
+ * Birtir vöruflokkana
  */
 export default function CategoriesRoute() {
 
@@ -45,9 +46,9 @@ export default function CategoriesRoute() {
         <p>Loading...</p>
       )}
       {!loading && (
-        <div>
+        <div className="categories">
           <h2>Skoðaðu vöruflokkana okkar</h2>
-          <section className='categories'>
+          <section className='categoryList'>
             { showCategories(categories) }
           </section>
         </div>

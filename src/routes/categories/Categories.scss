@@ -1,6 +1,10 @@
 @import '../../config.scss';
 
 .categories {
+  margin: 2rem 1rem;
+}
+
+.categoryList {
   display: flex;
   flex-flow: row wrap;
   justify-content: space-between;
