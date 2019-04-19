@@ -1,6 +1,13 @@
-
 @import '../../config.scss';
 
 .products {
+  align-items: baseline;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  margin: 0 -1.3rem 0 -1rem;
 
+  @media screen and (max-width: $mobile-width){
+    flex-flow: column;
+  }
 }
