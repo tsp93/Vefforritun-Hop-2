@@ -1,36 +1,42 @@
 @import '../../config.scss';
 
 .header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   background-color: rgb(34, 34, 34);
 }
 
-.header__content {
- display: flex;
-}
-
-.header__title {
-  margin: 1em;
+.header__contentTitle {
+  
 }
 
 .header__titleLink {
   color: white;
   text-decoration: none;
+  padding-top: 1rem;
 }
 
-.header__options {
-  color: gray;
-  text-decoration: none;
-  display: inline-block;
+.header__content {
+  display: flex;
   justify-content: space-between;
+  max-width: $max-width;
+  margin: auto;
+}
+
+.header__link {
+  color: white;
+  text-decoration: none;
+  padding: 1rem;
+}
+
+.header__optionAbove {
+  padding: 1rem;
+}
+
+.header__optionLower {
+  padding: 0 1.5rem;
 }
 
 .header__link--selected {
-  color: white;
-  flex-direction: column;
-  text-decoration: none;    
+  font-weight: 600;  
 }
 
 

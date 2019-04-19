@@ -50,28 +50,36 @@ export default function Home() {
     if(!loggedin){
       return (
         <div className="header__options">
-          <NavLink activeClassName="header__link--selected" exact to="/register">Nýskrá</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/login">Innskrá</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
-          <br/>
+          <div className="header__optionAbove">
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/register">Nýskrá</NavLink>
+            <br/>
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/login">Innskrá</NavLink>
+            <br/>
+          </div>
+          <div className="header__optionLower">
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
+            <br/>
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
+            <br/>
+          </div>
         </div>
       )
     }
     else if(loggedin){
       return (
         <div className="header__options">
-          <NavLink activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
-          <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
-          <button onClick={handleLogout}>logout</button>
+          <div className="header__optionAbove">
+            <button onClick={handleLogout}>logout</button>
+
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
+
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
+          </div>
+          <div className="header__optionLower">
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
+          
+            <NavLink className="header__link" activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
+          </div>
         </div>
       )
       
@@ -81,9 +89,11 @@ export default function Home() {
   return (
     <header className="header">
       <div className="header__content">
-        <h1 className="header__title">
-          <Link className="header__titleLink" to="/">Vefforritunarbúðin</Link>
-        </h1>
+        <div className="header__titleContent">
+          <h1 className="header__title">
+            <Link className="header__titleLink" to="/">Vefforritunarbúðin</Link>
+          </h1>
+        </div>
         {showNavigation()}
         <br/>
         <div>{showcurr(curr)}</div>
