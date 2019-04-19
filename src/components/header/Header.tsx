@@ -49,12 +49,12 @@ export default function Home() {
 
     if(!loggedin){
       return (
-        <div>
-          <NavLink activeClassName="header__link--selected" exact to="/register">Nýskráning</NavLink>
+        <div className="header__options">
+          <NavLink activeClassName="header__link--selected" exact to="/register">Nýskrá</NavLink>
           <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/login">Innskráning</NavLink>
+          <NavLink activeClassName="header__link--selected" exact to="/login">Innskrá</NavLink>
           <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/">Vörur</NavLink>
+          <NavLink activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
           <br/>
@@ -63,10 +63,10 @@ export default function Home() {
     }
     else if(loggedin){
       return (
-        <div>
+        <div className="header__options">
           <NavLink activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
           <br/>
-          <NavLink activeClassName="header__link--selected" exact to="/">Vörur</NavLink>
+          <NavLink activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
           <br/>
           <NavLink activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
           <br/>

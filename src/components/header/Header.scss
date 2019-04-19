@@ -1,10 +1,33 @@
 @import '../../config.scss';
 
 .header {
-   
+  background-color:rgb(34, 34, 34);
+}
+
+.header__content {
+ display: flex;
+}
+
+.header__title {
+  margin: 1em;
+}
+
+.header__titleLink {
+  color: white;
+  text-decoration: none;
+}
+
+.header__options {
+  color: gray;
+  text-decoration: none;
+  background-color: red;
+  display: inline-block;
+  justify-content: space-between;
 }
 
 .header__link--selected{
-    
+  color: white;
+  text-decoration: none;    
 }
+
 
