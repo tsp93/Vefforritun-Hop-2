@@ -63,12 +63,12 @@ async function getProducts(offset : number | null, limit : number | null, catego
   const response = await fetch(url.href);
   const data = response.json();
 
-  const products : IProduct[] = [];
-
-  data.then((value) => {
+  const products = data.then((value) => {
+    const productList : IProduct[] = [];
     value.items.forEach((element: any) => {
-      products.push(constructProduct(element));
+      productList.push(constructProduct(element));
     });
+    return productList;
   });
 
   return new Promise((resolve) => resolve(products));
@@ -82,17 +82,18 @@ async function getAllCategories() : Promise<ICategory[]> {
   const response = await fetch(url.href);
   const data = response.json();
 
-  const categories : ICategory[] = [];
+   
 
-  data.then((value) => {
+   const categories = data.then((value) => {
+    const categoryList : ICategory[] = [];
     value.items.forEach((element:any) => {
       const category: ICategory = {
         id: element.id,
         title: element.title,
       };
-
-      categories.push(category);
+      categoryList.push(category);
     });
+    return categoryList;
   });
 
   return new Promise((resolve) => resolve(categories));
@@ -393,7 +394,6 @@ async function postOrders(name : string, address : string) : Promise<IError[]> {
 
   const response = await fetch(url.href, options);
   const data = response.json();
-  console.log(data);
 
   const result = data.then((value) => {
     

@@ -5,7 +5,7 @@ import './Header.scss';
 import { getCurrentUser } from '../../api';
 import { IUser } from '../../api/types';
 
-export default function Home() {
+export default function Header() {
 
   const [curr, setCurr] = useState();
   const [loggedin, setloggedin] = useState(checkToken());

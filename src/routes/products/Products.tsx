@@ -14,12 +14,12 @@ export default function Products(props : any) {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    const fetchProduct = async () => {
+    const fetchProducts = async () => {
       const result = await getProducts(offset, limit, category, search);
       setProducts(result);
       setLoading(false);
     }
-    fetchProduct();
+    fetchProducts();
   }, []);
   
   function showProductList(prod : IProduct[] | undefined) {
