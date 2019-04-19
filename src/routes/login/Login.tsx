@@ -7,6 +7,8 @@ import './Login.scss';
 import Home  from '../home/Home';
 import { IUser, IError } from '../../api/types';
 
+import Button from '../../components/button/Button';
+
 export default function Login(props : any){
   
 const [user, setUser] = useState();
@@ -66,27 +68,29 @@ function loginSuccess(log: Boolean){
   }
 }
 
-
 return (
   <fieldset>
     <form onSubmit={onSubmitLogin} >
-    <div>
-      <label htmlFor="username">Notendanafn:</label>
-        <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
-        {showErrors('username',errors)}
-      </div>
-      <br/>
-      <div>
-        <label htmlFor="password">Lykilorð:</label>
-          <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
+    <h1>Innskráning</h1>
+    <div className="login__form">
+      <div className="login__username">
+       <label htmlFor="username">Notendanafn:</label>
+         <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
+          {showErrors('username',errors)}
+          </div>
+      <div className="login__password">
+       <label htmlFor="password">Lykilorð:</label>
+         <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
           {showErrors('password',errors)}
           {showErrors('NoSuchUser',errors)}
+          </div>
       </div>
-      <input type="submit" value="Submit"></input> 
-  </form>
+       <Button children={'Skrá inn'}/>
+    </form>
+    <Link className="form__register" to="/register">Nýskráning</Link>
   {loginSuccess(success)}
   </fieldset>
-)
+  )
 }
 
 

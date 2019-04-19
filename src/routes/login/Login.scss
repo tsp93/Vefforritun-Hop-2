@@ -1,4 +1,43 @@
 @import '../../config.scss';
 
-.login {
+fieldset {
+  border: 0;
+}
+
+.input {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 500px;
+}
+
+input {
+  border: 1px solid #4e1d04;
+  border-radius: 5px;
+  padding: 10px ;
+  width: 100%;
+  max-width: 300px;
+  min-height: 1rem;
+  font-size: 1rem;
+}
+
+label {
+  padding-right: 2rem;
+}
+
+h1 {
+  margin-top: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.login__username {
+  padding-bottom: 1rem;
+}
+
+
+
+.form__register {
+  color: black;
+  text-decoration: none;
 }

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { postSignUp } from '../../api/index';
+import { Link, Redirect } from 'react-router-dom';
 
 import './Register.scss';
 import { IError } from '../../api/types';
+
+import Button from '../../components/button/Button';
 
 export default function Register(props: any) {
 
@@ -64,6 +67,7 @@ if(sin === false){
   return (
     <fieldset>
     <form onSubmit={onSumbitSignup} >
+    <h1>Nýskráning</h1>
       <div>
       <label htmlFor="username">Notendanafn:</label>
         <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
@@ -83,9 +87,10 @@ if(sin === false){
           <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
           {showErrors('password',errors)}
       </div>
-      <input type="submit" value="Submit"></input> 
+      <Button children={'Nýskrá'}/>
   </form>
   <div>
+  <Link className="form__login" to="/login">Innskráning</Link>
     { invalidSignup(validsignup) }
   </div>
   </fieldset>
