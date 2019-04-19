@@ -36,31 +36,35 @@ export default function Header() {
   }, []);
 
   function showcurr(u : IUser){
-    if(u !== undefined){
-      return ( <p>logged in as: {u.username}</p>)
+    if((u !== undefined) && checkToken()) { 
+      return (
+        <div className="header__options">
+          <div className="header__optionsAbove">
+            <NavLink className="header__link" extact to="/" onClick={handleLogout}>{u.username} (útskrá)</NavLink>
+          </div>
+         </div>
+      )
     }
+  }
+
+  function handleLogout(e:any){
+    localStorage.removeItem('myToken');
+    setloggedin(false);
   }
   
   function showNavigation(){
-    function handleLogout(e:any){
-      localStorage.removeItem('myToken');
-      setloggedin(false);
-    }
 
     if(!loggedin){
       return (
         <div className="header__options">
-          <div className="header__optionAbove">
+          <div className="header__optionsAbove">
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/register">Nýskrá</NavLink>
-            <br/>
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/login">Innskrá</NavLink>
-            <br/>
           </div>
-          <div className="header__optionLower">
+
+          <div className="header__optionsLower">
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
-            <br/>
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
-            <br/>
           </div>
         </div>
       )
@@ -68,16 +72,13 @@ export default function Header() {
     else if(loggedin){
       return (
         <div className="header__options">
-          <div className="header__optionAbove">
-            <button onClick={handleLogout}>logout</button>
-
+          <div className="header__optionsAbove">
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/orders">Pantanir</NavLink>
-
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/cart">Karfa</NavLink>
           </div>
-          <div className="header__optionLower">
+
+          <div className="header__optionsLower">
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/">Nýjar vörur</NavLink>
-          
             <NavLink className="header__link" activeClassName="header__link--selected" exact to="/categories/">Flokkar</NavLink>
           </div>
         </div>
@@ -94,9 +95,9 @@ export default function Header() {
             <Link className="header__titleLink" to="/">Vefforritunarbúðin</Link>
           </h1>
         </div>
-        {showNavigation()}
+        {}
         <br/>
-        <div>{showcurr(curr)}</div>
+        <div>{showNavigation()} {showcurr(curr)}</div>
       </div>
     </header>
   );
