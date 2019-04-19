@@ -8,7 +8,7 @@ export default function CategoryBox(props: ICategory) {
   const { id, title } = props;
 
   return (
-    <Link to={`/categories/${id}`} className='categoryBox'>
+    <Link to={`/categories/${id}`} className="categoryBox">
       <h1>{title}</h1>
     </Link>
   );

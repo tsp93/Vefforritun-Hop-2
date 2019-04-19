@@ -2,15 +2,19 @@ import React from 'react';
 
 import Button from '../button/Button';
 
+import './Search.scss';
+
 export default function Search(props : any) {
-  const { handleSearchChange } = props;
+  const { handleSearchChange, submitSearch, searchText } = props;
 
   return (
-    <form>
-      <label htmlFor="leit">leit:</label>
-      <input autoComplete="off" id="leit" type="text" name="leit" onChange={handleSearchChange}/>
+    <form className="searchForm" onSubmit={submitSearch}>
+      <div>
+        <label htmlFor="search" className="searchLabel">Leita:</label>
+        <input className="searchInput" autoComplete="off" id="search" type="text" name="search" onChange={handleSearchChange} value={searchText}/>
+      </div>
       <Button
-        className={'searchButt'}
+        className={'searchButton'}
         children={'Leita'}
       />
     </form>

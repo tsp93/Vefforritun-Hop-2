@@ -48,13 +48,13 @@ async function getProduct(id: number ) : Promise<IProduct> {
  * Sækir vörur eftir parametrum
  * @param offset Hvar á að byrja á í vörulistanum
  * @param limit Hversu margar vörur á að sækja
- * @param category Hvaða flokk varan er í
+ * @param categoryID Hvaða flokk vörurnar eru í
  * @param search Leit að ákveðinni vöru
  */
-async function getProducts(offset : number | null, limit : number | null, category : number | null, search : String | null) : Promise<IProduct[]> {
+async function getProducts(offset : number | null, limit : number | null, categoryID : any | null, search : String | null) : Promise<IProduct[]> {
   let suffix = `/products?offset=${offset}&limit=${limit}`;
-  if (category != null) {
-    suffix = `${suffix}&category=${category}`
+  if (categoryID != null) {
+    suffix = `${suffix}&category=${categoryID}`
   }
   if (search != null) {
     suffix = `${suffix}&search=${search}`
@@ -82,8 +82,6 @@ async function getAllCategories() : Promise<ICategory[]> {
   const response = await fetch(url.href);
   const data = response.json();
 
-   
-
    const categories = data.then((value) => {
     const categoryList : ICategory[] = [];
     value.items.forEach((element:any) => {
@@ -97,26 +95,6 @@ async function getAllCategories() : Promise<ICategory[]> {
   });
 
   return new Promise((resolve) => resolve(categories));
-}
-
-/**
- * Sækir flokk
- * @param id Id á flokk
- */
-async function getCategory(id : number) {
-  const url = new URL(`/categories/${id}`, baseurl);
-  const response = await fetch(url.href);
-  const data = response.json();
-
-  const category = data.then((value) => {
-    const cat: ICategory = {
-      id: value.id,
-      title: value.title,
-    };
-    return cat;
-  });
-
-  return new Promise((resolve) => resolve(category));
 }
 
 /**
@@ -471,7 +449,6 @@ export {
   getProduct,
   getProducts,
   getAllCategories,
-  getCategory,
   postSignUp,
   getCurrentUser,
   getCart,

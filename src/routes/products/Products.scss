@@ -1,11 +1,1 @@
 @import '../../config.scss';
-
-.productList {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-
-  @media screen and (max-width: $mobile-width){
-    flex-flow: column;
-  }
-}

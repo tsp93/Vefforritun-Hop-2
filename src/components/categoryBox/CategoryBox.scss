@@ -1,15 +1,25 @@
 @import '../../config.scss';
 
 .categoryBox {
-  border: 1px solid black;
+  border: 1px solid $color-font;
   color: $color-font;
   font-size: $big-font-size;
   flex-shrink: 0;
-  margin: 1rem 0;
+  margin: 1rem;
   padding: 4rem 1rem;
   text-align: center;
   text-decoration: none;
-  width: 32%;
+  width: 30%;
+
+  transition:
+    color $transition,
+    background-color $transition,
+    border-color $transition;
+
+  &:hover {
+    background-color: $color-font;
+    color: $color-background;
+  }
 
   @media screen and (max-width: $tablet-width){
     width: 45%;

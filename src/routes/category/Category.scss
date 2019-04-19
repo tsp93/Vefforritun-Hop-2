@@ -1,5 +1,11 @@
 @import '../../config.scss';
 
-.category {
-  
+.pageNav {
+  align-items: baseline;
+  display: flex;
+  flex-flow: row nowrap;
+
+  & .pageButt {
+    max-width: $small-button-size;
+  }
 }
