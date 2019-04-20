@@ -7,7 +7,6 @@ import ProductComponent from '../../components/product/Product';
 import AddToCart from '../../components/cart/AddToCart';
 
 import './Product.scss';
-import './grid.scss';
 import Category from '../category/Category';
 import Products from '../products/Products';
 

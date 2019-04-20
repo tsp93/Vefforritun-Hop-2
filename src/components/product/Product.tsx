@@ -7,6 +7,7 @@ import { IProduct } from '../../api/types';
 export default function Product(props : IProduct) {
 
   function showProd(){
+    console.log(props);
     return (
     <div>
       <img src={props.image}></img>
