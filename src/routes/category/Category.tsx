@@ -18,6 +18,7 @@ export default function Category(props : any) {
 
   const [ search, setSearch ] = useState('');
   const [ searchNotFound, setSearchNotFound ] = useState(false);
+  const [ searchNotFoundText, setsearchNotFoundText ] = useState();
 
   const [ offset, setOffset ] = useState(0);
   const [ page, setPage ] = useState(1);
@@ -58,6 +59,7 @@ export default function Category(props : any) {
       setProducts(result);
     } else {
       setSearchNotFound(true);
+      setsearchNotFoundText(search);
     }
     setSearchLoading(false);
   }
@@ -96,8 +98,8 @@ export default function Category(props : any) {
           {searchLoading && (
             <p>Loading...</p>
           )}
-          {searchNotFound && (
-            <p>Ekkert '{search}' fannst</p>
+          {(!searchLoading && searchNotFound) && (
+            <p>Ekkert '{searchNotFoundText}' fannst</p>
           )}
           {(!searchNotFound && !searchLoading) &&(
             <Fragment>
