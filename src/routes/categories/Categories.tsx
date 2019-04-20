@@ -7,9 +7,7 @@ import CategoryBox from '../../components/categoryBox/CategoryBox';
 
 import './Categories.scss';
 
-/**
- * Birtir vöruflokkana
- */
+// Birtir vöruflokkana
 export default function Categories() {
 
   const [ categories, setCategories ] = useState();

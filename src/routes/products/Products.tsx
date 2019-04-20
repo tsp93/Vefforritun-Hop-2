@@ -21,7 +21,7 @@ export default function Products(props : any) {
     }
     fetchProducts();
   }, []);
-  
+
 
   return (
     <Fragment>

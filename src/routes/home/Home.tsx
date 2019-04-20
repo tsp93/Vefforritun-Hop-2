@@ -20,7 +20,10 @@ export default function Home() {
       />
       
       <Link to={`/categories`}>
-        <Button children={'Skoða alla flokka'} />
+        <Button
+          className={'categoryButton'}
+          children={'Skoða alla flokka'}
+          />
       </Link>
      
       <Categories /> 

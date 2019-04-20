@@ -4,11 +4,11 @@
   background-color: rgb(34, 34, 34);
   padding-top: 1rem;
   padding-bottom: 1rem;
-}
 
-p {
-  color: white;
-  margin: auto;
+  & p {
+    color: white;
+    margin: auto;
+  }
 }
 
 .header__contentTitle {

@@ -1,25 +1,25 @@
 import React from 'react';
 
-import './Product.scss';
-import  { Link } from 'react-router-dom'
 import { IProduct } from '../../api/types';
 
-export default function Product(props : IProduct) {
+import './Product.scss';
 
-  function showProd(){
-    return (
-    <div>
-      <img src={props.image}></img>
-      <p>{props.title}</p>
-      <p>{props.price} kr.</p>
-      <p>{props.category}</p>
-      <p> product id(temp): {props.id}</p>
-    </div>)
-  }
+export default function Product(props : IProduct) {
+  const { image, title, description, category, price } = props;
 
   return (
     <div className="product">
-      <Link to={`/product/"${props.id}`}>{showProd()}</Link>
+      <div className="productImg">
+        <img src={image}></img>
+      </div>
+      <div className="productInfo">
+        <h3>{title}</h3>
+        <div className="productTitPri">
+          <p>Flokkur: {category.title}</p>
+          <p className="productPri">Verð: {price} kr.</p>
+        </div>
+        <p className="productDes">{description}</p>
+      </div>
     </div>
   );
 }

@@ -13,27 +13,28 @@
   }
 
   @media screen and (max-width: $mobile-width){
+    margin: 2rem;
     width: 90%;
   }
-}
 
-.productImg {
-  flex: 3;
-
-  & img {
-    height: 18rem;
-    object-fit: cover;
-    width: 100%;
+  & .productImg {
+    flex: 3;
+  
+    & img {
+      height: 18rem;
+      object-fit: cover;
+      width: 100%;
+    }
   }
-}
 
-.productInfo {
-  display: flex;
-  flex: 1;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-}
+  & .productInfo {
+    display: flex;
+    flex: 1;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+  }
 
-.productPri {
-  font-size: $big-font-size;
+  & .productPri {
+    font-size: $big-font-size;
+  }
 }
