@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Button from '../button/Button';
+import Input from '../input/Input';
 
 import './Search.scss';
-import Input from '../input/Input';
 
 export default function Search(props : any) {
   const { handleSearchChange, submitSearch, searchText } = props;
@@ -11,6 +11,7 @@ export default function Search(props : any) {
   return (
     <form className="searchForm" onSubmit={submitSearch}>
       <Input
+        label={'Leita:'}
         name={'search'}
         onChange={handleSearchChange}
         value={searchText}

@@ -4,10 +4,31 @@
   align-items: center;
   display: flex;
   flex-flow: row nowrap;
+  
 
   font-family: $font-main;
   font-size: $small-font-size;
 
   width: 100%;
-  max-width: 300px;
+  max-width: 400px;
+
+  margin: 1rem 1rem 1rem 0;
+  
+
+  & label{
+    flex: 2;
+    width: 100%;
+    padding: 0;
+  }
+
+  & input {
+    flex: 3;
+    width: 100%;
+    padding: 10px;
+
+    border: 1px solid $color-font;
+    border-radius: 5px;
+
+    min-height: 1rem;
+  }
 }

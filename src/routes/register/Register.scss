@@ -1,9 +1,21 @@
 @import '../../config.scss';
 
-.register {
+.registerTitle {
+  margin: 3rem 0 2rem 0;
 }
 
-.errorMsg{
-    font-size:10px;
-    color: red;
+.registerForm {
+
+  & .registerButton {
+    margin-left: 0;
+  }
+}
+
+.registerLinkToLogin {
+  color: $color-font;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

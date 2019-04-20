@@ -104,7 +104,7 @@ async function getAllCategories() : Promise<ICategory[]> {
  * 
  * @returns Skilar fylki af villum ef einhverjar
  */
-async function postLogin(u : String, p : any) : Promise<IError[] | IUser> {
+async function postLogin(u : String, p : any) : Promise<IError[]> {
   const url = new URL('/users/login', baseurl);
   const response = await fetch(url.href, {
     method: 'POST',
@@ -123,16 +123,8 @@ async function postLogin(u : String, p : any) : Promise<IError[] | IUser> {
 
     // Ef notandi náði að skrá sig inn
     if (value.user) {
-      const user : IUser = {
-        id: value.user.id,
-        username: value.user.username,
-        email: value.user.email,
-        admin: value.user.admin,
-      }
-      if (value.token) {
-        localStorage.setItem('myToken', value.token);
-      }
-      return user;
+      localStorage.setItem('myToken', value.token);
+      return messages;
     }
 
     // Ef villa kom upp við innskráningu
@@ -445,10 +437,10 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
 
 
 export {
-  postLogin,
   getProduct,
   getProducts,
   getAllCategories,
+  postLogin,
   postSignUp,
   getCurrentUser,
   getCart,

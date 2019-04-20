@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { postSignUp } from '../../api/index';
 import { Link, Redirect } from 'react-router-dom';
 
-import './Register.scss';
 import { IError } from '../../api/types';
 
 import Button from '../../components/button/Button';
+import Input from '../../components/input/Input';
 
-export default function Register(props: any) {
+import './Register.scss';
+import Errors from '../../components/errors/Errors';
+
+export default function Register() {
 
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -17,82 +20,62 @@ export default function Register(props: any) {
   
 
   function changeUsernameInput(e: any){
-    let target = e.target.value;
-    setUsername(target);
+    setUsername(e.target.value);
   }
 
   function changeEmailInput(e: any){
-    let target = e.target.value;
-    setEmail(target);
+    setEmail(e.target.value);
   }
   
   function changePasswordInput(e: any){
-    let target = e.target.value;
-    setPassword(target);
+    setPassword(e.target.value);
   }
 
-async function onSumbitSignup(e: any){
-  e.preventDefault();
-  console.log(username);
-  console.log(email);
-  console.log(password);
-
-  const result = await postSignUp(username,password,email);
-  
-  console.log(result);
-
-  setErrors(result);
-
-}
-
-function showErrors(f: String, errs: IError[]){
-  if(errs !== undefined){
-    for(let i =0; i < errs.length; i++){
-    if(errs[i].field === f){
-      return (<p className="errorMsg">{errs[i].message}</p>)
-    }
+  async function onSubmitSignup(e: any){
+    e.preventDefault();
+    const result = await postSignUp(username, password, email);
+    
+    console.log(result);
+    setErrors(result);
   }
-  }
-}
-
-
-function invalidSignup(sin: Boolean){
-if(sin === false){
-  return (
-    <p>Notendanafn eða lykilorð er vitlaust </p>
-  )
-}
-}
 
   return (
-    <fieldset>
-    <form onSubmit={onSumbitSignup} >
-    <h1>Nýskráning</h1>
-      <div>
-      <label htmlFor="username">Notendanafn:</label>
-        <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
-        {showErrors('username',errors)}
-      </div>
-      
-      <br/>
-      <div>
-        <label htmlFor="email">Netfang:</label>
-        <input autoComplete="off" id="email" type="text" name="email" onChange={changeEmailInput}/>
-        {showErrors('email',errors)}
-      </div>
-      
-      <br/>
-      <div>
-        <label htmlFor="password">Lykilorð:</label>
-          <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
-          {showErrors('password',errors)}
-      </div>
-      <Button children={'Nýskrá'}/>
-  </form>
-  <div>
-  <Link className="form__login" to="/login">Innskráning</Link>
-    { invalidSignup(validsignup) }
-  </div>
-  </fieldset>
-  )
+    <Fragment>
+      <h1 className="registerTitle">Nýskráning</h1>
+      <form onSubmit={onSubmitSignup} className="registerForm" >
+        {errors != null && (
+          <Errors
+            errors={errors}
+          />
+        )}
+        <div className="registerInputs">
+          <Input
+            label={'Notendanafn:'}
+            name={'username'}
+            onChange={changeUsernameInput}
+            value={username}
+          />
+          <Input
+            label={'Lykilorð:'}
+            name={'password'}
+            onChange={changePasswordInput}
+            value={password}
+          />
+          <Input
+            label={'Netfang:'}
+            name={'email'}
+            onChange={changeEmailInput}
+            value={email}
+          />
+        </div>
+        <Button
+          className={'registerButton'}
+          children={'Nýskrá'}
+        />
+    </form>
+    <div>
+    <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
+    </div>
+  </Fragment>
+  );
 }

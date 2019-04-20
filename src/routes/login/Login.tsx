@@ -1,97 +1,74 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component, useState, Fragment } from 'react';
 import { postLogin } from '../../api/index';
 import { Link, Redirect } from 'react-router-dom';
 
-import App from '../../App';
 import './Login.scss';
-import Home  from '../home/Home';
-import { IUser, IError } from '../../api/types';
+import { IError } from '../../api/types';
 
+import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 
-export default function Login(props : any){
-  
-const [user, setUser] = useState();
-const [username, setUsername] = useState();
-const [password, setPassword] = useState();
-const [errors , setErrors] = useState();
-const [success, setSuccess] = useState();
+export default function Login() {
 
-function changeUsernameInput(e: any){
-  let target = e.target.value;
-  setUsername(target);
-}
+  const [username, setUsername] = useState();
+  const [password, setPassword] = useState();
+  const [errors , setErrors] = useState();
+  console.log(errors);
 
-function changePasswordInput(e: any){
-  let target = e.target.value;
-  setPassword(target);
-}
+  function changeUsernameInput(e: any){
+    setUsername(e.target.value);
+  }
 
-async function onSubmitLogin(e:any){
-  e.preventDefault();
-    const result = await postLogin(username,password);
+  function changePasswordInput(e: any){
+    setPassword(e.target.value);
+  }
+
+  async function onSubmitLogin(e:any){
+    e.preventDefault();
+    const result = await postLogin(username, password);
     
-    
-    setErrors(result);
-    const test1 = result.hasOwnProperty('username');
-    const test2 = result.hasOwnProperty('email');
-    const test3 = result.hasOwnProperty('id');
-    const test4 = result.hasOwnProperty('admin');
-
-    
-    if( test1 && test2 && test3 && test4){
-      console.log('success');
-      console.log(result);
-      setSuccess(true);
-      window.location.reload();
+    if (result[0] != undefined) {
+      setErrors(result);
     }
-}
+  }
 
-function showErrors(f: String, errs: IError[]){
-  
-  if(errs !== undefined){
-    for(let i =0; i < errs.length; i++){
-      if(errs[i] !== undefined){
-        if(errs[i].field === f){
-          return (<p className="errorMsg">{errs[i].message}</p>)
+  function showError(f: String, errs: IError[]) {
+    if(errs !== undefined) {
+      for(let i = 0; i < errs.length; i += 1) {
+        if(errs[i].field === f) {
+          return (<p className="errorMsg">{errs[i].message}</p>);
         }
       }
     }
   }
+
+  return (
+    <Fragment>
+      <h1 className="loginTitle">Innskráning</h1>
+      <form onSubmit={onSubmitLogin} className="loginForm" >
+        <div className="loginInputs">
+          <Input
+            label={'Notendanafn:'}
+            name={'username'}
+            onChange={changeUsernameInput}
+            value={username}
+          />
+          {showError('username', errors)}
+          <Input
+            label={'Lykilorð:'}
+            name={'password'}
+            onChange={changePasswordInput}
+            value={password}
+          />
+          {showError('password', errors)}
+        </div>
+        {showError('NoSuchUser', errors)}
+        <Button
+          className={'loginButton'}
+          children={'Skrá inn'}
+        />
+      </form>
+      <Link className="loginLinkToRegister" to="/register">Nýskráning</Link>
+    </Fragment>
+  );
 }
-
-function loginSuccess(log: Boolean){
-  if(log){
-    return (
-      <Redirect to="/" />
-    )
-  }
-}
-
-return (
-  <fieldset>
-    <form onSubmit={onSubmitLogin} >
-    <h1>Innskráning</h1>
-    <div className="login__form">
-      <div className="login__username">
-       <label htmlFor="username">Notendanafn:</label>
-         <input autoComplete="off" id="username" type="text" name="username" onChange={changeUsernameInput}/>
-          {showErrors('username',errors)}
-          </div>
-      <div className="login__password">
-       <label htmlFor="password">Lykilorð:</label>
-         <input autoComplete="off" id="password" type="password" name="password" onChange={changePasswordInput}/>
-          {showErrors('password',errors)}
-          {showErrors('NoSuchUser',errors)}
-          </div>
-      </div>
-       <Button children={'Skrá inn'}/>
-    </form>
-    <Link className="form__register" to="/register">Nýskráning</Link>
-  {loginSuccess(success)}
-  </fieldset>
-  )
-}
-
-
-
