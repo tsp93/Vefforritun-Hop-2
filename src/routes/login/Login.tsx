@@ -1,12 +1,13 @@
-import React, { Component, useState, Fragment } from 'react';
+import React, { useState, Fragment } from 'react';
 import { postLogin } from '../../api/index';
 import { Link, Redirect } from 'react-router-dom';
 
-import './Login.scss';
 import { IError } from '../../api/types';
 
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
+
+import './Login.scss';
 
 export default function Login() {
 
@@ -27,8 +28,10 @@ export default function Login() {
     e.preventDefault();
     const result = await postLogin(username, password);
     
-    if (result[0] != undefined) {
+    if (result.length !== 0) {
       setErrors(result);
+    } else {
+
     }
   }
 
@@ -59,6 +62,7 @@ export default function Login() {
             name={'password'}
             onChange={changePasswordInput}
             value={password}
+            type={'password'}
           />
           {showError('password', errors)}
         </div>

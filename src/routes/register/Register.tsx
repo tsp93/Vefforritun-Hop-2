@@ -1,22 +1,20 @@
 import React, { useState, Fragment } from 'react';
 import { postSignUp } from '../../api/index';
-import { Link, Redirect } from 'react-router-dom';
-
-import { IError } from '../../api/types';
+import { Link } from 'react-router-dom';
 
 import Button from '../../components/button/Button';
 import Input from '../../components/input/Input';
+import Errors from '../../components/errors/Errors';
 
 import './Register.scss';
-import Errors from '../../components/errors/Errors';
 
 export default function Register() {
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [email, setEmail] = useState();
-  const [validsignup, setValidsignup ] = useState();
-  const [errors , setErrors] = useState();
+  const [ username, setUsername ] = useState();
+  const [ password, setPassword ] = useState();
+  const [ email, setEmail ] = useState();
+  const [ registerSuccess, setRegisterSuccess ] = useState(false);
+  const [ errors , setErrors] = useState();
   
 
   function changeUsernameInput(e: any){
@@ -35,47 +33,55 @@ export default function Register() {
     e.preventDefault();
     const result = await postSignUp(username, password, email);
     
-    console.log(result);
-    setErrors(result);
+    if (result.length !== 0) {
+      setErrors(result);
+    } else {
+      setRegisterSuccess(true);
+    }
   }
 
   return (
     <Fragment>
       <h1 className="registerTitle">Nýskráning</h1>
-      <form onSubmit={onSubmitSignup} className="registerForm" >
-        {errors != null && (
-          <Errors
-            errors={errors}
+      {registerSuccess && (
+        <p className="registerSuccess">Skráning tókst!</p>
+      )}
+      {!registerSuccess && (
+        <form onSubmit={onSubmitSignup} className="registerForm" >
+          {errors != null && (
+            <Errors
+              errors={errors}
+            />
+          )}
+          <div className="registerInputs">
+            <Input
+              label={'Notendanafn:'}
+              name={'username'}
+              onChange={changeUsernameInput}
+              value={username}
+            />
+            <Input
+              label={'Lykilorð:'}
+              name={'password'}
+              onChange={changePasswordInput}
+              value={password}
+              type={'password'}
+            />
+            <Input
+              label={'Netfang:'}
+              name={'email'}
+              onChange={changeEmailInput}
+              value={email}
+              type={'email'}
+            />
+          </div>
+          <Button
+            className={'registerButton'}
+            children={'Nýskrá'}
           />
-        )}
-        <div className="registerInputs">
-          <Input
-            label={'Notendanafn:'}
-            name={'username'}
-            onChange={changeUsernameInput}
-            value={username}
-          />
-          <Input
-            label={'Lykilorð:'}
-            name={'password'}
-            onChange={changePasswordInput}
-            value={password}
-          />
-          <Input
-            label={'Netfang:'}
-            name={'email'}
-            onChange={changeEmailInput}
-            value={email}
-          />
-        </div>
-        <Button
-          className={'registerButton'}
-          children={'Nýskrá'}
-        />
-    </form>
-    <div>
-    <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
-    </div>
-  </Fragment>
+        </form>
+      )}
+      <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
+    </Fragment>
   );
 }
