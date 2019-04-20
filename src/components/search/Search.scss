@@ -5,20 +5,4 @@
   display: flex;
   flex-flow: row nowrap;
   margin: 1rem 0;
-
-  & .searchLabel {
-    font-size: $medium-font-size;
-    margin-right: 1rem;
-  }
-
-  & .searchInput {
-    font-size: $medium-font-size;
-  }
-
-  & .searchButton {
-    max-width: $small-button-size;
-
-    margin: 0 1rem;
-    padding: 0.5rem;
-  }
 }

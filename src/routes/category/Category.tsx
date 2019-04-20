@@ -113,6 +113,7 @@ export default function Category(props : any) {
                     className={'pageButt'}
                     children={'Fyrri síða'}
                     onClick={handlePrevious}
+                    small={true}
                   />
                 )}
                 <p className='pageNum'>Síða {page}</p>
@@ -121,6 +122,7 @@ export default function Category(props : any) {
                     className={'pageButt'}
                     children={'Næsta síða'}
                     onClick={handleNext}
+                    small={true}
                   />
                 )}
               </div>

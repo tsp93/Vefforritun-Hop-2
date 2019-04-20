@@ -6,6 +6,10 @@
   flex-flow: row nowrap;
 
   & .pageButt {
-    max-width: $small-button-size;
+    margin-left: 0;
+  }
+
+  & .pageNum {
+    margin-right: 1rem;
   }
 }
