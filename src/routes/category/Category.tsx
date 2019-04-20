@@ -86,27 +86,25 @@ export default function Category(props : any) {
       {!loading && (
         <Fragment>
           <Helmet title={category.title} />
-
-          <h1>{category.title}</h1>
+          <h1 className="categoryTitle">{category.title}</h1>
 
           <Search
             handleSearchChange={handleSearchChange}
             submitSearch={submitSearch}
             searchText={search}
           />
-
           {searchLoading && (
             <p>Loading...</p>
           )}
           {(!searchLoading && searchNotFound) && (
             <p>Ekkert '{searchNotFoundText}' fannst</p>
           )}
+
           {(!searchNotFound && !searchLoading) &&(
             <Fragment>
               <ProductsList
                 products={products.slice(0, 12)}
               />
-
               <div className='pageNav'>
                 {page > 1 && (
                   <Button
