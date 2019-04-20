@@ -11,10 +11,11 @@ import './Login.scss';
 
 export default function Login() {
 
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
-  const [errors , setErrors] = useState();
-  console.log(errors);
+  const [ username, setUsername ] = useState();
+  const [ password, setPassword ] = useState();
+
+  const [ errors , setErrors ] = useState();
+  const [ loggedIn, setLoggedIn ] = useState(false);
 
   function changeUsernameInput(e: any){
     setUsername(e.target.value);
@@ -31,7 +32,7 @@ export default function Login() {
     if (result.length !== 0) {
       setErrors(result);
     } else {
-
+      setLoggedIn(true);
     }
   }
 
@@ -48,7 +49,7 @@ export default function Login() {
   return (
     <Fragment>
       <h1 className="loginTitle">Innskráning</h1>
-      <form onSubmit={onSubmitLogin} className="loginForm" >
+      <form onSubmit={onSubmitLogin} className="loginForm">
         <div className="loginInputs">
           <Input
             label={'Notendanafn:'}
@@ -73,6 +74,9 @@ export default function Login() {
         />
       </form>
       <Link className="loginLinkToRegister" to="/register">Nýskráning</Link>
+      {loggedIn && (
+        <Redirect to='/' />
+      )}
     </Fragment>
   );
 }
