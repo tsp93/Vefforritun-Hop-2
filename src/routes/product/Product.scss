@@ -1,6 +1,7 @@
 @import '../../config.scss';
 
 .moreFrom {
+  font-family: $font-main;
   margin-bottom: 0;
 
   @media screen and (max-width: $mobile-width){

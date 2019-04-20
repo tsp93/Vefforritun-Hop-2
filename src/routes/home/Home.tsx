@@ -15,6 +15,7 @@ export default function Home() {
     <Fragment>
       <Helmet title="Forsíða" />
 
+      <h1>Nýjar vörur</h1>
       <Products
         limit={6}
       />
