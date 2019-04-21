@@ -11,7 +11,7 @@ interface IInputProps {
 }
 
 export default function Input(props: IInputProps) {
-  const { label, value, name, type = 'text', onChange = () => {} } = props;
+  const { label, value = '', name, type = 'text', onChange = () => {} } = props;
 
   return (
     <div className={"input"}>

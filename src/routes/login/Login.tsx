@@ -33,6 +33,7 @@ export default function Login() {
       setErrors(result);
     } else {
       setLoggedIn(true);
+      window.location.reload();
     }
   }
 
