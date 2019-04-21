@@ -2,18 +2,19 @@ import React, { useState, useEffect, Fragment } from 'react';
 
 
 import { getCart, changeLineQuantity } from '../../api';
-import { ICart } from '../../api/types';
+import { ICart, IProduct } from '../../api/types';
 
 import CartLines from '../../components/cart/Cart';
 import makeOrder from '../../components/makeOrder/makeOrder';
 
 import './Cart.scss';
 import Input from '../../components/input/Input';
+import Button from '../../components/button/Button';
 
 export default function Cart() {
-
   const [ cart, setCart ] = useState();
   const [ nameAddress, setNameAddress ] = useState({ name: '', address: '' });
+  const [ quantities, setQuantities ] = useState<number[]>([]);
 
   const [ loading, setLoading ] = useState(true);
 
@@ -21,11 +22,23 @@ export default function Cart() {
     const fetchProduct = async () => {
       const cartResult = await getCart();
       setCart(cartResult);
-      console.log(cartResult);
+      const quant : number [] = [];
+      cartResult.products.forEach((line : IProduct) => {
+        quant.push(line.quantity ? line.quantity : 0);
+      });
+      setQuantities(quant);
       setLoading(false);
     }
     fetchProduct();
   }, []);
+
+  function onChangeQuantity(e : any) {
+    const quant = quantities;
+    const index = parseInt(e.target.name[e.target.name.length - 1]);
+    quant[index] = parseInt(e.target.value);
+    
+    setQuantities(quant);
+  }
 
   function onChangeNameAddress(e : any) {
     setNameAddress({
@@ -47,6 +60,8 @@ export default function Cart() {
         <Fragment>
           <CartLines
             lines={cart.products}
+            quantities={quantities}
+            onChange={onChangeQuantity}
           />
           <p className="cartTotal">Karfa samtals: {cart.totalPrice} kr.</p>
           <form onSubmit={onSubmitCart} className="cartSubmit">
@@ -62,6 +77,10 @@ export default function Cart() {
               name={'address'}
               value={nameAddress.address}
               onChange={onChangeNameAddress}
+            />
+            <Button
+              className={'cartSubmitButton'}
+              children={'Senda Inn Pöntun'}
             />
           
           </form>

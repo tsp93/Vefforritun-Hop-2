@@ -28,24 +28,24 @@ export default function Product(props : any) {
         </div>
         {loggedIn && (
           <div className="productAddToCart">
-          <Input
-            label={'Fjöldi'}
-            name={'amount'}
-            value={productAmount.toString()}
-            onChange={onChange}
-            type={'number'}
-            small={true}
-          />
-          <Button
-            className={'productAddToCartButton'}
-            children={'Bæta við körfu'}
-            onClick={onClick}
-            small={true}
-          />
-          {added && (
-            <p>Bætt við körfu!</p>
-          )}
-        </div>
+            <Input
+              label={'Fjöldi'}
+              name={'amount'}
+              value={productAmount.toString()}
+              onChange={onChange}
+              type={'number'}
+              small={true}
+            />
+            <Button
+              className={'productAddToCartButton'}
+              children={'Bæta við körfu'}
+              onClick={onClick}
+              small={true}
+            />
+            {added && (
+              <p>Bætt við körfu!</p>
+            )}
+          </div>
         )}
       </div>
     </div>

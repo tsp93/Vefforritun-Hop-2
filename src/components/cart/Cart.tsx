@@ -8,14 +8,16 @@ import Button from '../button/Button';
 import './Cart.scss';
 
 export default function Cart(props : any) {
-  const { lines, onChange, updateLine, deleteLine } = props;
+  const { lines, quantities, onChange, updateLine, deleteLine } = props;
+
+  console.log(quantities);
   
   function showCartItems(lines : IProduct[]) {
     const array : any = [];
-    let key = 0;
-    lines.forEach(line => {
+    for (let i = 0; i < lines.length; i += 1) {
+      const line = lines[i];
       array.push(
-        <div className="cartLine" key={key++}>
+        <div className="cartLine" key={i}>
           <div className="cartLineImage">
             <img src={line.image}></img>
           </div>
@@ -27,8 +29,8 @@ export default function Cart(props : any) {
             <div className="cartLineManagementQuantity">
               <Input
                 label={'Fjöldi:'}
-                name={'amount'}
-                value={line.quantity ? line.quantity.toString() : ''}
+                name={`amount${i}`}
+                value={quantities[i]}
                 onChange={onChange}
                 type={'number'}
                 small={true}
@@ -39,7 +41,7 @@ export default function Cart(props : any) {
                 small={true}
               />
             </div>
-            <p className="cartLineManagementTotalPrice">Samtals: {line.price} kr.</p>
+            <p className="cartLineManagementTotalPrice">Samtals: {line.total} kr.</p>
             <Button
               className={'cartLineManagementDeleteButton'}
               children={'Eyða Línu'}
@@ -49,7 +51,9 @@ export default function Cart(props : any) {
           </div>
         </div>
       )
-    });
+    }
+
+      
     return array;
   }
 
