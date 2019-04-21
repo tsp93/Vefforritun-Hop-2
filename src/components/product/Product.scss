@@ -1,40 +1,52 @@
 @import '../../config';
 
 .product {
-    display: flex;
-    flex-flow: row nowrap;
-    margin: 3rem 0;
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 3rem 0;
 
-    @media screen and (max-width: $tablet-width){
-      flex-flow: column;
-    }
+  @media screen and (max-width: $tablet-width){
+    flex-flow: column;
+  }
 
-    @media screen and (max-width: $mobile-width){
-      
-      & .productImg {
-        margin: 1rem;
-      }
-    }
-
+  @media screen and (max-width: $mobile-width){
+    
     & .productImg {
-      flex: 1;
-
-      & img {
-        height: 30rem;
-        object-fit: cover;
-        width: 100%;
-      }
+      margin: 1rem;
     }
+  }
 
-    & .productInfo {
-      display: flex;
-      flex: 1;
-      flex-flow: column;
-      margin-left: 1rem;
+  & .productImg {
+    flex: 1;
+
+    & img {
+      height: 30rem;
+      object-fit: cover;
+      width: 100%;
     }
+  }
+
+  & .productInfo {
+    display: flex;
+    flex: 1;
+    flex-flow: column;
+    margin-left: 1rem;
 
     & .productTitPri {
-      margin: 1rem 0;
+      margin: 2rem 0 1rem 0;
     }
+
+    & .productDes {
+      & .productDesParagraph{
+        margin: 1rem 0;
+      }
+    }
+
+    & .productAddToCart {
+      align-items: center;
+      display: flex;
+      flex-flow: row nowrap;
+    }
+  }
 }
 

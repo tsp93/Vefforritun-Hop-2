@@ -216,7 +216,7 @@ async function getCurrentUser() : Promise<IUser | any> {
 /**
  * Nær í körfu
  */
-async function getCart() : Promise<ICart> {
+async function getCart() : Promise<ICart | any> {
   const url = new URL('/cart', baseurl);
   const options : any = { method: 'GET', headers: {} };
 
@@ -228,22 +228,22 @@ async function getCart() : Promise<ICart> {
   const response = await fetch(url.href, options);
   const data = response.json();
 
-  const cart : ICart = {
-    products: [],
-    cartID: -1,
-    total_price:0,
-  };
+  const cart = data.then((value) => {
+    const carty : ICart = {
+      products: [],
+      cartID: -1,
+      total_price:0,
+    };
 
-  data.then((value) => {
     if(value.error){
       return value.error;
     }
 
     value.lines.forEach((element: any) => {
-      cart.products.push(constructProduct(element));
+      carty.products.push(constructProduct(element));
     });
-    cart.total_price = value.total;
-    cart.cartID = value.id;
+    carty.total_price = value.total;
+    carty.cartID = value.id;
   });
 
   return new Promise(resolve => resolve(cart)); 

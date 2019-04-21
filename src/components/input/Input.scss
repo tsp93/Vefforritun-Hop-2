@@ -31,4 +31,22 @@
 
     min-height: 1rem;
   }
+
+  & input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+
+  &--small {
+    max-width: 100px;
+
+    & label {
+      margin-right: 1rem; 
+    }
+
+    & input {
+      text-align: center;
+    }
+  }
 }
