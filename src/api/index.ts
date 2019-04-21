@@ -232,7 +232,7 @@ async function getCart() : Promise<ICart | any> {
     const carty : ICart = {
       products: [],
       cartID: -1,
-      total_price:0,
+      totalPrice:0,
     };
 
     if(value.error){
@@ -242,8 +242,9 @@ async function getCart() : Promise<ICart | any> {
     value.lines.forEach((element: any) => {
       carty.products.push(constructProduct(element));
     });
-    carty.total_price = value.total;
+    carty.totalPrice = value.total;
     carty.cartID = value.id;
+    return carty;
   });
 
   return new Promise(resolve => resolve(cart)); 

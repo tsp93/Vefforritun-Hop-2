@@ -32,7 +32,7 @@ export interface IError{
 export interface ICart{
   products: IProduct[];
   cartID: number;
-  total_price: number;
+  totalPrice: number;
 }
 
 export interface IOrder{

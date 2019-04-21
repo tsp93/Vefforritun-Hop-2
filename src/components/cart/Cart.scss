@@ -1,26 +1,76 @@
 @import '../../config.scss';
 
 .cart {
-}
+  display: flex;
+  flex-flow: column;  
 
-.addToCart__container{
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-}
+  &Line {
+    display: flex;
+    flex-flow: row wrap;
 
-.addToCart__container button{
-    width:100px;
-    height: 1rem;
-    background-color: $color-font;
-    color: aliceblue;
-    border: none;
-    border-radius: 2.5px; 
-}
+    margin: 2rem 0;
 
-.addToCart__container input{
-    width:50px;
-    height:1rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    &Image {
+      flex: 1;
+
+      & img {
+        object-fit: cover;
+        padding: 1rem 0;
+
+        height: 16rem;
+        width: 100%;
+      }
+    }
+
+    &Info {
+      flex: 2;
+
+      margin: 0 2rem;
+    }
+
+    &Management {
+      flex: 1;
+
+      display: flex;
+      flex-flow: column;
+      
+      align-items: flex-start;
+
+      &Quantity {
+        align-items: center;
+        display: flex;
+        flex-flow: row nowrap;
+      }
+
+      &TotalPrice {
+        font-weight: bold;
+      }
+
+      &DeleteButton {
+        margin-left: 0;
+      }
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    
+    &Line {
+      flex-flow: column;
+      margin: 2rem 1rem;
+
+      &Image {
+        width: 100%;
+      }
+
+      &Info {
+        margin: 0;
+        width: 100%;
+      }
+
+      &Management {
+        width: 100%;
+      }
+    }
+  }
 }
 

@@ -1,4 +1,11 @@
 @import '../../config.scss';
 
-.cart {
+.cartTotal {
+  font-weight: bold;
+  justify-self: flex-end;
+  margin-left: 76%;
+}
+
+.cartSubmit {
+  margin: 4rem 0 12rem 0;
 }
