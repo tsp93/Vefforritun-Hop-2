@@ -11,22 +11,22 @@ import './Login.scss';
 
 export default function Login() {
 
-  const [ username, setUsername ] = useState();
-  const [ password, setPassword ] = useState();
+
+  const [ userPassword, setUserPassword ] = useState({ username: '', password: '' });
 
   const [ errors , setErrors ] = useState();
   const [ loggedIn, setLoggedIn ] = useState(false);
 
-  function changeUsernameInput(e: any){
-    setUsername(e.target.value);
-  }
-
-  function changePasswordInput(e: any){
-    setPassword(e.target.value);
+  function onChangeUserPassword(e : any) {
+    setUserPassword({
+      ...userPassword,
+      [e.target.name]: e.target.value,
+    });
   }
 
   async function onSubmitLogin(e:any){
     e.preventDefault();
+    const { username, password } = userPassword;
     const result = await postLogin(username, password);
     
     if (result.length !== 0) {
@@ -55,15 +55,15 @@ export default function Login() {
           <Input
             label={'Notendanafn:'}
             name={'username'}
-            onChange={changeUsernameInput}
-            value={username}
+            onChange={onChangeUserPassword}
+            value={userPassword.username}
           />
           {showError('username', errors)}
           <Input
             label={'Lykilorð:'}
             name={'password'}
-            onChange={changePasswordInput}
-            value={password}
+            onChange={onChangeUserPassword}
+            value={userPassword.password}
             type={'password'}
           />
           {showError('password', errors)}

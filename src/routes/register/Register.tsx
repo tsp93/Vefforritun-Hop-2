@@ -10,27 +10,21 @@ import './Register.scss';
 
 export default function Register() {
 
-  const [ username, setUsername ] = useState();
-  const [ password, setPassword ] = useState();
-  const [ email, setEmail ] = useState();
+  const [ userEmailPassword, setUserEmailPassword ] = useState({ username: '', email: '', password: '' });
+
   const [ registerSuccess, setRegisterSuccess ] = useState(false);
   const [ errors , setErrors] = useState();
-  
 
-  function changeUsernameInput(e: any){
-    setUsername(e.target.value);
-  }
-
-  function changeEmailInput(e: any){
-    setEmail(e.target.value);
-  }
-  
-  function changePasswordInput(e: any){
-    setPassword(e.target.value);
+  function onChangeUserEmailPassword(e : any) {
+    setUserEmailPassword({
+      ...userEmailPassword,
+      [e.target.name]: e.target.value,
+    });
   }
 
   async function onSubmitSignup(e: any){
     e.preventDefault();
+    const { username, password, email } = userEmailPassword;
     const result = await postSignUp(username, password, email);
     
     if (result.length !== 0) {
@@ -57,21 +51,21 @@ export default function Register() {
             <Input
               label={'Notendanafn:'}
               name={'username'}
-              onChange={changeUsernameInput}
-              value={username}
+              onChange={onChangeUserEmailPassword}
+              value={userEmailPassword.username}
             />
             <Input
               label={'Lykilorð:'}
               name={'password'}
-              onChange={changePasswordInput}
-              value={password}
+              onChange={onChangeUserEmailPassword}
+              value={userEmailPassword.password}
               type={'password'}
             />
             <Input
               label={'Netfang:'}
               name={'email'}
-              onChange={changeEmailInput}
-              value={email}
+              onChange={onChangeUserEmailPassword}
+              value={userEmailPassword.email}
               type={'email'}
             />
           </div>
