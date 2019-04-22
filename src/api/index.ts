@@ -7,7 +7,7 @@ const baseurl : string | undefined = process.env.REACT_APP_API_URL;
  * Hjálparfall sem býr til vöru út frá hlut
  * @param element Hlutur úr JSON
  */
-function constructProduct(element: any) {
+function constructProduct(element: any) : IProduct {
   if (element.product_id != null) {
     element.lineId = element.id;
     element.id = element.product_id;
@@ -288,8 +288,6 @@ async function addToCart(pid : number, q : number) : Promise<IError[]> {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
-  
-
   const response = await fetch(url.href, options);
   const data = response.json();
 
@@ -429,12 +427,12 @@ async function getOrders() : Promise<IOrder[] | any> {
       const orders : IOrder[] = [];
 
       value.items.forEach((element: any) => {
-        const order = {
+        const order : IOrder = {
           id: element.id,
           name: element.name,
           address : element.address,
           created : element.created,
-          lines : element.lines,
+          lines : [],
           total : element.total,
         }
         orders.push(order);
@@ -470,14 +468,17 @@ async function getOrder(id : number) : Promise<IOrder | any> {
     if (value.error) {
       return value;
     } else {
-      const order = {
+      const order : IOrder = {
         id: value.id,
         name: value.name,
         address : value.address,
         created : value.created,
-        lines : value.lines,
+        lines : [],
         total : value.total,
-      }
+      };
+      value.lines.forEach((line: IProduct) => {
+        order.lines.push(constructProduct(line));
+      });
       return order;
     }
   });

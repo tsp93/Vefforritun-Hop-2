@@ -7,6 +7,7 @@ import './Order.scss';
 
 export default function Order(props : IOrder) {
   const { name, address, created, lines, total } = props;
+  console.log(lines);
 
   function showLines(lines : IProduct[]) {
     const array = [];

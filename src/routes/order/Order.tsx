@@ -19,7 +19,6 @@ export default function Order(props : any) {
   useEffect(() => {
     const fetchProduct = async () => {
       const result = await getOrder(id);
-      console.log(result);
       if (result.error) {
         setNotFound(true);
       } else {
