@@ -12,7 +12,7 @@ import Category from './routes/category/Category';
 import Product from './routes/product/Product';
 import Cart from './routes/cart/Cart';
 import Orders from './routes/orders/Orders';
-import Order from './routes/orders/Order';
+import Order from './routes/order/Order';
 
 import NotFound from './routes/system-pages/NotFound';
 

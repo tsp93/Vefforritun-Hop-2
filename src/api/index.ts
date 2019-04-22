@@ -236,7 +236,7 @@ async function getCart() : Promise<ICart | any> {
     };
 
     if(value.error){
-      return value.error;
+      return value;
     }
 
     value.lines.forEach((element: any) => {

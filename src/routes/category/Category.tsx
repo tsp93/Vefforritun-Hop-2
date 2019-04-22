@@ -7,6 +7,8 @@ import Button from '../../components/button/Button';
 import Search from '../../components/search/Search';
 import ProductsList from '../../components/products/Products';
 
+import NotFound from '../system-pages/NotFound';
+
 import './Category.scss';
 
 export default function Category(props : any) {
@@ -26,11 +28,18 @@ export default function Category(props : any) {
   const [ loading, setLoading ] = useState(true);
   const [ searchLoading, setSearchLoading ] = useState(false);
 
+  const [ notFound, setNotFound ] = useState(false);
+
   useEffect(() => {
     const fetchProducts = async () => {
       const result = await getProducts(offset, limit + 1, id, search);
-      setProducts(result);
-      setCategory(result[0].category);
+      if (result.length === 0) {
+        setNotFound(true);
+      } else {
+        setProducts(result);
+        setCategory(result[0].category);
+      }
+      
       setLoading(false);
     }
     fetchProducts();
@@ -80,10 +89,13 @@ export default function Category(props : any) {
 
   return (
     <Fragment>
-      {loading && (
+      {notFound && (
+        <NotFound />
+      )}
+      {(loading && !notFound) && (
         <p>Loading...</p>
       )}
-      {!loading && (
+      {(!loading && !notFound) && (
         <Fragment>
           <Helmet title={category.title} />
           <h1 className="categoryTitle">{category.title}</h1>

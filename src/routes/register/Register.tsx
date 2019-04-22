@@ -22,7 +22,7 @@ export default function Register() {
     });
   }
 
-  async function onSubmitSignup(e: any){
+  async function onSubmitSignup(e: any) {
     e.preventDefault();
     const { username, password, email } = userEmailPassword;
     const result = await postSignUp(username, password, email);

@@ -1,32 +1,45 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { Redirect } from 'react-router-dom';
 
-
-import { getCart, changeLineQuantity } from '../../api';
+import { getCart, changeLineQuantity, postOrders } from '../../api';
 import { ICart, IProduct } from '../../api/types';
 
-import CartLines from '../../components/cart/Cart';
-import makeOrder from '../../components/makeOrder/makeOrder';
-
-import './Cart.scss';
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
+import Errors from '../../components/errors/Errors';
+import CartLines from '../../components/cart/Cart';
+import makeOrder from '../../components/order/Order';
+
+import NotFound from '../system-pages/NotFound';
+
+import './Cart.scss';
 
 export default function Cart() {
+
   const [ cart, setCart ] = useState();
   const [ nameAddress, setNameAddress ] = useState({ name: '', address: '' });
   const [ quantities, setQuantities ] = useState<number[]>([]);
 
+  const [ submitCartSuccess, setSubmitCartSuccess ] = useState(false);
+  const [ errors, setErrors ] = useState();
+
+  const [ notFound, setNotFound ] = useState(false);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
       const cartResult = await getCart();
-      setCart(cartResult);
-      const quant : number [] = [];
-      cartResult.products.forEach((line : IProduct) => {
-        quant.push(line.quantity ? line.quantity : 0);
-      });
-      setQuantities(quant);
+      console.log(cartResult);
+      if (cartResult.hasOwnProperty('error')) { 
+        setNotFound(true);
+      } else {
+        setCart(cartResult);
+        const quant : number [] = [];
+        cartResult.products.forEach((line : IProduct) => {
+          quant.push(line.quantity ? line.quantity : 0);
+        });
+        setQuantities(quant);
+      }
       setLoading(false);
     }
     fetchProduct();
@@ -47,16 +60,30 @@ export default function Cart() {
     });
   }
 
-  function onSubmitCart() {
-
+  async function onSubmitCart(e : any) {
+    e.preventDefault();
+    const { name, address } = nameAddress;
+    const result = await postOrders(name, address);
+  
+    if (result.length !== 0) {
+      setErrors(result);
+    } else {
+      setSubmitCartSuccess(true);
+    }
   }
 
   return (
     <Fragment>
-      {loading && (
+      {submitCartSuccess && (
+        <Redirect to='/orders' />
+      )}
+      {notFound && (
+        <NotFound />
+      )}
+      {(loading && !notFound) && (
         <p>Loading...</p>
       )}
-      {!loading && (
+      {(!loading && !notFound) && (
         <Fragment>
           <CartLines
             lines={cart.products}
@@ -66,6 +93,11 @@ export default function Cart() {
           <p className="cartTotal">Karfa samtals: {cart.totalPrice} kr.</p>
           <form onSubmit={onSubmitCart} className="cartSubmit">
             <h2>Senda inn pöntun</h2>
+            {errors != null && (
+              <Errors
+                errors={errors}
+              />
+            )}
             <Input
               label={'Nafn:'}
               name={'name'}

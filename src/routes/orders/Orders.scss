@@ -1,5 +1,10 @@
 @import '../../config.scss';
 
 .orders {
+  margin: 3rem auto;
+  width: 70%;
 
+  @media screen and (max-width: $mobile-width){
+    width: 100%;
+  }
 }

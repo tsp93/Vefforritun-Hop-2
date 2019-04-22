@@ -1,7 +1,7 @@
-import React, { useState, Fragment } from 'react';
-import { postLogin } from '../../api/index';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 
+import { postLogin, getCurrentUser } from '../../api/index';
 import { IError } from '../../api/types';
 
 import Input from '../../components/input/Input';
@@ -16,6 +16,19 @@ export default function Login() {
 
   const [ errors , setErrors ] = useState();
   const [ loggedIn, setLoggedIn ] = useState(false);
+  const [ loading, setLoading ] = useState(true);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true);
+      const userResult = await getCurrentUser();
+      if (!userResult.hasOwnProperty('error')) {
+        setLoggedIn(true);
+      }
+      setLoading(false);
+    }
+    fetchUser();
+  }, []);
 
   function onChangeUserPassword(e : any) {
     setUserPassword({
@@ -49,34 +62,38 @@ export default function Login() {
 
   return (
     <Fragment>
-      <h1 className="loginTitle">Innskráning</h1>
-      <form onSubmit={onSubmitLogin} className="loginForm">
-        <div className="loginInputs">
-          <Input
-            label={'Notendanafn:'}
-            name={'username'}
-            onChange={onChangeUserPassword}
-            value={userPassword.username}
-          />
-          {showError('username', errors)}
-          <Input
-            label={'Lykilorð:'}
-            name={'password'}
-            onChange={onChangeUserPassword}
-            value={userPassword.password}
-            type={'password'}
-          />
-          {showError('password', errors)}
-        </div>
-        {showError('NoSuchUser', errors)}
-        <Button
-          className={'loginButton'}
-          children={'Skrá inn'}
-        />
-      </form>
-      <Link className="loginLinkToRegister" to="/register">Nýskráning</Link>
-      {loggedIn && (
+      {(loggedIn && !loading) && (
         <Redirect to='/' />
+      )}
+      {(!loggedIn && !loading) && (
+        <Fragment>
+          <h1 className="loginTitle">Innskráning</h1>
+          <form onSubmit={onSubmitLogin} className="loginForm">
+            <div className="loginInputs">
+              <Input
+                label={'Notendanafn:'}
+                name={'username'}
+                onChange={onChangeUserPassword}
+                value={userPassword.username}
+              />
+              {showError('username', errors)}
+              <Input
+                label={'Lykilorð:'}
+                name={'password'}
+                onChange={onChangeUserPassword}
+                value={userPassword.password}
+                type={'password'}
+              />
+              {showError('password', errors)}
+            </div>
+            {showError('NoSuchUser', errors)}
+            <Button
+              className={'loginButton'}
+              children={'Skrá inn'}
+            />
+          </form>
+          <Link className="loginLinkToRegister" to="/register">Nýskráning</Link>
+        </Fragment>
       )}
     </Fragment>
   );

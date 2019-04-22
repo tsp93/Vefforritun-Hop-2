@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useState } from 'react';
 
-import { getProduct, getProducts, getCurrentUser, getCart, addToCart } from '../../api';
+import { getProduct, getProducts, getCurrentUser, addToCart } from '../../api';
 
 import ProductComponent from '../../components/product/Product';
 import ProductList from '../../components/products/Products';
+
+import NotFound from '../system-pages/NotFound';
 
 import './Product.scss';
 
@@ -18,18 +20,23 @@ export default function Product(props:any) {
   const [ added, setAdded ] = useState(false);
 
   const [ productAmount, setProductAmount ] = useState(1);
+  const [ notFound, setNotFound ] = useState(false);
   const [ loading , setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
       const productResult = await getProduct(id);
-      setProduct(productResult);
+      console.log(productResult);
+      if (productResult.id == null) { 
+        setNotFound(true);
+      } else {
+        setProduct(productResult);
+        const productsResult = await getProducts(null, limit, productResult.category.id, null);
+        setProducts(productsResult);
 
-      const productsResult = await getProducts(null, limit, productResult.category.id, null);
-      setProducts(productsResult);
-
-      const userResult = await getCurrentUser();
-      setLoggedIn(userResult.username != null);
+        const userResult = await getCurrentUser();
+        setLoggedIn(userResult.username != null);
+      }
       setLoading(false);
     }
     fetchProduct();
@@ -46,13 +53,13 @@ export default function Product(props:any) {
 
   return (
     <Fragment>
-      {loading && (
+      {notFound && (
+        <NotFound />
+      )}
+      {(loading && !notFound) && (
         <p>Loading...</p>
       )}
-      {(!loading && product.id == null) && (
-        <p>Vara fannst ekki</p>
-      )}
-      {(!loading && product.id != null) && (
+      {(!loading && !notFound) && (
         <Fragment>
           <ProductComponent
             id={product.id}

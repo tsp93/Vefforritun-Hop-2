@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import { postLogin, postOrders } from '../../api/index';
 import { Link, Redirect } from 'react-router-dom';
 
-export default function makeOrder(){
+export default function Order(){
     
     const [name, setName] = useState();
     const [address, setAddress] = useState();
