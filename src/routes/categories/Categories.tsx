@@ -45,7 +45,7 @@ export default function Categories() {
       )}
       {!loading && (
         <div className="categories">
-          <h2>Skoðaðu vöruflokkana okkar</h2>
+          <h2 className="categoriesTitle">Skoðaðu vöruflokkana okkar</h2>
           <section className='categoryList'>
             { showCategories(categories) }
           </section>
