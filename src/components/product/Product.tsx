@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
 import './Product.scss';
 import Input from '../input/Input';
 import Button from '../button/Button';
 
 export default function Product(props : any) {
-  const { image, title, description, category, price, loggedIn, productAmount, onChange, onClick, added } = props;
+  const { image, title, description, category, price, loggedIn, productAmount, onChange, onClick, added, addLoading } = props;
 
   return (
     <div className="product">
@@ -27,25 +27,33 @@ export default function Product(props : any) {
           ))}
         </div>
         {loggedIn && (
-          <div className="productAddToCart">
-            <Input
-              label={'Fjöldi'}
-              name={'amount'}
-              value={productAmount.toString()}
-              onChange={onChange}
-              type={'number'}
-              small={true}
-            />
-            <Button
-              className={'productAddToCartButton'}
-              children={'Bæta við körfu'}
-              onClick={onClick}
-              small={true}
-            />
-            {added && (
-              <p>Bætt við körfu!</p>
+          <Fragment>
+            {addLoading && (
+              <p>Bætir við körfu...</p>
             )}
-          </div>
+            {!addLoading && (
+              <div className="productAddToCart">
+              <Input
+                label={'Fjöldi'}
+                name={'amount'}
+                value={productAmount.toString()}
+                onChange={onChange}
+                type={'number'}
+                small={true}
+              />
+              <Button
+                className={'productAddToCartButton'}
+                children={'Bæta við körfu'}
+                onClick={onClick}
+                small={true}
+                disabled={added}
+              />
+              {added && (
+                <p>Bætt við körfu!</p>
+              )}
+            </div>
+            )}
+          </Fragment>
         )}
       </div>
     </div>

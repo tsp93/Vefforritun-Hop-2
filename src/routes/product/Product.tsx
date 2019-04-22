@@ -22,6 +22,7 @@ export default function Product(props:any) {
 
   const [ notFound, setNotFound ] = useState(false);
   const [ loading , setLoading ] = useState(true);
+  const [ addLoading, setAddLoading ] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -51,8 +52,11 @@ export default function Product(props:any) {
     if (productAmount < 1 || !Number.isInteger(productAmount)) {
       return;
     }
+    
     setAdded(true);
+    setAddLoading(true);
     await addToCart(product.id, productAmount);
+    setAddLoading(false);
   }
 
   return (
@@ -77,6 +81,7 @@ export default function Product(props:any) {
             onChange={handleProductAmountChange}
             onClick={onSubmitAmount}
             added={added}
+            addLoading={addLoading}
           />
 
           <h1 className="moreFromCat">Meira úr {product.category.title}</h1>

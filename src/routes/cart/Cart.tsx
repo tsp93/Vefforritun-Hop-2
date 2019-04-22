@@ -8,7 +8,6 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import Errors from '../../components/errors/Errors';
 import CartLines from '../../components/cart/Cart';
-import makeOrder from '../../components/order/Order';
 
 import NotFound from '../system-pages/NotFound';
 
