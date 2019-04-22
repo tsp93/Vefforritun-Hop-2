@@ -1,15 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { getCart, changeLineQuantity, deleteLine, postOrders } from '../../api';
-import { IProduct } from '../../api/types';
+import { getCart, postOrders } from '../../api';
 
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import Errors from '../../components/errors/Errors';
 import CartLines from '../../components/cart/Cart';
-
-import NotFound from '../system-pages/NotFound';
 
 import './Cart.scss';
 
@@ -21,14 +18,14 @@ export default function Cart() {
   const [ submitCartSuccess, setSubmitCartSuccess ] = useState(false);
   const [ errors, setErrors ] = useState();
 
-  const [ notFound, setNotFound ] = useState(false);
+  const [ noCart, setNoCart ] = useState(false);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
       const cartResult = await getCart();
       if (cartResult.hasOwnProperty('error')) { 
-        setNotFound(true);
+        setNoCart(true);
       } else {
         setCart(cartResult);
       }
@@ -43,7 +40,6 @@ export default function Cart() {
       [e.target.name]: e.target.value,
     });
   }
-
 
   async function onDeleteLine() {
     const cartResult = await getCart();
@@ -67,13 +63,13 @@ export default function Cart() {
       {submitCartSuccess && (
         <Redirect to='/orders' />
       )}
-      {notFound && (
-        <NotFound />
+      {noCart && (
+        <p className="noCart">Bættu við vöru í körfu og hún mun birtast hér</p>
       )}
-      {(loading && !notFound) && (
+      {(loading && !noCart) && (
         <p>Loading...</p>
       )}
-      {(!loading && !notFound) && (
+      {(!loading && !noCart) && (
         <Fragment>
           <CartLines
             lines={cart.lines}
