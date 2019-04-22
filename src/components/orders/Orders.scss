@@ -17,4 +17,13 @@
   & th, td {
     padding: 0.5rem;
   }
+
+  & .orderLink {
+    color: $color-font;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
