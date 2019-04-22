@@ -114,7 +114,6 @@ export default function Cart() {
               className={'cartSubmitButton'}
               children={'Senda Inn Pöntun'}
             />
-          
           </form>
         </Fragment>
       )}

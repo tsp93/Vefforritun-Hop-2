@@ -19,6 +19,7 @@ export default function Orders() {
     }
     fetchProduct();
   }, []);
+
   return (
     <div className="orders">
       <h1 className="ordersTitle">Þínar pantanir</h1>

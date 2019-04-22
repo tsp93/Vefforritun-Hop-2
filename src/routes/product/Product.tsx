@@ -26,7 +26,6 @@ export default function Product(props:any) {
   useEffect(() => {
     const fetchProduct = async () => {
       const productResult = await getProduct(id);
-      console.log(productResult);
       if (productResult.id == null) { 
         setNotFound(true);
       } else {

@@ -13,7 +13,7 @@ export default function Orders(props : any) {
     for (let i = 0; i < orders.length; i += 1) {
       array.push(
         <tr key={i}>
-          <td><Link className="orderLink" exact to={`/orders/${orders[i].id}`}>Pöntun #{orders[i].id}</Link></td>
+          <td><Link className="orderLink" to={`/orders/${orders[i].id}`}>Pöntun #{orders[i].id}</Link></td>
           <td>{orders[i].name}</td>
           <td>{orders[i].address}</td>
           <td>{orders[i].created}</td>

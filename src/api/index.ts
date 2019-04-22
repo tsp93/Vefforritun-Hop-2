@@ -388,7 +388,7 @@ async function postOrders(name : string, address : string) : Promise<IError[]> {
 /**
  * Sækir pantanir
  */
-async function getOrders(): Promise<IOrder[] | IError[]> {
+async function getOrders() : Promise<IOrder[] | any> {
   const url = new URL('/orders', baseurl);
   const options : any = {
     method: 'GET',
@@ -397,7 +397,7 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
   options.headers['Content-Type'] ='application/json';
 
   const token = localStorage.getItem('myToken');
-  if(token){
+  if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
@@ -405,17 +405,8 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
   const data = response.json();
 
   const result = data.then((value) => {
-    if (value.errors) {
-      const messages : IError[] = [];
-
-      value.errors.forEach((err: any) => {
-        const msg: IError = {
-          field: err.field,
-          message: err.error,
-        }
-        messages.push(msg);
-      });
-      return messages;
+    if (value.error) {
+      return value;
     } else {
       const orders : IOrder[] = [];
 
@@ -425,11 +416,51 @@ async function getOrders(): Promise<IOrder[] | IError[]> {
           name: element.name,
           address : element.address,
           created : element.created,
+          lines : element.lines,
+          total : element.total,
         }
         orders.push(order);
       });
 
       return orders;
+    }
+  });
+
+  return new Promise(resolve => resolve(result));
+}
+
+/**
+ * Sækir pöntun
+ */
+async function getOrder(id : number) : Promise<IOrder | any> {
+  const url = new URL(`/orders/${id}`, baseurl);
+  const options : any = {
+    method: 'GET',
+    headers: {},
+  };
+  options.headers['Content-Type'] ='application/json';
+
+  const token = localStorage.getItem('myToken');
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url.href, options);
+  const data = response.json();
+
+  const result = data.then((value) => {
+    if (value.error) {
+      return value;
+    } else {
+      const order = {
+        id: value.id,
+        name: value.name,
+        address : value.address,
+        created : value.created,
+        lines : value.lines,
+        total : value.total,
+      }
+      return order;
     }
   });
 
@@ -449,4 +480,5 @@ export {
   changeLineQuantity,
   postOrders,
   getOrders,
+  getOrder,
 };

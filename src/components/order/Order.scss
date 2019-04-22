@@ -1,5 +1,45 @@
 @import '../../config.scss';
 
-.order {
+.orderInfo {
+  display: flex;
+  flex-flow: row nowrap;
+  margin: 2rem 0;
 
+  &Left {
+    font-weight: bold;
+    margin-right: 25%;
+  }
+}
+
+.orderTable {
+  border-collapse: collapse;
+  text-align: left;
+  width: 100%;
+
+  & thead {
+    background-color: $color-font;
+    color: $color-background;
+  }
+
+  & tr:nth-child(even){
+    background-color:#E8E8E8;
+  }
+  
+  & th, td {
+    padding: 0.5rem;
+  }
+
+  & .orderLink {
+    color: $color-font;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.orderTotal {
+  font-weight: bold;
+  margin: 1rem 0 2rem 82.2%;
 }

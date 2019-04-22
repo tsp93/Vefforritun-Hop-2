@@ -17,27 +17,29 @@ export interface IProduct {
   total?: number;
 }
 
-export interface IUser{
+export interface IUser {
   id: number;
   username: String;
   email: String;
   admin: Boolean;
 }
 
-export interface IError{
+export interface IError {
   field: String;
   message: String;
 }
 
-export interface ICart{
-  products: IProduct[];
+export interface ICart {
   cartID: number;
   totalPrice: number;
+  products: IProduct[];
 }
 
-export interface IOrder{
+export interface IOrder {
   id: number;
   name: string;
   address: string;
   created: Date;
+  lines: IProduct[];
+  total: number;
 }
