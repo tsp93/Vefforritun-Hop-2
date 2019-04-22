@@ -261,12 +261,24 @@ async function getCart() : Promise<ICart | any> {
  */
 async function addToCart(pid : number, q : number) : Promise<IError[]> {
   const url = new URL('/cart', baseurl);
+
+  let quant = q;
+  const cart = await getCart();
+  if (!cart.error) {
+    cart.lines.forEach((line : IProduct) => {
+      if (line.id === pid) {
+        quant += line.quantity ? line.quantity : 0;
+        return;
+      }
+    });
+  }
+
   const options : any = {
     method: 'POST',
     headers: {},
     body:JSON.stringify({
       product: pid,
-      quantity: q,
+      quantity: quant,
     })
   };
   options.headers['Content-Type'] ='application/json';
@@ -275,6 +287,8 @@ async function addToCart(pid : number, q : number) : Promise<IError[]> {
   if (token) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
+
+  
 
   const response = await fetch(url.href, options);
   const data = response.json();

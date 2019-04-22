@@ -15,21 +15,23 @@ export default function Product(props:any) {
 
   const [ product, setProduct ] = useState();
   const [ products, setProducts ] = useState();
+  const [ productAmount, setProductAmount ] = useState(1);
 
   const [ loggedIn, setLoggedIn ] = useState();
   const [ added, setAdded ] = useState(false);
 
-  const [ productAmount, setProductAmount ] = useState(1);
   const [ notFound, setNotFound ] = useState(false);
   const [ loading , setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
       const productResult = await getProduct(id);
-      if (productResult.id == null) { 
+      if (productResult.id == null) {
         setNotFound(true);
       } else {
+        setAdded(false);
         setProduct(productResult);
+
         const productsResult = await getProducts(null, limit, productResult.category.id, null);
         setProducts(productsResult);
 
@@ -46,6 +48,9 @@ export default function Product(props:any) {
   }
 
   async function onSubmitAmount() {
+    if (productAmount < 1 || !Number.isInteger(productAmount)) {
+      return;
+    }
     setAdded(true);
     await addToCart(product.id, productAmount);
   }
