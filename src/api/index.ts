@@ -313,10 +313,10 @@ return new Promise(resolve => resolve(result));
 
 /**
  * Breytir magn af ákveðinni vöru í körfu
- * @param line Varan sem skal uppfæra
+ * @param line Lína sem skal uppfæra
  * @param q Nýja magn af vöru
  */
-async function changeLineQuantity(line : number, q : number | string) : Promise<IError[] | IProduct> {
+async function changeLineQuantity(line : number, q : number) : Promise<IError[] | IProduct> {
   const suffix = `/cart/line/${line}`;
   const url = new URL(suffix,baseurl);
   const options : any = {
@@ -337,24 +337,49 @@ async function changeLineQuantity(line : number, q : number | string) : Promise<
   const data = response.json();
 
   const result = data.then((value) => {
-    if (value.errors) {
-      const messages : IError[] = [];
-
-      value.errors.forEach((err: any) => {
-        const msg: IError = {
-          field: err.field,
-          message: err.error,
-        }
-        messages.push(msg);
-      });
-
-      return messages;
+    if (value.error) {
+      return value;
     } else {
       return constructProduct(value);
     }
   });
 
   return new Promise(resolve => resolve(result));
+}
+
+/**
+ * Eyðir vöru úr körfu
+ * @param line Varan sem skal eyða
+ */
+async function deleteLine(line : number) : Promise<any> {
+  const suffix = `/cart/line/${line}`;
+  const url = new URL(suffix, baseurl);
+  const options : any = {
+    method: 'DELETE',
+    headers: {},
+  };
+  options.headers['Content-Type'] ='application/json';
+
+  const token = localStorage.getItem('myToken');
+  if (token) {
+    options.headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url.href, options);
+  if (response.status === 204) {
+    return [];
+  } else {
+    const data = response.json();
+
+    const result = data.then((value) => {
+      if (value.error) {
+        return value;
+      } else {
+        return [];
+      }
+    });
+    return new Promise(resolve => resolve(result));
+  }
 }
 
 /**
@@ -497,6 +522,7 @@ export {
   getCart,
   addToCart,
   changeLineQuantity,
+  deleteLine,
   postOrders,
   getOrders,
   getOrder,

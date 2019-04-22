@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 
-import './Product.scss';
 import Input from '../input/Input';
 import Button from '../button/Button';
+
+import './Product.scss';
 
 export default function Product(props : any) {
   const { image, title, description, category, price, loggedIn, productAmount, onChange, onClick, added, addLoading } = props;

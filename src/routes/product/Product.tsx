@@ -45,14 +45,13 @@ export default function Product(props:any) {
   }, [id]);
 
   function handleProductAmountChange(e : any) {
-    setProductAmount(e.target.value);
+    setProductAmount(Number.parseInt(e.target.value));
   }
 
   async function onSubmitAmount() {
     if (productAmount < 1 || !Number.isInteger(productAmount)) {
       return;
     }
-    
     setAdded(true);
     setAddLoading(true);
     await addToCart(product.id, productAmount);

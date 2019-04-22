@@ -1,8 +1,8 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { getCart, changeLineQuantity, postOrders } from '../../api';
-import { ICart, IProduct } from '../../api/types';
+import { getCart, changeLineQuantity, deleteLine, postOrders } from '../../api';
+import { IProduct } from '../../api/types';
 
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
@@ -17,7 +17,6 @@ export default function Cart() {
 
   const [ cart, setCart ] = useState();
   const [ nameAddress, setNameAddress ] = useState({ name: '', address: '' });
-  const [ quantities, setQuantities ] = useState<number[]>([]);
 
   const [ submitCartSuccess, setSubmitCartSuccess ] = useState(false);
   const [ errors, setErrors ] = useState();
@@ -28,35 +27,27 @@ export default function Cart() {
   useEffect(() => {
     const fetchProduct = async () => {
       const cartResult = await getCart();
-      console.log(cartResult);
       if (cartResult.hasOwnProperty('error')) { 
         setNotFound(true);
       } else {
         setCart(cartResult);
-        const quant : number [] = [];
-        cartResult.lines.forEach((line : IProduct) => {
-          quant.push(line.quantity ? line.quantity : 0);
-        });
-        setQuantities(quant);
       }
       setLoading(false);
     }
     fetchProduct();
   }, []);
 
-  function onChangeQuantity(e : any) {
-    const quant = quantities;
-    const index = parseInt(e.target.name[e.target.name.length - 1]);
-    quant[index] = parseInt(e.target.value);
-    
-    setQuantities(quant);
-  }
-
   function onChangeNameAddress(e : any) {
     setNameAddress({
       ...nameAddress,
       [e.target.name]: e.target.value,
     });
+  }
+
+
+  async function onDeleteLine() {
+    const cartResult = await getCart();
+    setCart(cartResult);
   }
 
   async function onSubmitCart(e : any) {
@@ -86,8 +77,7 @@ export default function Cart() {
         <Fragment>
           <CartLines
             lines={cart.lines}
-            quantities={quantities}
-            onChange={onChangeQuantity}
+            onDeleteLine={onDeleteLine}
           />
           <p className="cartTotal">Karfa samtals: {cart.totalPrice} kr.</p>
           <form onSubmit={onSubmitCart} className="cartSubmit">
