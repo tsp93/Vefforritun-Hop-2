@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { IProduct } from '../../api/types';
 
@@ -9,8 +10,6 @@ import './Cart.scss';
 
 export default function Cart(props : any) {
   const { lines, quantities, onChange, updateLine, deleteLine } = props;
-
-  console.log(quantities);
   
   function showCartItems(lines : IProduct[]) {
     const array : any = [];
@@ -22,7 +21,7 @@ export default function Cart(props : any) {
             <img src={line.image}></img>
           </div>
           <div className="cartLineInfo">
-            <h1 className="cartLineInfoTitle">{line.title}</h1>
+            <h2><Link className="cartLineInfoTitle" to={`/product/${line.id}`}>{line.title}</Link></h2>
             <p className="cartLineInfoPrice">Verð: {line.price} kr.</p>
           </div>
           <div className="cartLineManagement">

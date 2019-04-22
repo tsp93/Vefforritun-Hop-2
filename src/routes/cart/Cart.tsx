@@ -35,7 +35,7 @@ export default function Cart() {
       } else {
         setCart(cartResult);
         const quant : number [] = [];
-        cartResult.products.forEach((line : IProduct) => {
+        cartResult.lines.forEach((line : IProduct) => {
           quant.push(line.quantity ? line.quantity : 0);
         });
         setQuantities(quant);
@@ -86,7 +86,7 @@ export default function Cart() {
       {(!loading && !notFound) && (
         <Fragment>
           <CartLines
-            lines={cart.products}
+            lines={cart.lines}
             quantities={quantities}
             onChange={onChangeQuantity}
           />

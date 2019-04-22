@@ -1,18 +1,19 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 import { IOrder, IProduct } from '../../api/types';
 
 import './Order.scss';
 
 export default function Order(props : IOrder) {
-  const { id, name, address, created, lines, total } = props;
+  const { name, address, created, lines, total } = props;
 
   function showLines(lines : IProduct[]) {
     const array = [];
     for (let i = 0; i < lines.length; i += 1) {
       array.push(
         <tr key={i}>
-          <td>{lines[i].title}</td>
+          <td><Link className="productLink" to={`/product/${lines[i].id}`}>{lines[i].title}</Link></td>
           <td>{lines[i].price} kr.</td>
           <td>{lines[i].quantity}</td>
           <td>{lines[i].total} kr.</td>

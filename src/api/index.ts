@@ -8,6 +8,10 @@ const baseurl : string | undefined = process.env.REACT_APP_API_URL;
  * @param element Hlutur úr JSON
  */
 function constructProduct(element: any) {
+  if (element.product_id != null) {
+    element.lineId = element.id;
+    element.id = element.product_id;
+  }
   const product: IProduct = {
     id: element.id,
     title: element.title,
@@ -21,7 +25,7 @@ function constructProduct(element: any) {
     created: element.created,
     updated: element.updated,
     quantity: element.quantity,
-    line: element.line,
+    lineId: element.lineId,
     total: element.total,
   };
 
@@ -230,7 +234,7 @@ async function getCart() : Promise<ICart | any> {
 
   const cart = data.then((value) => {
     const carty : ICart = {
-      products: [],
+      lines: [],
       cartID: -1,
       totalPrice:0,
     };
@@ -240,7 +244,7 @@ async function getCart() : Promise<ICart | any> {
     }
 
     value.lines.forEach((element: any) => {
-      carty.products.push(constructProduct(element));
+      carty.lines.push(constructProduct(element));
     });
     carty.totalPrice = value.total;
     carty.cartID = value.id;

@@ -21,12 +21,17 @@
     color: $color-background;
   }
 
-  & tr:nth-child(even){
+  & tr:nth-child(even) {
     background-color:#E8E8E8;
   }
   
   & th, td {
     padding: 0.5rem;
+  }
+
+  & .productLink {
+    color: $color-font;
+    text-decoration: none;
   }
 
   & .orderLink {

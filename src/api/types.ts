@@ -13,7 +13,7 @@ export interface IProduct {
   created?: Date;
   updated?: Date;
   quantity?: number;
-  line?: number;
+  lineId?: number;
   total?: number;
 }
 
@@ -32,7 +32,7 @@ export interface IError {
 export interface ICart {
   cartID: number;
   totalPrice: number;
-  products: IProduct[];
+  lines: IProduct[];
 }
 
 export interface IOrder {
