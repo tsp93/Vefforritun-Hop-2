@@ -1,4 +1,25 @@
 @import '../../config.scss';
 
 .system-page {
+  align-items: center;
+  margin: 10% 40%;
+  text-align: center;
+
+  & .errorTitle {
+    font-size: 4rem;
+  }
+
+  & .errorMessage {
+    font-size: $big-font-size;
+    margin: 3rem 0;
+  }
+
+  & .errorLink {
+    color: $color-font;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
