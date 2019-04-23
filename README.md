@@ -14,3 +14,6 @@ Til að setja upp þetta verkefni þarf að clone-a það, keyra `npm install` o
 | Marinó Kristjánsson   | mak78       |
 | Páll Ásgeir Björnsson | pab14       |
 | Thomas S. Pálsson     | tsp3        |
+
+## Heroku
+Verkefnið má finna keyrandi [hér](https://vef2-h2-mak78-tsp3-pab14.herokuapp.com/)
