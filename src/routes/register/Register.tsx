@@ -1,6 +1,7 @@
-import React, { useState, Fragment } from 'react';
-import { postSignUp } from '../../api/index';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Link, Redirect } from 'react-router-dom';
+
+import { postSignUp, getCurrentUser } from '../../api/index';
 
 import Button from '../../components/button/Button';
 import Input from '../../components/input/Input';
@@ -15,6 +16,21 @@ export default function Register() {
   const [ registerSuccess, setRegisterSuccess ] = useState(false);
   const [ errors , setErrors] = useState();
 
+  const [ loggedIn, setLoggedIn ] = useState(false);
+  const [ loading, setLoading ] = useState(true);
+  const [ registering, setRegistering ] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userResult = await getCurrentUser();
+      if (!userResult.hasOwnProperty('error')) {
+        setLoggedIn(true);
+      }
+      setLoading(false);
+    }
+    fetchUser();
+  }, []);
+
   function onChangeUserEmailPassword(e : any) {
     setUserEmailPassword({
       ...userEmailPassword,
@@ -24,6 +40,7 @@ export default function Register() {
 
   async function onSubmitSignup(e: any) {
     e.preventDefault();
+    setRegistering(true);
     const { username, password, email } = userEmailPassword;
     const result = await postSignUp(username, password, email);
     
@@ -32,16 +49,32 @@ export default function Register() {
     } else {
       setRegisterSuccess(true);
     }
+    setRegistering(false);
   }
 
   return (
     <Fragment>
-      <h1 className="registerTitle">Nýskráning</h1>
-      {registerSuccess && (
-        <p className="registerSuccess">Skráning tókst!</p>
+      {(!loggedIn && loading) && (
+        <p>Loading...</p>
       )}
-      {!registerSuccess && (
-        <form onSubmit={onSubmitSignup} className="registerForm" >
+      {(loggedIn && !loading) && (
+        <Redirect to='/' />
+      )}
+      {(!loggedIn && registerSuccess && !loading) && (
+        <Fragment>
+          <h1 className="registerTitle">Nýskráning</h1>
+          <p className="registerSuccess">Skráning tókst!</p>
+          <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
+        </Fragment>
+      )}
+      {(!loggedIn && !registerSuccess && !loading) && (
+        <Fragment>
+        <h1 className="registerTitle">Nýskráning</h1>
+        {registering && (
+          <p>Nýskráir...</p>
+        )}
+        {!registering && (
+          <form onSubmit={onSubmitSignup} className="registerForm" >
           {errors != null && (
             <Errors
               errors={errors}
@@ -74,8 +107,10 @@ export default function Register() {
             children={'Nýskrá'}
           />
         </form>
+        )}
+        <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
+        </Fragment>
       )}
-      <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
     </Fragment>
   );
 }

@@ -24,7 +24,7 @@ export default function Home() {
         <Button
           className={'categoryButton'}
           children={'Skoða alla flokka'}
-          />
+        />
       </Link>
      
       <Categories /> 

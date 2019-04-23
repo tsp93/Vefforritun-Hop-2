@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Redirect } from 'react-router-dom';
 
-import { getCart, postOrders } from '../../api';
+import { getCart, postOrders, getCurrentUser } from '../../api';
 
 import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
@@ -18,13 +18,23 @@ export default function Cart() {
   const [ submitCartSuccess, setSubmitCartSuccess ] = useState(false);
   const [ errors, setErrors ] = useState();
 
+  const [ loggedIn, setLoggedIn ] = useState(true);
   const [ noCart, setNoCart ] = useState(false);
+
+  const [ ordering, setOrdering ] = useState(false);
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
     const fetchProduct = async () => {
+      const userResult = await getCurrentUser();
+      if (userResult.hasOwnProperty('error')) {
+        setLoggedIn(false);
+        setLoading(false);
+        return;
+      }
+
       const cartResult = await getCart();
-      if (cartResult.hasOwnProperty('error')) { 
+      if (cartResult.hasOwnProperty('error') || cartResult.lines.length === 0) { 
         setNoCart(true);
       } else {
         setCart(cartResult);
@@ -44,10 +54,14 @@ export default function Cart() {
   async function onDeleteLine() {
     const cartResult = await getCart();
     setCart(cartResult);
+    if (cartResult.lines.length === 0) { 
+      setNoCart(true);
+    }
   }
 
   async function onSubmitCart(e : any) {
     e.preventDefault();
+    setOrdering(true);
     const { name, address } = nameAddress;
     const result = await postOrders(name, address);
   
@@ -56,20 +70,21 @@ export default function Cart() {
     } else {
       setSubmitCartSuccess(true);
     }
+    setOrdering(false);
   }
 
   return (
     <Fragment>
-      {submitCartSuccess && (
-        <Redirect to='/orders' />
+      {(!loggedIn && !loading) && (
+        <Redirect to='/login' />
       )}
-      {noCart && (
-        <p className="noCart">Bættu við vöru í körfu og hún mun birtast hér</p>
+      {(noCart && !loading && loggedIn) && (
+        <p className="noCart">Karfan þín er tóm</p>
       )}
-      {(loading && !noCart) && (
+      {(loading && !noCart && loggedIn) && (
         <p>Loading...</p>
       )}
-      {(!loading && !noCart) && (
+      {(!loading && !noCart && loggedIn) && (
         <Fragment>
           <CartLines
             lines={cart.lines}
@@ -78,27 +93,37 @@ export default function Cart() {
           <p className="cartTotal">Karfa samtals: {cart.totalPrice} kr.</p>
           <form onSubmit={onSubmitCart} className="cartSubmit">
             <h2>Senda inn pöntun</h2>
-            {errors != null && (
-              <Errors
-                errors={errors}
-              />
+            {submitCartSuccess && !ordering && (
+              <p className="cartOrderMessage">Pöntun tókst!</p>
             )}
-            <Input
-              label={'Nafn:'}
-              name={'name'}
-              value={nameAddress.name}
-              onChange={onChangeNameAddress}
-            />
-            <Input
-              label={'Heimilisfang:'}
-              name={'address'}
-              value={nameAddress.address}
-              onChange={onChangeNameAddress}
-            />
-            <Button
-              className={'cartSubmitButton'}
-              children={'Senda Inn Pöntun'}
-            />
+            {!submitCartSuccess && ordering && (
+              <p className="cartOrderMessage">Sendi inn pöntun...</p>
+            )}
+            {!submitCartSuccess && !ordering && (
+              <Fragment>
+                {errors != null && (
+                  <Errors
+                    errors={errors}
+                  />
+                )}
+                <Input
+                  label={'Nafn:'}
+                  name={'name'}
+                  value={nameAddress.name}
+                  onChange={onChangeNameAddress}
+                />
+                <Input
+                  label={'Heimilisfang:'}
+                  name={'address'}
+                  value={nameAddress.address}
+                  onChange={onChangeNameAddress}
+                />
+                <Button
+                  className={'cartSubmitButton'}
+                  children={'Senda Inn Pöntun'}
+                />
+              </Fragment>
+            )}
           </form>
         </Fragment>
       )}

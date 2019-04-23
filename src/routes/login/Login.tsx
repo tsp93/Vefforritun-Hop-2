@@ -20,7 +20,6 @@ export default function Login() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      setLoading(true);
       const userResult = await getCurrentUser();
       if (!userResult.hasOwnProperty('error')) {
         setLoggedIn(true);
@@ -62,6 +61,9 @@ export default function Login() {
 
   return (
     <Fragment>
+      {(!loggedIn && loading) && (
+        <p>Loading...</p>
+      )}
       {(loggedIn && !loading) && (
         <Redirect to='/' />
       )}
