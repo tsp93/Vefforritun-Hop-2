@@ -1,5 +1,4 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { getCart, postOrders, getCurrentUser } from '../../api';
 
@@ -7,6 +6,8 @@ import Input from '../../components/input/Input';
 import Button from '../../components/button/Button';
 import Errors from '../../components/errors/Errors';
 import CartLines from '../../components/cart/Cart';
+
+import NoAccess from '../system-pages/NoAccess';
 
 import './Cart.scss';
 
@@ -76,7 +77,7 @@ export default function Cart() {
   return (
     <Fragment>
       {(!loggedIn && !loading) && (
-        <Redirect to='/login' />
+        <NoAccess />
       )}
       {(noCart && !loading && loggedIn) && (
         <p className="noCart">Karfan þín er tóm</p>

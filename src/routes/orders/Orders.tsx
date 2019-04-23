@@ -1,9 +1,10 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Redirect } from 'react-router-dom';
 
 import { getOrders, getCurrentUser } from '../../api';
 
 import OrderList from '../../components/orders/Orders';
+
+import NoAccess from '../system-pages/NoAccess';
 
 import './Orders.scss';
 
@@ -38,7 +39,7 @@ export default function Orders() {
         <p>Loading...</p>
       )}
       {(!loggedIn && !loading) && (
-        <Redirect to='/login' />
+        <NoAccess />
       )}
       {(loggedIn && !loading) && (
         <div className="orders">
