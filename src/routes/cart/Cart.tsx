@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Helmet from 'react-helmet';
 
 import { getCart, postOrders, getCurrentUser } from '../../api';
 
@@ -87,6 +88,7 @@ export default function Cart() {
       )}
       {(!loading && !noCart && loggedIn) && (
         <Fragment>
+          <Helmet title="Karfa" />
           <CartLines
             lines={cart.lines}
             onDeleteLine={onDeleteLine}

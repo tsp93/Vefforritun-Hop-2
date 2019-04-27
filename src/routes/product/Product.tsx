@@ -1,4 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
+import Helmet from 'react-helmet';
 
 import { getProduct, getProducts, getCurrentUser, addToCart } from '../../api';
 
@@ -68,6 +69,7 @@ export default function Product(props:any) {
       )}
       {(!loading && !notFound) && (
         <Fragment>
+          <Helmet title={product.title} />
           <ProductComponent
             id={product.id}
             image={product.image}

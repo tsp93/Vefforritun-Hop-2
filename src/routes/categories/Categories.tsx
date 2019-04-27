@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Helmet from 'react-helmet';
 
 import { getAllCategories } from '../../api';
 import { ICategory } from '../../api/types';
@@ -40,6 +41,7 @@ export default function Categories() {
 
   return (
     <Fragment>
+      <Helmet title="Flokkar" />
       {loading && (
         <p>Loading...</p>
       )}

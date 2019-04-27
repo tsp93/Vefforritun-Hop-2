@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Helmet from 'react-helmet';
 import { Link, Redirect } from 'react-router-dom';
 
 import { postSignUp, getCurrentUser } from '../../api/index';
@@ -60,55 +61,56 @@ export default function Register() {
       {(loggedIn && !loading) && (
         <Redirect to='/' />
       )}
-      {(!loggedIn && registerSuccess && !loading) && (
+      {(!loggedIn && !loading) && (
         <Fragment>
+          <Helmet title="Nýskráning" />
           <h1 className="registerTitle">Nýskráning</h1>
-          <p className="registerSuccess">Skráning tókst!</p>
-          <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
-        </Fragment>
-      )}
-      {(!loggedIn && !registerSuccess && !loading) && (
-        <Fragment>
-        <h1 className="registerTitle">Nýskráning</h1>
-        {registering && (
-          <p>Nýskráir...</p>
-        )}
-        {!registering && (
-          <form onSubmit={onSubmitSignup} className="registerForm" >
-          {errors != null && (
-            <Errors
-              errors={errors}
-            />
+          {registerSuccess && (
+            <p className="registerSuccess">Skráning tókst!</p>
           )}
-          <div className="registerInputs">
-            <Input
-              label={'Notendanafn:'}
-              name={'username'}
-              onChange={onChangeUserEmailPassword}
-              value={userEmailPassword.username}
-            />
-            <Input
-              label={'Lykilorð:'}
-              name={'password'}
-              onChange={onChangeUserEmailPassword}
-              value={userEmailPassword.password}
-              type={'password'}
-            />
-            <Input
-              label={'Netfang:'}
-              name={'email'}
-              onChange={onChangeUserEmailPassword}
-              value={userEmailPassword.email}
-              type={'email'}
-            />
-          </div>
-          <Button
-            className={'registerButton'}
-            children={'Nýskrá'}
-          />
-        </form>
-        )}
-        <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
+          {!registerSuccess && (
+            <Fragment>
+              {registering && (
+                <p>Nýskráir...</p>
+              )}
+              {!registering && (
+                <form onSubmit={onSubmitSignup} className="registerForm" >
+                {errors != null && (
+                  <Errors
+                    errors={errors}
+                  />
+                )}
+                <div className="registerInputs">
+                  <Input
+                    label={'Notendanafn:'}
+                    name={'username'}
+                    onChange={onChangeUserEmailPassword}
+                    value={userEmailPassword.username}
+                  />
+                  <Input
+                    label={'Lykilorð:'}
+                    name={'password'}
+                    onChange={onChangeUserEmailPassword}
+                    value={userEmailPassword.password}
+                    type={'password'}
+                  />
+                  <Input
+                    label={'Netfang:'}
+                    name={'email'}
+                    onChange={onChangeUserEmailPassword}
+                    value={userEmailPassword.email}
+                    type={'email'}
+                  />
+                </div>
+                <Button
+                  className={'registerButton'}
+                  children={'Nýskrá'}
+                />
+              </form>
+              )}
+              </Fragment>
+            )}
+          <Link className="registerLinkToLogin" to="/login">Innskráning</Link>
         </Fragment>
       )}
     </Fragment>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Helmet from 'react-helmet';
 import { Link, Redirect } from 'react-router-dom';
 
 import { postLogin, getCurrentUser } from '../../api/index';
@@ -69,6 +70,7 @@ export default function Login() {
       )}
       {(!loggedIn && !loading) && (
         <Fragment>
+          <Helmet title="Innskráning" />
           <h1 className="loginTitle">Innskráning</h1>
           <form onSubmit={onSubmitLogin} className="loginForm">
             <div className="loginInputs">

@@ -1,4 +1,5 @@
 import React, { Fragment, useState, useEffect } from 'react';
+import Helmet from 'react-helmet';
 import { Link } from 'react-router-dom';
 
 import { getOrder } from '../../api';
@@ -38,18 +39,21 @@ export default function Order(props : any) {
         <p>Loading...</p>
       )}
       {(!loading && !notFound) && (
-        <div className="order">
-          <h1 className="orderName">Pöntun #{order.id}</h1>
-          <OrderComponent
-            id={order.id}
-            name={order.name}
-            address={order.address}
-            created={order.created}
-            lines={order.lines}
-            total={order.total}
-          />
-          <Link className="orderLinkToOrders" to="/orders">Aftur í pantanir</Link>
-        </div>
+        <Fragment>
+          <Helmet title="Pöntun" />
+          <div className="order">
+            <h1 className="orderName">Pöntun #{order.id}</h1>
+            <OrderComponent
+              id={order.id}
+              name={order.name}
+              address={order.address}
+              created={order.created}
+              lines={order.lines}
+              total={order.total}
+            />
+            <Link className="orderLinkToOrders" to="/orders">Aftur í pantanir</Link>
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );

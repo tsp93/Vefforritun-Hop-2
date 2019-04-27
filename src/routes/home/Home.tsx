@@ -13,7 +13,6 @@ export default function Home() {
  
   return (
     <Fragment>
-      <Helmet title="Forsíða" />
 
       <h1>Nýjar vörur</h1>
       <Products
@@ -27,7 +26,9 @@ export default function Home() {
         />
       </Link>
      
-      <Categories /> 
+      <Categories />
+
+      <Helmet title="Forsíða" />
 
     </Fragment>
   );

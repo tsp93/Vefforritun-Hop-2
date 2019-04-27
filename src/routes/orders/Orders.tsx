@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import Helmet from 'react-helmet';
 
 import { getOrders, getCurrentUser } from '../../api';
 
@@ -42,17 +43,20 @@ export default function Orders() {
         <NoAccess />
       )}
       {(loggedIn && !loading) && (
-        <div className="orders">
-          <h1 className="ordersTitle">Þínar pantanir</h1>
-          {loadingOrders && (
-            <p>Sæki pantanir...</p>
-          )}
-          {!loadingOrders && (
-            <OrderList 
-              orders={orders}
-            />
-          )}
-        </div>
+        <Fragment>
+          <Helmet title="Pantanir" />
+          <div className="orders">
+            <h1 className="ordersTitle">Þínar pantanir</h1>
+            {loadingOrders && (
+              <p>Sæki pantanir...</p>
+            )}
+            {!loadingOrders && (
+              <OrderList 
+                orders={orders}
+              />
+            )}
+          </div>
+        </Fragment>
       )}
     </Fragment>
   );
